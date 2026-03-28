@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Guida Pratica a Claude — Per Docenti</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;min-height:100vh}
+.header{background:#1e293b;color:white;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.header-title{font-weight:800;font-size:16px}
+.header-sub{font-size:12px;color:#94a3b8;margin-top:2px}
+.header-badge{background:#D97706;color:white;border-radius:8px;padding:5px 14px;font-size:13px;font-weight:700}
+.layout{display:flex;height:calc(100vh - 53px)}
+.sidebar{width:210px;background:white;border-right:1px solid #e2e8f0;padding:16px 0;overflow-y:auto;flex-shrink:0}
+.sidebar-label{padding:0 14px 12px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px}
+.nav-btn{width:100%;text-align:left;padding:10px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:10px;border-right:3px solid transparent;transition:all .15s;color:#475569;font-weight:400}
+.nav-btn.active{background:#eff6ff;color:#1e40af;font-weight:700;border-right:3px solid #1e40af}
+.nav-num{width:22px;height:22px;border-radius:5px;background:#e2e8f0;color:#94a3b8;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.nav-btn.active .nav-num{background:#1e40af;color:white}
+.nav-sub{display:block;font-size:10px;color:#9ca3af;margin-top:1px}
+.content{flex:1;overflow-y:auto;padding:28px 32px}
+.inner{max-width:740px;margin:0 auto}
+.section-title{display:flex;align-items:center;gap:14px;margin-bottom:22px;padding-bottom:12px;border-bottom:2px solid #e2e8f0}
+.section-num{width:36px;height:36px;border-radius:8px;background:#1e40af;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0}
+h2{font-size:20px;font-weight:800;color:#1e293b}
+p{color:#4b5563;line-height:1.8;font-size:14px;margin-bottom:16px}
+.info-box{border-left:4px solid #1e40af;border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:16px;background:#eff6ff}
+.info-box.green{border-color:#0f766e;background:#f0fdfa}
+.info-box.yellow{border-color:#b45309;background:#fffbeb}
+.info-box-title{font-weight:700;color:#1e40af;font-size:14px;margin-bottom:6px}
+.info-box.green .info-box-title{color:#0f766e}
+.info-box.yellow .info-box-title{color:#b45309}
+.info-box-text{font-size:14px;color:#374151;line-height:1.75}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.card{background:white;border-radius:10px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.card.blue-top{border-top:3px solid #1e40af}
+.card-icon{font-size:22px;margin-bottom:6px}
+.card-title{font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px}
+.card-desc{font-size:13px;color:#6b7280;line-height:1.55}
+.step{display:flex;gap:14px;margin-bottom:16px}
+.step-num{width:30px;height:30px;border-radius:50%;background:#1e40af;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px}
+.step-title{font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px}
+.step-text{font-size:14px;color:#4b5563;line-height:1.7}
+.chat-area{background:#f8fafc;border-radius:12px;padding:18px;margin-bottom:20px;border:1px solid #e2e8f0}
+.chat-label{font-weight:700;color:#1e293b;font-size:14px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.badge{border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;color:white}
+.bubble-wrap{display:flex;margin-bottom:10px}
+.bubble-wrap.user{justify-content:flex-end}
+.avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-top:2px}
+.avatar.claude{background:#D97706;color:white;margin-right:8px}
+.avatar.user{background:#475569;color:white;margin-left:8px}
+.bubble{max-width:80%;border-radius:16px;padding:10px 14px;font-size:13px;line-height:1.65;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.bubble.user{background:#1e40af;color:white;border-radius:16px 4px 16px 16px}
+.bubble.claude{background:white;color:#1f2937;border-radius:4px 16px 16px 16px;border:1px solid #e2e8f0}
+.point-row{background:white;padding:11px 15px;border-radius:8px;border-left:3px solid #1e40af;color:#374151;font-size:14px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.myth-card{background:white;border-radius:12px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.myth-top{background:#fef2f2;padding:10px 15px;display:flex;gap:8px;align-items:center;border-bottom:1px solid #fee2e2}
+.myth-bot{padding:12px 15px;display:flex;gap:8px;align-items:flex-start}
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.plan-card{background:white;border-radius:10px;padding:14px;border:1px solid #e2e8f0}
+.plan-name{font-weight:800;font-size:16px;margin-bottom:2px}
+.plan-price{font-size:12px;font-weight:600;color:#6b7280}
+.plan-features{margin:10px 0;display:flex;flex-direction:column;gap:5px}
+.plan-feat{font-size:12px;color:#4b5563;display:flex;gap:6px;align-items:flex-start}
+.plan-best{border-radius:6px;padding:6px 10px;font-size:12px;font-weight:600}
+.compare-table{background:white;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.compare-head{display:grid;grid-template-columns:1fr 70px 70px 70px 90px;background:#1e40af;padding:10px 14px}
+.compare-head-cell{font-weight:700;font-size:12px;color:white}
+.compare-row{display:grid;grid-template-columns:1fr 70px 70px 70px 90px;padding:10px 14px;border-bottom:1px solid #f3f4f6;align-items:center}
+.compare-row.even{background:#fafafa}
+.compare-cell{font-size:13px;color:#374151}
+.compare-cell.center{text-align:center;font-size:15px}
+.feature-block{margin-bottom:24px}
+.feature-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.feature-icon{font-size:22px}
+.feature-title{font-weight:700;color:#1e293b;font-size:15px}
+.prompt-box{background:white;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:14px;overflow:hidden}
+.prompt-top{background:#f8fafc;padding:8px 14px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}
+.prompt-label{font-weight:700;color:#1e40af;font-size:13px}
+.copy-btn{background:#1e40af;color:white;border:none;border-radius:5px;padding:4px 12px;font-size:12px;cursor:pointer;font-weight:600}
+.copy-btn.copied{background:#16a34a}
+.prompt-text{padding:12px 14px;font-family:monospace;font-size:13px;color:#374151;line-height:1.7;white-space:pre-wrap}
+.formula-row{display:flex;align-items:flex-start;gap:10px;background:white;border-radius:7px;padding:8px 12px;margin-bottom:8px}
+.tag{display:inline-block;background:#1e40af18;color:#1e40af;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:600;margin-right:5px}
+.compare2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.compare2-card{background:white;border-radius:10px;border:1px solid #e2e8f0;overflow:hidden}
+.compare2-head{padding:12px 16px;font-weight:700;font-size:15px;color:white}
+.compare2-body{padding:14px}
+.compare2-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:13px;color:#374151}
+.project-item{background:white;border-radius:8px;padding:11px 14px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;margin-bottom:9px}
+.project-icon{font-size:22px}
+.project-name{font-weight:700;color:#1e293b;font-size:14px}
+.project-desc{font-size:12px;color:#6b7280;margin-top:2px}
+.code-block{background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:18px;overflow:hidden}
+.code-label{background:#e2e8f0;padding:8px 14px;font-size:12px;font-weight:700;color:#475569}
+.code-text{padding:14px 16px;font-family:monospace;font-size:13px;color:#374151;line-height:1.8}
+.nav-footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0}
+.nav-prev,.nav-next{padding:9px 20px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer}
+.nav-prev{border:1px solid #e2e8f0;background:white;color:#374151}
+.nav-next{border:none;background:#1e40af;color:white}
+.nav-prev:disabled,.nav-next:disabled{background:#e2e8f0;color:#9ca3af;cursor:not-allowed}
+.nav-counter{font-size:13px;color:#94a3b8}
+.tool-card-head{border-radius:10px;padding:13px 18px;margin-bottom:14px;color:white}
+.tool-name{font-weight:800;font-size:18px}
+.tool-url{font-size:12px;opacity:.8;margin-top:2px}
+.tool-features{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tool-tag{border-radius:4px;padding:2px 9px;font-size:12px;font-weight:600}
+.overview-card{background:white;border-radius:10px;padding:13px 15px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:10px}
+.sum-table{background:white;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.sum-head{display:grid;grid-template-columns:110px 1fr 78px 78px;background:#1e293b;padding:10px 14px}
+.sum-row{display:grid;grid-template-columns:110px 1fr 78px 78px;padding:10px 14px;border-bottom:1px solid #f3f4f6;align-items:center}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-title">Guida Pratica a Claude</div>
+    <div class="header-sub">Per docenti di scuola secondaria · Con esempi applicativi</div>
+  </div>
+  <div class="header-badge">Claude</div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-label">Contenuti</div>
+    <button class="nav-btn active" onclick="goTo(0)"><span class="nav-num">01</span><span>Cos'è Claude<span class="nav-sub">Introduzione</span></span></button>
+    <button class="nav-btn" onclick="goTo(1)"><span class="nav-num">02</span><span>Come iniziare<span class="nav-sub">Accesso e registrazione</span></span></button>
+    <button class="nav-btn" onclick="goTo(2)"><span class="nav-num">03</span><span>La Chat<span class="nav-sub">Come funziona</span></span></button>
+    <button class="nav-btn" onclick="goTo(3)"><span class="nav-num">04</span><span>I Projects<span class="nav-sub">Memoria persistente</span></span></button>
+    <button class="nav-btn" onclick="goTo(4)"><span class="nav-num">05</span><span>Funzionalità<span class="nav-sub">Artifacts, Search, File</span></span></button>
+    <button class="nav-btn" onclick="goTo(5)"><span class="nav-num">06</span><span>Prompt efficaci<span class="nav-sub">Formula e esempi</span></span></button>
+    <button class="nav-btn" onclick="goTo(6)"><span class="nav-num">07</span><span>Chat vs Project<span class="nav-sub">Quando usare cosa</span></span></button>
+  </div>
+
+  <div class="content">
+    <div class="inner" id="main-content"></div>
+  </div>
+</div>
+
+<script>
+let current = 0;
+
+const sections = [
+
+// 0 — Cos'è Claude
+`<div class="section-title"><div class="section-num">1</div><h2>Cos'è Claude</h2></div>
+<p><strong>Claude</strong> è un assistente AI sviluppato da <strong>Anthropic</strong>, azienda americana fondata nel 2021 da ex ricercatori di OpenAI. È progettato con un approccio chiamato <em>Constitutional AI</em>: ogni risposta viene valutata su criteri di sicurezza, onestà e utilità prima di essere fornita all'utente.</p>
+<div class="info-box"><div class="info-box-title">🎯 Perché Claude è adatto ai docenti?</div><div class="info-box-text">Claude eccelle in tre aree particolarmente utili per chi insegna: la <strong>gestione di testi lunghi</strong> (analizza documenti interi, programmi, libri), la <strong>qualità della scrittura</strong> (produce testi fluidi e ben strutturati) e il <strong>ragionamento sfumato</strong> (tiene conto del contesto scolastico se lo descrivi con precisione).</div></div>
+<div class="grid2">
+  <div class="card blue-top"><div class="card-icon">📄</div><div class="card-title">Contesto esteso</div><div class="card-desc">Analizza fino a ~200.000 parole in una sola chat</div></div>
+  <div class="card blue-top"><div class="card-icon">✍️</div><div class="card-title">Qualità della prosa</div><div class="card-desc">Testi chiari e adatti al registro richiesto</div></div>
+  <div class="card blue-top"><div class="card-icon">🧠</div><div class="card-title">Ragionamento</div><div class="card-desc">Spiegazioni strutturate, argomentazioni, analisi</div></div>
+  <div class="card blue-top"><div class="card-icon">🛡️</div><div class="card-title">Sicurezza</div><div class="card-desc">Rifiuta contenuti dannosi, è trasparente sui limiti</div></div>
+</div>`,
+
+// 1 — Come iniziare
+`<div class="section-title"><div class="section-num">2</div><h2>Come iniziare</h2></div>
+<p>Claude è accessibile via browser da qualsiasi dispositivo, senza installare nulla. Puoi iniziare gratuitamente in meno di due minuti.</p>
+<div class="step"><div class="step-num">1</div><div><div class="step-title">Vai su claude.ai</div><div class="step-text">Apri il browser e digita <strong>claude.ai</strong>. Il sito è disponibile anche in italiano.</div></div></div>
+<div class="step"><div class="step-num">2</div><div><div class="step-title">Crea un account gratuito</div><div class="step-text">Clicca su <em>Sign up</em> e registrati con Google, Microsoft o qualsiasi email. Non è richiesta una carta di credito per il piano gratuito.</div></div></div>
+<div class="step"><div class="step-num">3</div><div><div class="step-title">Scegli il tuo piano</div><div class="step-text">Il piano <strong>Free</strong> è sufficiente per iniziare. Per uso quotidiano professionale, il piano <strong>Pro</strong> (20 €/mese) sblocca tutti i modelli e i Projects illimitati.</div></div></div>
+<div class="step"><div class="step-num">4</div><div><div class="step-title">Inizia a conversare</div><div class="step-text">Scrivi il tuo primo messaggio nella casella in basso. Non serve un prompt perfetto: inizia con una richiesta semplice e affina man mano.</div></div></div>
+<div class="info-box green"><div class="info-box-title">💡 Suggerimento per iniziare</div><div class="info-box-text">La prima cosa che ti consiglio è di presentarti: <em>«Sono una docente di informatica in un liceo scientifico. Vorrei usarti per preparare materiali didattici. Come posso iniziare?»</em> — Claude ti guiderà.</div></div>`,
+
+// 2 — La Chat
+`<div class="section-title"><div class="section-num">3</div><h2>La Chat — Come funziona</h2></div>
+<p>La chat è il modo più semplice per interagire con Claude. Ogni conversazione è <strong>autonoma</strong>: Claude ricorda tutto ciò che hai scritto nella conversazione corrente, ma quando apri una nuova chat riparte da zero, senza memoria delle sessioni precedenti.</p>
+<div class="chat-area">
+  <div class="chat-label"><span class="badge" style="background:#1e40af">ESEMPIO</span> Preparare una verifica — conversazione reale</div>
+  <div class="bubble-wrap user"><div class="bubble user">Crea una verifica scritta su Python (liste e dizionari) per una classe 4ª di istituto tecnico informatico. 8 esercizi di difficoltà crescente. Tempo: 2 ore.</div><div class="avatar user">D</div></div>
+  <div class="bubble-wrap"><div class="avatar claude">C</div><div class="bubble claude">Ecco la verifica su liste e dizionari in Python, strutturata in difficoltà crescente per 2 ore di lavoro.<br><br><strong>Parte A — Liste (30 pt)</strong><br>Es. 1: Scrivi una funzione che dato una lista di interi restituisca la somma degli elementi positivi...<br>Es. 2: Data la lista [3, 1, 4, 1, 5, 9, 2, 6], rimuovi i duplicati mantenendo l'ordine...<br><em>[...continua con gli altri esercizi...]</em></div></div>
+  <div class="bubble-wrap user"><div class="bubble user">Perfetto. Aggiungi una sezione bonus con un esercizio che combina entrambe le strutture. E crea anche la griglia di correzione.</div><div class="avatar user">D</div></div>
+  <div class="bubble-wrap"><div class="avatar claude">C</div><div class="bubble claude"><strong>Sezione Bonus (10 pt extra)</strong><br>Scrivi una funzione che riceva una lista di dizionari (con chiavi "nome" e "voto") e restituisca un dizionario nome → media dei voti...<br><br><strong>Griglia di correzione</strong><br>Es. 1: correttezza logica (3), sintassi (2) — Tot. 5 pt<br><em>[...griglia completa...]</em></div></div>
+</div>
+<div class="info-box"><div class="info-box-title">✅ Cosa impari da questo esempio</div><div class="info-box-text">Claude mantiene il contesto <strong>all'interno della stessa conversazione</strong>: sa già che stiamo parlando di Python, 4ª tecnico, 2 ore. Puoi continuare a raffinare con richieste successive, come dialogare con un collega.</div></div>
+<div class="info-box yellow"><div class="info-box-title">⚠️ Limite della chat semplice</div><div class="info-box-text">Se domani apri una <strong>nuova chat</strong>, Claude non sa che classe hai, che linguaggio insegni, né il livello degli studenti. Devi ricominciare a fornire il contesto. Per ovviare a questo: usa i <strong>Projects</strong>.</div></div>`,
+
+// 3 — I Projects
+`<div class="section-title"><div class="section-num">4</div><h2>I Projects — Memoria persistente per classe</h2></div>
+<p>Un <strong>Project</strong> è uno spazio di lavoro permanente in cui Claude ricorda il contesto in tutte le conversazioni. Puoi caricare documenti, dare istruzioni fisse e organizzare il lavoro per classe, materia o UDA.</p>
+<div class="step"><div class="step-num">1</div><div><div class="step-title">Clicca su "New Project" nella barra laterale sinistra</div><div class="step-text">Dalla home di claude.ai, nella sidebar trovi il pulsante <em>New Project</em>. Dagli un nome chiaro: <strong>"Classe 4B Informatica"</strong> oppure <strong>"UDA Reti e Protocolli 2024"</strong>.</div></div></div>
+<div class="step"><div class="step-num">2</div><div><div class="step-title">Scrivi le istruzioni permanenti (Project Instructions)</div><div class="step-text">Descrivi il contesto che Claude deve ricordare sempre, in ogni conversazione del progetto. È come consegnare un "briefing" una volta sola.</div></div></div>
+<div class="code-block"><div class="code-label">📋 ESEMPIO — Istruzioni del Project "Classe 4B Informatica"</div><div class="code-text">Sei un assistente didattico per la mia classe 4B di informatica (istituto tecnico).<br><br><strong>Contesto della classe:</strong><br>- 22 studenti, livello eterogeneo (6 eccellenti, 10 nella media, 6 con difficoltà)<br>- 3 studenti con DSA (dislessia): Luca, Marco, Sara — serve sempre una versione semplificata<br>- Argomenti già affrontati: basi di Python, liste, dizionari, funzioni<br>- Argomento attuale: programmazione orientata agli oggetti (OOP)<br><br><strong>Come rispondermi:</strong><br>- Usa sempre esempi concreti e contestualizzati<br>- Quando crei esercizi, indica il livello (base / intermedio / avanzato)<br>- Per i materiali DSA: frasi brevi, grassetto sulle parole chiave, schema riassuntivo finale</div></div>
+<div class="step"><div class="step-num">3</div><div><div class="step-title">Carica i tuoi documenti nel Project</div><div class="step-text">Allega PDF, Word o testo: la tua programmazione annuale, il libro di testo, le linee guida BES dell'istituto. Claude li leggerà e li userà in tutte le conversazioni.</div></div></div>
+<div class="step"><div class="step-num">4</div><div><div class="step-title">Inizia a conversare — Claude sa già tutto</div><div class="step-text">Da questo momento, in qualsiasi chat del Project, Claude conosce già la tua classe, i tuoi studenti, il livello e il contesto. Non devi ripetere nulla.</div></div></div>
+<div class="chat-area">
+  <div class="chat-label"><span class="badge" style="background:#0f766e">ESEMPIO</span> Come cambia l'esperienza con un Project attivo</div>
+  <div class="bubble-wrap user"><div class="bubble user">Crea un esercizio introduttivo su classi e oggetti in Python.</div><div class="avatar user">D</div></div>
+  <div class="bubble-wrap"><div class="avatar claude">C</div><div class="bubble claude">Ecco un esercizio calibrato per la 4B. Ho preparato <strong>tre versioni</strong>:<br><br>🟢 <strong>Base</strong> — Crea una classe Studente con nome e voto. Aggiungi un metodo che stampa se è promosso.<br>🟡 <strong>Intermedio</strong> — Estendi la classe con una lista di voti e un metodo per calcolare la media.<br>🔴 <strong>Avanzato</strong> — Crea una classe Registro che contiene una lista di Studenti e genera le statistiche.<br><br>📄 <strong>Versione DSA (per Luca, Marco, Sara)</strong><br>Una <strong>classe</strong> è come un modello. Un <strong>oggetto</strong> è una copia di quel modello...<br><em>[testo semplificato con schema visivo]</em></div></div>
+</div>
+<div class="info-box green"><div class="info-box-title">✅ Cosa è successo in questo esempio?</div><div class="info-box-text">Claude ha risposto senza che tu abbia spiegato nulla: sa già che la classe è in OOP, conosce i tre livelli della 4B e ha preparato autonomamente la versione DSA per i tre studenti specifici. Tutto grazie alle istruzioni del Project.</div></div>`,
+
+// 4 — Funzionalità
+`<div class="section-title"><div class="section-num">5</div><h2>Funzionalità chiave per il docente</h2></div>
+<div class="feature-block">
+  <div class="feature-header"><span class="feature-icon">🎨</span><span class="feature-title">Artifacts — Contenuti interattivi</span></div>
+  <p>Quando chiedi a Claude di creare qualcosa di strutturato (un quiz, una tabella, una timeline), può generarlo come Artifact: un contenuto separato, visualizzato in una finestra dedicata, che puoi copiare e usare direttamente.</p>
+  <div class="chat-area">
+    <div class="bubble-wrap user"><div class="bubble user">Crea un quiz interattivo con 5 domande a risposta multipla sulla differenza tra classi e istanze in Python. Deve funzionare nel browser.</div><div class="avatar user">D</div></div>
+    <div class="bubble-wrap"><div class="avatar claude">C</div><div class="bubble claude">Ecco il quiz interattivo! [Artifact aperto nella finestra a destra]<br><br>Il quiz include: 5 domande a risposta multipla, feedback immediato per ogni risposta, punteggio finale con messaggio personalizzato. Puoi incorporarlo in Moodle o condividerlo come link.</div></div>
+  </div>
+</div>
+<div class="feature-block">
+  <div class="feature-header"><span class="feature-icon">🌐</span><span class="feature-title">Web Search — Informazioni aggiornate</span></div>
+  <p>Claude può cercare sul web in tempo reale per integrare le risposte con dati aggiornati, normative recenti o risorse online.</p>
+  <div class="chat-area">
+    <div class="bubble-wrap user"><div class="bubble user">Cerca le ultime linee guida ministeriali sull'uso dell'AI nella scuola secondaria italiana.</div><div class="avatar user">D</div></div>
+    <div class="bubble-wrap"><div class="avatar claude">C</div><div class="bubble claude">Ho cercato sul web le indicazioni più recenti. Il MIUR ha pubblicato nel 2024 le "Linee guida per l'uso consapevole dell'IA nella scuola"... [continua con fonti citate]</div></div>
+  </div>
+</div>
+<div class="feature-block">
+  <div class="feature-header"><span class="feature-icon">📎</span><span class="feature-title">Caricamento file — Lavora sui tuoi documenti</span></div>
+  <p>Puoi caricare PDF, documenti Word o immagini direttamente nella chat. Claude li analizza, li riassume o li usa come base per creare nuovi materiali.</p>
+  <div class="chat-area">
+    <div class="bubble-wrap user"><div class="bubble user">[Allego il PDF della mia programmazione annuale] A partire da questa programmazione, crea le schede UDA per il primo quadrimestre.</div><div class="avatar user">D</div></div>
+    <div class="bubble-wrap"><div class="avatar claude">C</div><div class="bubble claude">Ho analizzato la tua programmazione. Ecco le schede UDA per il primo quadrimestre:<br><br>UDA 1 — Fondamenti di OOP (settembre–ottobre)<br>Obiettivi: comprensione del paradigma OOP, classi e oggetti...<br>[continua per ogni UDA]</div></div>
+  </div>
+</div>`,
+
+// 5 — Prompt efficaci
+`<div class="section-title"><div class="section-num">6</div><h2>Prompt efficaci — La formula che funziona</h2></div>
+<p>Un buon prompt non è magia: segue una struttura semplice. Più contesto dai, migliore è il risultato.</p>
+<div style="background:#eff6ff;border-radius:10px;padding:16px;margin-bottom:20px;border:1px solid #93c5fd">
+  <div style="font-weight:700;color:#1e40af;font-size:14px;margin-bottom:10px">Formula base di un prompt efficace</div>
+  <div class="formula-row"><span style="font-size:16px">🎭</span><div><span class="tag">Ruolo</span><span style="font-size:13px;color:#6b7280">«Sei un esperto di didattica...»</span></div></div>
+  <div class="formula-row"><span style="font-size:16px">🎯</span><div><span class="tag">Obiettivo</span><span style="font-size:13px;color:#6b7280">«Crea una lezione di 50 minuti su...»</span></div></div>
+  <div class="formula-row"><span style="font-size:16px">👥</span><div><span class="tag">Destinatari</span><span style="font-size:13px;color:#6b7280">«Per una classe 3ª di liceo scientifico...»</span></div></div>
+  <div class="formula-row"><span style="font-size:16px">📐</span><div><span class="tag">Struttura</span><span style="font-size:13px;color:#6b7280">«Includi: introduzione, esempi, esercizio finale»</span></div></div>
+  <div class="formula-row"><span style="font-size:16px">⚙️</span><div><span class="tag">Vincoli</span><span style="font-size:13px;color:#6b7280">«Tono accessibile, evita il gergo tecnico»</span></div></div>
+</div>
+<div style="font-weight:700;color:#1e293b;font-size:15px;margin-bottom:14px">Prompt pronti — copia e adatta</div>
+<div class="prompt-box">
+  <div class="prompt-top"><span class="prompt-label">📋 Piano lezione completo</span><button class="copy-btn" onclick="copyPrompt(this)">Copia</button></div>
+  <div class="prompt-text">Sei un esperto di didattica. Crea una lezione di 50 minuti su [argomento] per una classe 3ª di istituto tecnico informatico.
+Struttura:
+- Obiettivi di apprendimento (3 obiettivi in formato "Lo studente sarà in grado di...")
+- Attività di apertura / aggancio (5 min)
+- Spiegazione con esempi concreti (25 min)
+- Attività pratica guidata (15 min)
+- Verifica di comprensione / exit ticket (5 min)
+Tono: accessibile, con analogie concrete. Includi domande da fare alla classe.</div>
+</div>
+<div class="prompt-box">
+  <div class="prompt-top"><span class="prompt-label">📊 Rubrica di valutazione</span><button class="copy-btn" onclick="copyPrompt(this)">Copia</button></div>
+  <div class="prompt-text">Crea una rubrica analitica per valutare [tipo di elaborato] su [tema] per studenti di [livello].
+- 4 livelli: Eccellente (9-10), Buono (7-8), Sufficiente (6), Non sufficiente (&lt;6)
+- Indicatori: contenuto/correttezza, struttura/organizzazione, linguaggio/codice, originalità
+Formato: tabella con descrittori chiari e osservabili per ogni cella.</div>
+</div>
+<div class="prompt-box">
+  <div class="prompt-top"><span class="prompt-label">♿ Adattamento per DSA</span><button class="copy-btn" onclick="copyPrompt(this)">Copia</button></div>
+  <div class="prompt-text">Adatta il seguente testo per uno studente con dislessia di classe [livello]:
+[incolla qui il testo originale]
+
+Criteri di adattamento:
+- Frasi brevi (max 20 parole)
+- Parole chiave in grassetto
+- Sostituisci termini tecnici con spiegazioni semplici
+- Aggiungi uno schema visivo riassuntivo alla fine
+- Crea un glossario con i 5 termini più importanti</div>
+</div>
+<div class="prompt-box">
+  <div class="prompt-top"><span class="prompt-label">📝 Verifica differenziata</span><button class="copy-btn" onclick="copyPrompt(this)">Copia</button></div>
+  <div class="prompt-text">Crea una verifica su [argomento] con tre versioni:
+- Versione A (base): 5 esercizi semplici, risposta chiusa o guidata
+- Versione B (standard): 5 esercizi di comprensione e applicazione
+- Versione C (avanzata): 5 esercizi di analisi, problem solving e un esercizio aperto
+Indica il punteggio per ogni esercizio. Tutte le versioni sommano a 30 punti.</div>
+</div>`,
+
+// 6 — Chat vs Project
+`<div class="section-title"><div class="section-num">7</div><h2>Chat vs Project — Quando usare cosa</h2></div>
+<p>La scelta tra chat e Project dipende dalla natura del task: occasionale o continuativo, isolato o legato a una classe specifica.</p>
+<div class="compare2">
+  <div class="compare2-card">
+    <div class="compare2-head" style="background:#475569">💬 Chat semplice</div>
+    <div class="compare2-body">
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Domanda rapida e isolata</div>
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Sperimentare un nuovo prompt</div>
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Bozza di testo da rivedere</div>
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Task non legato a una classe</div>
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Prima volta che usi Claude</div>
+    </div>
+  </div>
+  <div class="compare2-card" style="border:2px solid #1e40af">
+    <div class="compare2-head" style="background:#1e40af">📁 Project</div>
+    <div class="compare2-body">
+      <div class="compare2-item"><span style="color:#1e40af">✓</span> Lavoro continuativo su una classe</div>
+      <div class="compare2-item"><span style="color:#1e40af">✓</span> Hai caricato la programmazione</div>
+      <div class="compare2-item"><span style="color:#1e40af">✓</span> Hai studenti con BES di cui Claude deve sapere</div>
+      <div class="compare2-item"><span style="color:#1e40af">✓</span> Prepari UDA o moduli nel tempo</div>
+      <div class="compare2-item"><span style="color:#1e40af">✓</span> Vuoi coerenza tra i materiali</div>
+    </div>
+  </div>
+</div>
+<div style="font-weight:700;color:#1e293b;font-size:15px;margin-bottom:12px">Struttura Projects consigliata per un docente</div>
+<div class="project-item"><span class="project-icon">🏫</span><div><div class="project-name">Classe 3A Informatica</div><div class="project-desc">Programma, livelli studenti, BES, argomento corrente</div></div></div>
+<div class="project-item"><span class="project-icon">🏫</span><div><div class="project-name">Classe 4B Informatica</div><div class="project-desc">Programma, livelli studenti, BES, argomento corrente</div></div></div>
+<div class="project-item"><span class="project-icon">📅</span><div><div class="project-name">Programmazione Annuale 2024-25</div><div class="project-desc">UDA, obiettivi, competenze da sviluppare</div></div></div>
+<div class="project-item"><span class="project-icon">🔗</span><div><div class="project-name">Progetto PCTO 2025</div><div class="project-desc">Azienda partner, obiettivi, studenti coinvolti</div></div></div>
+<div class="project-item"><span class="project-icon">📚</span><div><div class="project-name">Aggiornamento Professionale</div><div class="project-desc">Articoli, riflessioni, risorse per la mia formazione</div></div></div>
+<div class="info-box green" style="margin-top:20px"><div class="info-box-title">🎯 In sintesi</div><div class="info-box-text">Inizia con la <strong>chat</strong> per familiarizzare con lo strumento. Passa ai <strong>Projects</strong> non appena hai un contesto stabile da conservare — anche solo le istruzioni sulla classe fanno già una differenza enorme nella qualità delle risposte.</div></div>`
+
+];
+
+function goTo(n) {
+  current = n;
+  document.getElementById('main-content').innerHTML = sections[n] + navFooter();
+  document.querySelectorAll('.nav-btn').forEach((b, i) => b.classList.toggle('active', i === n));
+  document.querySelector('.content').scrollTop = 0;
+}
+
+function navFooter() {
+  return `<div class="nav-footer">
+    <button class="nav-prev" onclick="goTo(${current-1})" ${current===0?'disabled':''}>← Precedente</button>
+    <span class="nav-counter">${current+1} / ${sections.length}</span>
+    <button class="nav-next" onclick="goTo(${current+1})" ${current===sections.length-1?'disabled':''}>Successivo →</button>
+  </div>`;
+}
+
+function copyPrompt(btn) {
+  const text = btn.closest('.prompt-box').querySelector('.prompt-text').innerText;
+  navigator.clipboard.writeText(text);
+  btn.textContent = '✓ Copiato';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copia'; btn.classList.remove('copied'); }, 2000);
+}
+
+goTo(0);
+</script>
+</body>
+</html>
