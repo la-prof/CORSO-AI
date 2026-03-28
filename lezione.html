@@ -169,7 +169,10 @@ p.lead{color:var(--muted);line-height:1.85;font-size:14px;margin-bottom:16px}
 <body>
 
 <div class="header">
-  <div class="h-left">AI nella Didattica &mdash; Lezione Laboratoriale</div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <a href="index.html" style="color:var(--gold-light);text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 10px;border:1px solid rgba(196,154,40,.4);border-radius:2px;white-space:nowrap;flex-shrink:0">← Home</a>
+    <div class="h-left">AI nella Didattica &mdash; Lezione Laboratoriale</div>
+  </div>
   <div style="display:flex;align-items:center;gap:16px">
     <div class="h-right">Scuola sec. 2° grado · 2 ore</div>
     <div class="h-count" id="hcount">1 / 1</div>
@@ -196,23 +199,23 @@ const MODS=[
       <div class="point">Possono «allucinare»: generare informazioni false presentate con sicurezza — verificare sempre le fonti</div>`},
     {title:"Perché integrarli nella didattica?",html:()=>`
       <p class="lead">Usati con metodo, gli strumenti AI possono trasformare significativamente la preparazione e la gestione della didattica quotidiana.</p>
-      <div class="point">⏱ Risparmio di tempo — esercizi, verifiche e rubriche in pochi minuti</div>
-      <div class="point">✏️ Personalizzazione — adattare contenuti per BES, DSA e livelli differenziati</div>
-      <div class="point">💡 Creatività — idee per attività innovative, simulazioni, discussioni guidate</div>
-      <div class="point">📚 Aggiornamento professionale — sintesi di articoli, spiegazioni di nuovi argomenti</div>`},
+      <div class="point">Risparmio di tempo — esercizi, verifiche e rubriche in pochi minuti</div>
+      <div class="point">Personalizzazione — adattare contenuti per BES, DSA e livelli differenziati</div>
+      <div class="point">Creatività — idee per attività innovative, simulazioni, discussioni guidate</div>
+      <div class="point">Aggiornamento professionale — sintesi di articoli, spiegazioni di nuovi argomenti</div>`},
     {title:"Miti da sfatare",html:()=>`
       <div class="myth"><div class="myth-top"><span>✕</span>«L'AI sostituirà i professori»</div><div class="myth-bot"><span style="color:#2D6A1F;font-size:16px">✓</span>Il docente resta insostituibile per la relazione educativa, l'empatia, il giudizio etico e la lettura del contesto.</div></div>
       <div class="myth"><div class="myth-top"><span>✕</span>«Tutto ciò che dice l'AI è vero»</div><div class="myth-bot"><span style="color:#2D6A1F;font-size:16px">✓</span>I modelli possono allucinare. Verificare sempre le informazioni critiche con fonti primarie affidabili.</div></div>
       <div class="myth"><div class="myth-top"><span>✕</span>«Gli studenti imparano meno con l'AI»</div><div class="myth-bot"><span style="color:#2D6A1F;font-size:16px">✓</span>Dipende dalla progettazione didattica. L'AI può stimolare il pensiero critico se il docente struttura bene le attività.</div></div>`},
   ]},
-  {title:"Claude ⭐",dur:"35 min",slides:[
+  {title:"Claude",dur:"35 min",slides:[
     {title:"Claude — Profilo e caratteristiche distintive",html:()=>`
       <div class="info-box"><div class="info-title">Anthropic · Constitutional AI · Sicurezza · Affidabilità</div><div class="info-text">Claude è sviluppato da Anthropic (2021) con un approccio «Constitutional AI»: ogni risposta viene valutata su criteri di sicurezza, onestà e utilità. Particolarmente apprezzato per la gestione di testi lunghi, la qualità della prosa e il ragionamento strutturato.</div></div>
       <div class="grid2">
-        <div class="card gold-top"><div class="card-icon">📄</div><div class="card-title">Contesto esteso</div><div class="card-desc">Analizza fino a ~200.000 parole in una sola conversazione</div></div>
-        <div class="card gold-top"><div class="card-icon">🧠</div><div class="card-title">Ragionamento avanzato</div><div class="card-desc">Eccellente per analisi complesse e spiegazioni strutturate</div></div>
-        <div class="card gold-top"><div class="card-icon">✍️</div><div class="card-title">Qualità della prosa</div><div class="card-desc">Testi fluidi: lezioni, schede, relazioni, lettere ai genitori</div></div>
-        <div class="card gold-top"><div class="card-icon">🛡️</div><div class="card-title">Sicurezza by design</div><div class="card-desc">Risposta etica e trasparente, rifiuta contenuti dannosi</div></div>
+        <div class="card gold-top"><div class="card-title">Contesto esteso</div><div class="card-desc">Analizza fino a ~200.000 parole in una sola conversazione</div></div>
+        <div class="card gold-top"><div class="card-title">Ragionamento avanzato</div><div class="card-desc">Eccellente per analisi complesse e spiegazioni strutturate</div></div>
+        <div class="card gold-top"><div class="card-title">Qualità della prosa</div><div class="card-desc">Testi fluidi: lezioni, schede, relazioni, lettere ai genitori</div></div>
+        <div class="card gold-top"><div class="card-title">Sicurezza by design</div><div class="card-desc">Risposta etica e trasparente, rifiuta contenuti dannosi</div></div>
       </div>`},
     {title:"Claude — I Piani Disponibili",html:()=>`
       <div class="grid2">
@@ -250,13 +253,13 @@ const MODS=[
       </div>`},
     {title:"Claude — Funzionalità per il Docente",html:()=>`
       ${[
-        {icon:"📁",title:"Projects",desc:"Crea un progetto per ogni classe o UDA. Carica programmi, materiali, libri di testo: Claude li ricorda in tutte le conversazioni del progetto.",tip:"💡 Crea un Project «Classe 4B Informatica» e carica la tua programmazione annuale"},
-        {icon:"🎨",title:"Artifacts",desc:"Genera contenuti interattivi direttamente nella chat: quiz HTML, tabelle comparative, timeline, infografiche e presentazioni.",tip:"💡 Chiedi: «Crea un quiz interattivo su [argomento] per i miei studenti»"},
-        {icon:"🌐",title:"Web Search",desc:"Cerca informazioni aggiornate sul web e le integra nelle risposte con riferimenti verificabili alle fonti.",tip:"💡 «Cerca le ultime linee guida MIUR sull'uso dell'AI a scuola»"},
-        {icon:"🧩",title:"Caricamento file",desc:"Carica PDF, Word, immagini e chiedi di analizzarli, riassumerli o usarli come base per nuovi materiali.",tip:"💡 Carica la verifica dell'anno scorso e chiedi di creare una versione aggiornata"},
+        {icon:"",title:"Projects",desc:"Crea un progetto per ogni classe o UDA. Carica programmi, materiali, libri di testo: Claude li ricorda in tutte le conversazioni del progetto.",tip:"Crea un Project «Classe 4B Informatica» e carica la tua programmazione annuale"},
+        {icon:"",title:"Artifacts",desc:"Genera contenuti interattivi direttamente nella chat: quiz HTML, tabelle comparative, timeline, infografiche e presentazioni.",tip:"Chiedi: «Crea un quiz interattivo su [argomento] per i miei studenti»"},
+        {icon:"",title:"Web Search",desc:"Cerca informazioni aggiornate sul web e le integra nelle risposte con riferimenti verificabili alle fonti.",tip:"«Cerca le ultime linee guida MIUR sull'uso dell'AI a scuola»"},
+        {icon:"",title:"Caricamento file",desc:"Carica PDF, Word, immagini e chiedi di analizzarli, riassumerli o usarli come base per nuovi materiali.",tip:"Carica la verifica dell'anno scorso e chiedi di creare una versione aggiornata"},
       ].map(f=>`
         <div class="feat-card">
-          <div class="feat-head"><span class="feat-icon">${f.icon}</span><span class="feat-title">${f.title}</span></div>
+          <div class="feat-head"><span class="feat-title">${f.title}</span></div>
           <div class="feat-desc">${f.desc}</div>
           <div class="feat-tip">${f.tip}</div>
         </div>`).join('')}`},
@@ -275,7 +278,7 @@ const MODS=[
           <div class="prompt-text">${p.text}</div>
         </div>`).join('')}`},
     {title:"Attività Pratica — Esploriamo Claude",html:()=>`
-      <div class="activity-hd">⏱ <strong>10 minuti</strong> &nbsp;—&nbsp; Apri il browser: <span style="color:var(--gold-light)">claude.ai</span></div>
+      <div class="activity-hd"><strong>10 minuti</strong> &nbsp;—&nbsp; Apri il browser: <span style="color:var(--gold-light)">claude.ai</span></div>
       ${["Vai su claude.ai e crea un account gratuito (o accedi se già registrato)","Crea un nuovo Project: nominalo con la tua materia o una classe","Scegli uno dei prompt dalla slide precedente e adattalo alla tua disciplina","Osserva la risposta: è utile? Prova a chiedere una modifica specifica"].map((s,i)=>`
         <div class="step"><div class="step-n">${i+1}</div><div class="step-text">${s}</div></div>`).join('')}
       <div class="reflection">Riflessione di gruppo: quale prompt ha prodotto il risultato più utilizzabile? Cosa cambieresti? Come integreresti questo strumento nella tua routine di preparazione?</div>`},
@@ -297,19 +300,19 @@ const MODS=[
         </div>`).join('')}`},
     {title:"Come scegliere lo strumento più adatto?",html:()=>`
       <p class="lead">Non esiste uno strumento migliore in assoluto: la scelta dipende dal task specifico, dal contesto e dall'integrazione con i propri flussi di lavoro.</p>
-      <div class="point">📝 Per scrivere e analizzare testi lunghi → <strong>Claude</strong> (contesto esteso, qualità della prosa)</div>
-      <div class="point">🔍 Per ricerca con fonti aggiornate → <strong>Perplexity</strong> (cita sempre le fonti)</div>
-      <div class="point">🖼️ Per generare immagini o usare plugin → <strong>ChatGPT</strong> (DALL-E integrato, GPT Store)</div>
-      <div class="point">📂 Per lavorare con file Google → <strong>Gemini</strong> (integrazione nativa Drive e Docs)</div>
-      <div class="point">🧪 Per confrontare modelli diversi → <strong>Poe</strong> (accesso gratuito a più sistemi)</div>`},
+      <div class="point">Per scrivere e analizzare testi lunghi → <strong>Claude</strong> (contesto esteso, qualità della prosa)</div>
+      <div class="point">Per ricerca con fonti aggiornate → <strong>Perplexity</strong> (cita sempre le fonti)</div>
+      <div class="point">Per generare immagini o usare plugin → <strong>ChatGPT</strong> (DALL-E integrato, GPT Store)</div>
+      <div class="point">Per lavorare con file Google → <strong>Gemini</strong> (integrazione nativa Drive e Docs)</div>
+      <div class="point">Per confrontare modelli diversi → <strong>Poe</strong> (accesso gratuito a più sistemi)</div>`},
   ]},
   {title:"Strumenti Didattici",dur:"25 min",slides:[
     {title:"Perché strumenti specifici per la scuola?",html:()=>`
       <p class="lead">I chatbot generalisti sono potenti ma non progettati per il contesto scolastico. Gli strumenti didattici colmano questo gap in modo sostanziale.</p>
-      <div class="point">🔒 Privacy e GDPR: pensati per il trattamento dati di minori, conformi alle normative europee</div>
-      <div class="point">👩‍🏫 Controllo docente: l'insegnante monitora le conversazioni degli studenti in tempo reale</div>
-      <div class="point">📋 Funzioni integrate: piani lezione, verifiche, schede BES già nel tool — nessun prompting avanzato</div>
-      <div class="point">🌍 Community: template condivisi da milioni di docenti, pronti all'uso immediato</div>`},
+      <div class="point">Privacy e GDPR: pensati per il trattamento dati di minori, conformi alle normative europee</div>
+      <div class="point">Controllo docente: l'insegnante monitora le conversazioni degli studenti in tempo reale</div>
+      <div class="point">Funzioni integrate: piani lezione, verifiche, schede BES già nel tool — nessun prompting avanzato</div>
+      <div class="point">Community: template condivisi da milioni di docenti, pronti all'uso immediato</div>`},
     ...[
       {name:"Mizou",url:"mizou.com",desc:"Crea chatbot personalizzati per i tuoi studenti. Il docente definisce argomento, tono e limiti: gli studenti interagiscono, il docente monitora tutto.",feats:["Chatbot personalizzabili per lezione","Dashboard monitoraggio conversazioni","Privacy-first, GDPR compliant","Piano gratuito disponibile"],tip:"Crea un tutor su un argomento specifico: ogni studente lo interroga a modo suo, tu vedi tutte le domande poste."},
       {name:"SchoolAI",url:"schoolai.com",desc:"«Spaces»: ambienti AI sicuri e monitorati per attività in classe. Il docente vede tutto ciò che gli studenti scrivono in tempo reale.",feats:["Spaces: ambienti AI guidati","Monitoraggio in tempo reale","Filtri contenuti automatici","Integrazione Google Classroom"],tip:"Attività in classe dove ogni studente usa l'AI in autonomia: tu monitora tutto dal tuo schermo senza doverti muovere."},
@@ -322,11 +325,11 @@ const MODS=[
       html:()=>`
         <div class="tool-hd">
           <div class="tool-name">${t.name}</div>
-          <div class="tool-url">&#128279; ${t.url}</div>
+          <div class="tool-url">${t.url}</div>
         </div>
         <p class="lead">${t.desc}</p>
         <div class="tags">${t.feats.map(f=>`<span class="tag">${f}</span>`).join('')}</div>
-        <div class="tip">💡 ${t.tip}</div>`
+        <div class="tip">${t.tip}</div>`
     })),
     {title:"Riepilogo — Quale strumento per quale scopo?",html:()=>`
       <div class="sum">
@@ -344,7 +347,7 @@ const MODS=[
             <div class="sum-val">${r[3]}</div>
           </div>`).join('')}
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--muted);font-style:italic">✅ Disponibile &nbsp;·&nbsp; ⚠️ Limitato/da verificare &nbsp;·&nbsp; ❌ Non disponibile</div>`},
+      <div style="margin-top:8px;font-size:11px;color:var(--muted);font-style:italic">Disponibile &nbsp;·&nbsp; Limitato/da verificare &nbsp;·&nbsp; Non disponibile</div>`},
   ]},
   {title:"Etica & Pratiche",dur:"15 min",slides:[
     {title:"Privacy e GDPR in classe",html:()=>`
@@ -394,7 +397,7 @@ function renderQuiz(){
   if(qState.done){
     const sc=qs.filter((q,i)=>qState.sel[i]===q.ans).length;
     return `<div class="quiz-result" style="background:${sc>=6?'#F0F7ED':sc>=4?'#FBF6E9':'#FEF2F2'}">
-      <div class="quiz-emoji">${sc>=6?'🏆':sc>=4?'👍':'📚'}</div>
+      <div class="quiz-label" style="font-family:Georgia,serif;font-weight:700;font-size:16px;color:var(--navy);margin-bottom:8px">${sc>=6?'Ottimo risultato':sc>=4?'Buon risultato':'Da rivedere'}</div>
       <div class="quiz-score">${sc} / ${qs.length}</div>
       <div class="quiz-msg">${sc>=6?'Risultato eccellente. Sei pronta a integrare questi strumenti nella tua pratica didattica.':sc>=4?'Buon risultato. Rivedi le risposte segnate in rosso.':'Continua ad esplorare i materiali del corso.'}</div>
     </div>
