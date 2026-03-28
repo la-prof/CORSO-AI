@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Guida Pratica a Gemini — Per Docenti</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;min-height:100vh}
+.header{background:#1e293b;color:white;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.header-title{font-weight:800;font-size:16px}
+.header-sub{font-size:12px;color:#94a3b8;margin-top:2px}
+.layout{display:flex;height:calc(100vh - 53px)}
+.sidebar{width:210px;background:white;border-right:1px solid #e2e8f0;padding:16px 0;overflow-y:auto;flex-shrink:0}
+.sidebar-label{padding:0 14px 12px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px}
+.nav-btn{width:100%;text-align:left;padding:10px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:10px;border-right:3px solid transparent;transition:all .15s;color:#475569;font-weight:400}
+.nav-btn.active{background:#e8f0fe;color:#1a73e8;font-weight:700;border-right:3px solid #1a73e8}
+.nav-num{width:22px;height:22px;border-radius:5px;background:#e2e8f0;color:#94a3b8;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.nav-btn.active .nav-num{background:#1a73e8;color:white}
+.nav-sub{display:block;font-size:10px;color:#9ca3af;margin-top:1px}
+.content{flex:1;overflow-y:auto;padding:28px 32px}
+.inner{max-width:740px;margin:0 auto}
+.section-title{display:flex;align-items:center;gap:14px;margin-bottom:22px;padding-bottom:12px;border-bottom:2px solid #e2e8f0}
+.section-num{width:36px;height:36px;border-radius:8px;background:#1a73e8;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0}
+h2{font-size:20px;font-weight:800;color:#1e293b}
+p{color:#4b5563;line-height:1.8;font-size:14px;margin-bottom:16px}
+.info-box{border-left:4px solid #1a73e8;border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:16px;background:#e8f0fe}
+.info-box.green{border-color:#0f766e;background:#f0fdfa}
+.info-box.yellow{border-color:#b45309;background:#fffbeb}
+.info-box.red{border-color:#dc2626;background:#fef2f2}
+.info-box-title{font-weight:700;color:#1a73e8;font-size:14px;margin-bottom:6px}
+.info-box.green .info-box-title{color:#0f766e}
+.info-box.yellow .info-box-title{color:#b45309}
+.info-box.red .info-box-title{color:#dc2626}
+.info-box-text{font-size:14px;color:#374151;line-height:1.75}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;margin-bottom:16px}
+.card{background:white;border-radius:10px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.card.blue-top{border-top:3px solid #1a73e8}
+.card-title{font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px}
+.card-desc{font-size:13px;color:#6b7280;line-height:1.55}
+.step{display:flex;gap:14px;margin-bottom:16px}
+.step-num{width:30px;height:30px;border-radius:50%;background:#1a73e8;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px}
+.step-title{font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px}
+.step-text{font-size:14px;color:#4b5563;line-height:1.7}
+.chat-area{background:#f8fafc;border-radius:12px;padding:18px;margin-bottom:20px;border:1px solid #e2e8f0}
+.chat-label{font-weight:700;color:#1e293b;font-size:14px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.badge{border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;color:white}
+.bubble-wrap{display:flex;margin-bottom:10px}
+.bubble-wrap.user{justify-content:flex-end}
+.avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.avatar.gemini{background:#1a73e8;color:white;margin-right:8px}
+.avatar.user{background:#475569;color:white;margin-left:8px}
+.bubble{max-width:80%;border-radius:16px;padding:10px 14px;font-size:13px;line-height:1.65;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.bubble.user{background:#1a73e8;color:white;border-radius:16px 4px 16px 16px}
+.bubble.gemini{background:white;color:#1f2937;border-radius:4px 16px 16px 16px;border:1px solid #e2e8f0}
+.point-row{background:white;padding:11px 15px;border-radius:8px;border-left:3px solid #1a73e8;color:#374151;font-size:14px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:16px}
+.plan-card{background:white;border-radius:10px;padding:14px;border:1px solid #e2e8f0}
+.plan-name{font-weight:800;font-size:16px;margin-bottom:2px}
+.plan-price{font-size:12px;font-weight:600;color:#6b7280;margin-bottom:10px}
+.plan-feat{font-size:12px;color:#4b5563;display:flex;gap:6px;align-items:flex-start;margin-bottom:5px}
+.plan-best{border-radius:6px;padding:6px 10px;font-size:12px;font-weight:600;margin-top:10px}
+.compare-table{background:white;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:16px}
+.compare-head{display:grid;grid-template-columns:1fr 70px 70px 90px;background:#1a73e8;padding:10px 14px}
+.compare-head-cell{font-weight:700;font-size:12px;color:white}
+.compare-row{display:grid;grid-template-columns:1fr 70px 70px 90px;padding:10px 14px;border-bottom:1px solid #f3f4f6;align-items:center}
+.compare-row.even{background:#fafafa}
+.compare-cell{font-size:13px;color:#374151}
+.compare-cell.center{text-align:center;font-size:15px}
+.feature-block{margin-bottom:28px}
+.feature-title{font-weight:700;color:#1e293b;font-size:15px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e2e8f0}
+.prompt-box{background:white;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:14px;overflow:hidden}
+.prompt-top{background:#f8fafc;padding:8px 14px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}
+.prompt-label{font-weight:700;color:#1a73e8;font-size:13px}
+.copy-btn{background:#1a73e8;color:white;border:none;border-radius:5px;padding:4px 12px;font-size:12px;cursor:pointer;font-weight:600}
+.copy-btn.copied{background:#16a34a}
+.prompt-text{padding:12px 14px;font-family:monospace;font-size:13px;color:#374151;line-height:1.7;white-space:pre-wrap}
+.formula-row{display:flex;align-items:flex-start;gap:10px;background:white;border-radius:7px;padding:8px 12px;margin-bottom:8px}
+.tag{display:inline-block;background:#1a73e818;color:#1a73e8;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:600;margin-right:5px}
+.compare2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.compare2-card{background:white;border-radius:10px;border:1px solid #e2e8f0;overflow:hidden}
+.compare2-head{padding:12px 16px;font-weight:700;font-size:15px;color:white}
+.compare2-body{padding:14px}
+.compare2-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:13px;color:#374151}
+.gem-item{background:white;border-radius:8px;padding:11px 14px;border:1px solid #e2e8f0;margin-bottom:9px}
+.gem-name{font-weight:700;color:#1e293b;font-size:14px}
+.gem-desc{font-size:12px;color:#6b7280;margin-top:2px}
+.code-block{background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:18px;overflow:hidden}
+.code-label{background:#e2e8f0;padding:8px 14px;font-size:12px;font-weight:700;color:#475569}
+.code-text{padding:14px 16px;font-family:monospace;font-size:13px;color:#374151;line-height:1.8}
+.ws-card{background:white;border-radius:10px;border:1px solid #e2e8f0;overflow:hidden;margin-bottom:12px}
+.ws-head{padding:12px 16px;font-weight:700;font-size:14px;color:white}
+.ws-body{padding:14px 16px;font-size:13px;color:#374151;line-height:1.7}
+.ws-example{background:#f8fafc;border-top:1px solid #e2e8f0;padding:10px 16px;font-size:12px;color:#6b7280;font-style:italic}
+.nav-footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0}
+.nav-prev,.nav-next{padding:9px 20px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer}
+.nav-prev{border:1px solid #e2e8f0;background:white;color:#374151}
+.nav-next{border:none;background:#1a73e8;color:white}
+.nav-prev:disabled,.nav-next:disabled{background:#e2e8f0;color:#9ca3af;cursor:not-allowed}
+.nav-counter{font-size:13px;color:#94a3b8}
+@media(max-width:640px){
+  .layout{flex-direction:column;height:auto}
+  .sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid #e2e8f0;padding:8px 0;display:flex;overflow-x:auto;gap:0}
+  .nav-btn{white-space:nowrap;border-right:none;border-bottom:3px solid transparent;padding:8px 12px}
+  .nav-btn.active{border-right:none;border-bottom:3px solid #1a73e8}
+  .nav-sub{display:none}
+  .content{padding:20px 16px}
+  .grid2,.plans-grid,.compare2{grid-template-columns:1fr}
+  .compare-head,.compare-row{grid-template-columns:1fr 60px 60px 80px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:20px">
+    <a href="index.html" style="color:#94a3b8;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 10px;border:1px solid rgba(148,163,184,.3);border-radius:4px;white-space:nowrap;flex-shrink:0">← Home</a>
+    <div>
+      <div class="header-title">Guida Pratica a Gemini</div>
+      <div class="header-sub">Per docenti di scuola secondaria · Con integrazione Google Workspace</div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-label">Contenuti</div>
+    <button class="nav-btn active" onclick="goTo(0)"><span class="nav-num">01</span><span>Cos'è Gemini<span class="nav-sub">Introduzione</span></span></button>
+    <button class="nav-btn" onclick="goTo(1)"><span class="nav-num">02</span><span>Come iniziare<span class="nav-sub">Accesso e piani</span></span></button>
+    <button class="nav-btn" onclick="goTo(2)"><span class="nav-num">03</span><span>La Chat<span class="nav-sub">Come funziona</span></span></button>
+    <button class="nav-btn" onclick="goTo(3)"><span class="nav-num">04</span><span>Google Workspace<span class="nav-sub">Docs, Drive, Gmail</span></span></button>
+    <button class="nav-btn" onclick="goTo(4)"><span class="nav-num">05</span><span>Funzionalità<span class="nav-sub">Multimodale, Gems</span></span></button>
+    <button class="nav-btn" onclick="goTo(5)"><span class="nav-num">06</span><span>Prompt efficaci<span class="nav-sub">Formula e esempi</span></span></button>
+    <button class="nav-btn" onclick="goTo(6)"><span class="nav-num">07</span><span>Chat vs Workspace<span class="nav-sub">Quando usare cosa</span></span></button>
+  </div>
+
+  <div class="content">
+    <div class="inner" id="main-content"></div>
+  </div>
+</div>
+
+<script>
+let current = 0;
+
+const sections = [
+
+// 0 — Cos'è Gemini
+`<div class="section-title"><div class="section-num">1</div><h2>Cos'è Gemini</h2></div>
+<p><strong>Gemini</strong> è il modello di intelligenza artificiale sviluppato da <strong>Google DeepMind</strong>. Nato come evoluzione di Bard, Gemini è progettato per essere <em>nativamente multimodale</em>: comprende e genera testo, immagini, audio e codice in modo integrato. Il suo punto di forza principale per i docenti è la <strong>profonda integrazione con Google Workspace</strong> — Docs, Drive, Gmail, Meet e Classroom.</p>
+<div class="info-box"><div class="info-box-title">Perché Gemini è rilevante per i docenti?</div><div class="info-box-text">Se usi già Google Classroom, Drive o Docs nella tua scuola, Gemini si inserisce direttamente nei tuoi strumenti esistenti: non devi cambiare applicazione, non devi copiare e incollare. Lavori dentro i tuoi documenti, con la tua programmazione già caricata, e l'AI ti assiste in modo contestuale.</div></div>
+<div class="grid2">
+  <div class="card blue-top"><div class="card-title">Integrazione Workspace</div><div class="card-desc">Funziona direttamente in Docs, Drive, Gmail, Slides e Meet senza uscire dalla suite Google</div></div>
+  <div class="card blue-top"><div class="card-title">Multimodalità</div><div class="card-desc">Analizza testi, immagini, tabelle, PDF e audio nella stessa conversazione</div></div>
+  <div class="card blue-top"><div class="card-title">Ricerca web in tempo reale</div><div class="card-desc">Accesso diretto a Google Search: risposte aggiornate con fonti citate</div></div>
+  <div class="card blue-top"><div class="card-title">Gems — Assistenti personalizzati</div><div class="card-desc">Crea assistenti AI configurati per la tua materia o classe, riutilizzabili nel tempo</div></div>
+</div>
+<div class="info-box yellow"><div class="info-box-title">Differenza rispetto a Claude e ChatGPT</div><div class="info-box-text">Claude eccelle nella qualità della prosa e nel ragionamento su testi lunghi. ChatGPT ha un ecosistema di plugin e la generazione immagini. Gemini si distingue per l'integrazione con l'ecosistema Google: se la tua scuola usa G Suite, Gemini è lo strumento che riduce maggiormente il cambio di contesto nel lavoro quotidiano.</div></div>`,
+
+// 1 — Come iniziare
+`<div class="section-title"><div class="section-num">2</div><h2>Come iniziare</h2></div>
+<p>Gemini è accessibile da browser su qualsiasi dispositivo. Se hai già un account Google — personale o scolastico — sei a due minuti dall'inizio.</p>
+<div class="step"><div class="step-num">1</div><div><div class="step-title">Vai su gemini.google.com</div><div class="step-text">Apri il browser e digita <strong>gemini.google.com</strong>. Il sito è disponibile in italiano. In alternativa, accedi direttamente da Docs, Drive o Gmail tramite il pulsante Gemini nella barra laterale.</div></div></div>
+<div class="step"><div class="step-num">2</div><div><div class="step-title">Accedi con il tuo account Google</div><div class="step-text">Usa il tuo account Gmail personale o, se disponibile, l'account Google della scuola (<em>@nomescuola.edu.it</em>). Non è necessaria una registrazione separata.</div></div></div>
+<div class="step"><div class="step-num">3</div><div><div class="step-title">Scegli il piano più adatto</div><div class="step-text">Il piano <strong>Gemini Free</strong> è sufficiente per iniziare. Per le funzionalità avanzate e l'integrazione completa con Workspace, valuta <strong>Gemini Advanced</strong> (incluso in Google One AI Premium, circa 22 €/mese) oppure i piani <strong>Google Workspace for Education</strong> dedicati alle scuole.</div></div></div>
+<div class="step"><div class="step-num">4</div><div><div class="step-title">Attiva Gemini in Workspace (se disponibile)</div><div class="step-text">Se la tua scuola ha un account Google Workspace for Education, l'amministratore IT può attivare le funzionalità Gemini per tutti i docenti. Verifica con il referente informatico del tuo istituto.</div></div></div>
+<div class="plans-grid">
+  <div class="plan-card" style="border-top:3px solid #64748b">
+    <div class="plan-name" style="color:#64748b">Free</div>
+    <div class="plan-price">Gratuito</div>
+    <div class="plan-feat"><span style="color:#64748b">·</span>Gemini 1.5 Flash</div>
+    <div class="plan-feat"><span style="color:#64748b">·</span>Chat testuale e multimodale</div>
+    <div class="plan-feat"><span style="color:#64748b">·</span>Ricerca web integrata</div>
+    <div class="plan-feat"><span style="color:#64748b">·</span>Generazione immagini (Imagen 3)</div>
+    <div class="plan-feat"><span style="color:#64748b">·</span>Limite messaggi giornalieri</div>
+    <div class="plan-best" style="background:#64748b14;color:#64748b">Ideale per: iniziare e sperimentare</div>
+  </div>
+  <div class="plan-card" style="border-top:3px solid #1a73e8">
+    <div class="plan-name" style="color:#1a73e8">Advanced</div>
+    <div class="plan-price">~22 €/mese (Google One AI Premium)</div>
+    <div class="plan-feat"><span style="color:#1a73e8">·</span>Gemini 1.5 Pro (modello più potente)</div>
+    <div class="plan-feat"><span style="color:#1a73e8">·</span>Contesto esteso: fino a 1 milione di token</div>
+    <div class="plan-feat"><span style="color:#1a73e8">·</span>Gems: assistenti personalizzati</div>
+    <div class="plan-feat"><span style="color:#1a73e8">·</span>Integrazione profonda Workspace</div>
+    <div class="plan-feat"><span style="color:#1a73e8">·</span>Messaggi illimitati</div>
+    <div class="plan-best" style="background:#1a73e814;color:#1a73e8">Ideale per: uso professionale quotidiano</div>
+  </div>
+  <div class="plan-card" style="border-top:3px solid #0f766e">
+    <div class="plan-name" style="color:#0f766e">Workspace for Education</div>
+    <div class="plan-price">Gratuito o a tariffa scolastica</div>
+    <div class="plan-feat"><span style="color:#0f766e">·</span>Account gestito dall'istituto</div>
+    <div class="plan-feat"><span style="color:#0f766e">·</span>Controllo admin centralizzato</div>
+    <div class="plan-feat"><span style="color:#0f766e">·</span>Dati NON usati per training</div>
+    <div class="plan-feat"><span style="color:#0f766e">·</span>GDPR e conformità EU</div>
+    <div class="plan-feat"><span style="color:#0f766e">·</span>Google Classroom integrato</div>
+    <div class="plan-best" style="background:#0f766e14;color:#0f766e">Ideale per: istituti e reti di scuole</div>
+  </div>
+  <div class="plan-card" style="border-top:3px solid #5C3D0E">
+    <div class="plan-name" style="color:#5C3D0E">Enterprise</div>
+    <div class="plan-price">Su preventivo</div>
+    <div class="plan-feat"><span style="color:#5C3D0E">·</span>Tutto il piano Workspace</div>
+    <div class="plan-feat"><span style="color:#5C3D0E">·</span>DPA dedicato e audit log</div>
+    <div class="plan-feat"><span style="color:#5C3D0E">·</span>Gemini for Workspace avanzato</div>
+    <div class="plan-feat"><span style="color:#5C3D0E">·</span>Supporto prioritario dedicato</div>
+    <div class="plan-best" style="background:#5C3D0E14;color:#5C3D0E">Ideale per: reti di istituti e USR</div>
+  </div>
+</div>
+<div class="info-box green"><div class="info-box-title">Nota per le scuole italiane</div><div class="info-box-text">Molte scuole italiane hanno già un contratto Google Workspace for Education Fundamentals (gratuito). In questo caso, l'attivazione di Gemini dipende dall'amministratore IT dell'istituto. Verifica prima di acquistare un piano personale a pagamento.</div></div>`,
+
+// 2 — La Chat
+`<div class="section-title"><div class="section-num">3</div><h2>La Chat</h2></div>
+<p>L'interfaccia principale di Gemini su <strong>gemini.google.com</strong> funziona come una conversazione. Scrivi un messaggio, Gemini risponde, puoi continuare a raffinare. La differenza rispetto ad altri chatbot è la possibilità di allegare immagini, file da Drive e attivare la ricerca web in tempo reale direttamente nella chat.</p>
+<div class="chat-area">
+  <div class="chat-label"><span class="badge" style="background:#1a73e8">ESEMPIO</span> Preparare una verifica con immagine</div>
+  <div class="bubble-wrap user"><div class="bubble user">Ho fotografato questa pagina del libro di testo (allego immagine). Crea 5 domande aperte per una verifica scritta, adatte a una classe 3ª di liceo scientifico.</div><div class="avatar user">D</div></div>
+  <div class="bubble-wrap"><div class="avatar gemini">G</div><div class="bubble gemini">Ho analizzato la pagina. Ecco 5 domande aperte calibrate per il livello richiesto:<br><br><strong>1.</strong> Descrivi il processo illustrato nel diagramma a pag. 47, indicando i passaggi fondamentali...<br><strong>2.</strong> Confronta le due teorie presentate nel testo evidenziando analogie e differenze...<br><em>[...continua con le altre domande...]</em></div></div>
+  <div class="bubble-wrap user"><div class="bubble user">Aggiungi per ogni domanda un indicatore di valutazione e il punteggio suggerito. Totale: 30 punti.</div><div class="avatar user">D</div></div>
+  <div class="bubble-wrap"><div class="avatar gemini">G</div><div class="bubble gemini">Ecco la versione con griglia di valutazione integrata:<br><br><strong>Domanda 1</strong> — max 8 punti<br>· Descrizione corretta del processo (4 pt)<br>· Utilizzo terminologia appropriata (2 pt)<br>· Completezza dei passaggi (2 pt)<br><em>[...griglia completa per tutte e 5 le domande...]</em></div></div>
+</div>
+<div class="info-box"><div class="info-box-title">Cosa impari da questo esempio</div><div class="info-box-text">Gemini può analizzare una <strong>fotografia di un libro</strong> e generare materiale basato su quel contenuto specifico — senza dover riscrivere il testo. Questo accelera enormemente la preparazione di materiali a partire dai libri adottati.</div></div>
+<div class="info-box yellow"><div class="info-box-title">Limite della chat semplice</div><div class="info-box-text">Come tutti i chatbot, Gemini non ricorda le conversazioni precedenti in una nuova chat. Per lavorare con un contesto stabile (la tua classe, la programmazione, i tuoi studenti), usa i <strong>Gems</strong> o l'integrazione con Google Drive dove i documenti sono sempre disponibili.</div></div>`,
+
+// 3 — Google Workspace
+`<div class="section-title"><div class="section-num">4</div><h2>Google Workspace — Il punto di forza di Gemini</h2></div>
+<p>L'integrazione con <strong>Google Workspace</strong> è il vantaggio competitivo di Gemini rispetto agli altri chatbot. Non devi uscire da Docs per chiedere aiuto: Gemini legge il documento su cui stai lavorando e ti assiste direttamente.</p>
+
+<div class="ws-card">
+  <div class="ws-head" style="background:#1a73e8">Gemini in Google Docs</div>
+  <div class="ws-body">Apri un documento in Docs e clicca sul pulsante Gemini nella barra laterale (o premi <strong>@Gemini</strong> nel testo). Puoi chiedere a Gemini di riassumere il documento aperto, migliorare un paragrafo selezionato, espandere un'idea, cambiare tono o creare un indice automatico — tutto senza copiare e incollare nulla.</div>
+  <div class="ws-example">Esempio pratico: apri la tua programmazione annuale in Docs → chiedi a Gemini «Crea le schede UDA per il primo quadrimestre basandoti su questo documento» → il testo generato viene inserito direttamente nel documento.</div>
+</div>
+
+<div class="ws-card">
+  <div class="ws-head" style="background:#34a853">Gemini in Google Drive</div>
+  <div class="ws-body">Da Drive puoi chiedere a Gemini di cercare tra i tuoi file e riassumere documenti senza aprirli. Digita una domanda nella barra di ricerca di Drive preceduta da «Chiedi a Gemini» per ottenere risposte basate sui contenuti dei tuoi file — programmi, verbali, relazioni — tutti indicizzati automaticamente.</div>
+  <div class="ws-example">Esempio pratico: «Cerca tra i miei file il piano di lavoro del docente di informatica del 2023-24 e riassumi gli obiettivi del secondo quadrimestre.»</div>
+</div>
+
+<div class="ws-card">
+  <div class="ws-head" style="background:#ea4335">Gemini in Gmail</div>
+  <div class="ws-body">Gemini può riassumere lunghe catene di email, suggerire una risposta appropriata al contesto, e aiutarti a scrivere comunicazioni formali (lettere ai genitori, convocazioni, circolari) a partire da poche indicazioni. Trovi il pulsante Gemini direttamente nell'interfaccia di Gmail.</div>
+  <div class="ws-example">Esempio pratico: seleziona una lunga email di un genitore → «Riassumi questa email in tre punti e suggerisci una risposta professionale che spieghi le procedure di recupero.»</div>
+</div>
+
+<div class="ws-card">
+  <div class="ws-head" style="background:#fbbc04;color:#1e293b">Gemini in Google Classroom</div>
+  <div class="ws-body">Nelle versioni Workspace for Education, Gemini può assistere nella creazione di compiti, nella formulazione di rubriche di valutazione e nella generazione di feedback personalizzati sulle consegne degli studenti. Il docente mantiene sempre il controllo prima della pubblicazione.</div>
+  <div class="ws-example">Esempio pratico: nel pannello docente di Classroom → «Crea una rubrica per valutare la relazione di laboratorio su [argomento] con 4 livelli e indicatori osservabili.»</div>
+</div>
+
+<div class="info-box red"><div class="info-box-title">Attenzione alla privacy con account personali</div><div class="info-box-text">Con un account Google <strong>personale</strong>, i dati condivisi con Gemini potrebbero essere usati per migliorare i modelli Google. Per dati sensibili (nomi di studenti, valutazioni, documenti riservati) usa esclusivamente un account <strong>Google Workspace for Education</strong> gestito dall'istituto, che garantisce il non utilizzo dei dati per il training.</div></div>`,
+
+// 4 — Funzionalità
+`<div class="section-title"><div class="section-num">5</div><h2>Funzionalità chiave per il docente</h2></div>
+
+<div class="feature-block">
+  <div class="feature-title">Multimodalità — Analisi di immagini e documenti</div>
+  <p>A differenza di molti concorrenti, Gemini gestisce nativamente testo, immagini, tabelle e PDF nella stessa conversazione. Puoi fotografare una pagina di libro, un diagramma alla lavagna o un compito scritto a mano e chiedere a Gemini di lavorarci sopra.</p>
+  <div class="chat-area">
+    <div class="bubble-wrap user"><div class="bubble user">Allego la foto del grafico che ho disegnato alla lavagna. Trasformalo in una descrizione testuale per gli studenti assenti.</div><div class="avatar user">D</div></div>
+    <div class="bubble-wrap"><div class="avatar gemini">G</div><div class="bubble gemini">Ho analizzato il grafico. Si tratta di un diagramma che mostra l'andamento della funzione f(x) = x² nel piano cartesiano. Il vertice è posizionato nell'origine (0,0), la parabola si apre verso l'alto... [descrizione completa con valori e osservazioni]</div></div>
+  </div>
+</div>
+
+<div class="feature-block">
+  <div class="feature-title">Gems — Assistenti personalizzati per materia</div>
+  <p>I <strong>Gems</strong> sono assistenti AI configurabili che puoi creare e riutilizzare (disponibili con Gemini Advanced). Funzionano in modo simile ai Projects di Claude: definisci il contesto una volta sola, e ogni conversazione con quel Gem parte già configurata con le tue istruzioni permanenti.</p>
+  <div class="code-block">
+    <div class="code-label">ESEMPIO — Istruzioni per un Gem "Assistente Informatica 4B"</div>
+    <div class="code-text">Sei un assistente didattico per la mia classe 4B di informatica (istituto tecnico).<br><br><strong>Contesto della classe:</strong><br>- 22 studenti, programmazione orientata agli oggetti (OOP) in Python<br>- 3 studenti con DSA: prepara sempre una versione semplificata<br>- Livelli: 6 eccellenti, 10 nella media, 6 con difficoltà<br><br><strong>Come rispondermi:</strong><br>- Usa sempre esempi pratici con codice Python<br>- Per i materiali, indica sempre il livello (base / standard / avanzato)<br>- Schema riassuntivo finale per i materiali DSA</div>
+  </div>
+  <div class="gem-item"><div class="gem-name">Come creare un Gem</div><div class="gem-desc">Su gemini.google.com → menu a sinistra → «Esplora Gems» → «Nuovo Gem» → inserisci le istruzioni e il nome → salva. Il Gem apparirà nella barra laterale per accesso rapido.</div></div>
+</div>
+
+<div class="feature-block">
+  <div class="feature-title">NotebookLM — Ricerca nei propri documenti</div>
+  <p><strong>NotebookLM</strong> (notebooklm.google.com) è uno strumento Google strettamente collegato a Gemini. Permette di caricare i tuoi documenti (programmi, libri, articoli, PDF) e fare domande specifiche su quei contenuti — le risposte sono basate <em>esclusivamente</em> sui tuoi materiali, con citazioni precise.</p>
+  <div class="info-box green"><div class="info-box-title">NotebookLM nella pratica didattica</div><div class="info-box-text">Carica il libro di testo adottato in NotebookLM: puoi chiedere «Trova tutti i passaggi che trattano la ricorsione» oppure «Genera 10 domande di comprensione sul capitolo 5». Le risposte citano sempre la pagina esatta — nessuna allucinazione su contenuti extra-testo.</div></div>
+</div>
+
+<div class="feature-block">
+  <div class="feature-title">Ricerca web in tempo reale</div>
+  <p>A differenza di Claude (che ha la ricerca web come funzionalità separata), Gemini integra Google Search nativamente. Le risposte su argomenti di attualità, normative recenti e risorse online sono sempre aggiornate e citate con fonte.</p>
+  <div class="chat-area">
+    <div class="bubble-wrap user"><div class="bubble user">Cerca le ultime linee guida del MIUR sull'uso dell'intelligenza artificiale nelle scuole secondarie italiane.</div><div class="avatar user">D</div></div>
+    <div class="bubble-wrap"><div class="avatar gemini">G</div><div class="bubble gemini">Ho trovato le indicazioni più recenti. Il Ministero ha pubblicato nel 2024 le "Linee guida per l'uso consapevole dell'IA nella scuola" che raccomandano... [con link alle fonti originali citati]</div></div>
+  </div>
+</div>`,
+
+// 5 — Prompt efficaci
+`<div class="section-title"><div class="section-num">6</div><h2>Prompt efficaci — La formula che funziona</h2></div>
+<p>Come per qualsiasi chatbot AI, la qualità dell'output dipende dalla qualità dell'input. Con Gemini, il contesto di <em>dove</em> stai lavorando (in Docs, in Drive, nella chat libera) influenza molto il modo ottimale di formulare il prompt.</p>
+<div style="background:#e8f0fe;border-radius:10px;padding:16px;margin-bottom:20px;border:1px solid #93c5fd">
+  <div style="font-weight:700;color:#1a73e8;font-size:14px;margin-bottom:10px">Formula base di un prompt efficace</div>
+  <div class="formula-row"><div><span class="tag">Ruolo</span><span style="font-size:13px;color:#6b7280">«Sei un esperto di didattica della matematica...»</span></div></div>
+  <div class="formula-row"><div><span class="tag">Obiettivo</span><span style="font-size:13px;color:#6b7280">«Crea una verifica strutturata su...»</span></div></div>
+  <div class="formula-row"><div><span class="tag">Destinatari</span><span style="font-size:13px;color:#6b7280">«Per una classe 2ª di liceo scientifico...»</span></div></div>
+  <div class="formula-row"><div><span class="tag">Struttura</span><span style="font-size:13px;color:#6b7280">«Includi: 3 esercizi a risposta aperta, 1 problema, griglia di valutazione»</span></div></div>
+  <div class="formula-row"><div><span class="tag">Vincoli</span><span style="font-size:13px;color:#6b7280">«Tempo: 1 ora. Totale: 30 punti. Tono: formale ma accessibile.»</span></div></div>
+</div>
+<div style="font-weight:700;color:#1e293b;font-size:15px;margin-bottom:14px">Prompt pronti — copia e adatta</div>
+<div class="prompt-box">
+  <div class="prompt-top"><span class="prompt-label">Piano lezione in Docs</span><button class="copy-btn" onclick="copyPrompt(this)">Copia</button></div>
+  <div class="prompt-text">Sei un esperto di didattica. Crea una lezione di 50 minuti su [argomento] per una classe [livello].
+Struttura:
+- Obiettivi di apprendimento (3 obiettivi in formato "Lo studente sarà in grado di...")
+- Attività di apertura / aggancio (5 min)
+- Spiegazione con esempi concreti (25 min)
+- Attività pratica guidata (15 min)
+- Verifica di comprensione / exit ticket (5 min)
+Tono: accessibile, con analogie concrete. Includi domande da fare alla classe.</div>
+</div>
+<div class="prompt-box">
+  <div class="prompt-top"><span class="prompt-label">Feedback su consegna studente</span><button class="copy-btn" onclick="copyPrompt(this)">Copia</button></div>
+  <div class="prompt-text">Sei un docente esperto. Leggi la seguente consegna di uno studente di [livello] su [argomento] e fornisci un feedback formativo.
+[incolla qui la consegna dello studente]
+
+Il feedback deve:
+- Iniziare con un aspetto positivo concreto
+- Indicare 2 aree di miglioramento specifiche con esempi
+- Suggerire una revisione concreta per il punto più critico
+- Concludere con un incoraggiamento
+Tono: costruttivo, professionale, non giudicante. Max 150 parole.</div>
+</div>
+<div class="prompt-box">
+  <div class="prompt-top"><span class="prompt-label">Email ai genitori</span><button class="copy-btn" onclick="copyPrompt(this)">Copia</button></div>
+  <div class="prompt-text">Sei un docente di scuola secondaria. Scrivi una comunicazione formale ai genitori di una classe [livello] per informarli di [situazione/comunicazione].
+
+Dettagli:
+- Argomento: [descrivi la situazione]
+- Tono: professionale, chiaro, non allarmistico
+- Struttura: saluto, contesto, informazione principale, azioni richieste ai genitori, chiusura formale
+- Lunghezza: max 200 parole
+- Firma: Prof./Prof.ssa [cognome], [materia]</div>
+</div>
+<div class="prompt-box">
+  <div class="prompt-top"><span class="prompt-label">Adattamento per DSA</span><button class="copy-btn" onclick="copyPrompt(this)">Copia</button></div>
+  <div class="prompt-text">Adatta il seguente testo per uno studente con dislessia di classe [livello]:
+[incolla qui il testo originale]
+
+Criteri di adattamento:
+- Frasi brevi (max 20 parole)
+- Parole chiave in grassetto
+- Sostituisci termini tecnici con spiegazioni semplici
+- Aggiungi uno schema visivo riassuntivo alla fine
+- Crea un glossario con i 5 termini più importanti</div>
+</div>`,
+
+// 6 — Chat vs Workspace
+`<div class="section-title"><div class="section-num">7</div><h2>Chat vs Workspace — Quando usare cosa</h2></div>
+<p>La vera potenza di Gemini emerge quando smetti di usarlo come chatbot isolato e lo integri nel flusso di lavoro esistente. La scelta dipende dal tipo di task e da dove si trovano i tuoi materiali.</p>
+<div class="compare2">
+  <div class="compare2-card">
+    <div class="compare2-head" style="background:#475569">Chat su gemini.google.com</div>
+    <div class="compare2-body">
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Domanda rapida e isolata</div>
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Sperimentare un prompt nuovo</div>
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Analisi di un'immagine o foto</div>
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Ricerca web in tempo reale</div>
+      <div class="compare2-item"><span style="color:#10b981">✓</span> Prima volta che usi Gemini</div>
+    </div>
+  </div>
+  <div class="compare2-card" style="border:2px solid #1a73e8">
+    <div class="compare2-head" style="background:#1a73e8">Gemini in Workspace (Docs / Drive / Gmail)</div>
+    <div class="compare2-body">
+      <div class="compare2-item"><span style="color:#1a73e8">✓</span> Stai lavorando su un documento Docs</div>
+      <div class="compare2-item"><span style="color:#1a73e8">✓</span> Vuoi rielaborare materiali già in Drive</div>
+      <div class="compare2-item"><span style="color:#1a73e8">✓</span> Devi rispondere a un'email in Gmail</div>
+      <div class="compare2-item"><span style="color:#1a73e8">✓</span> Stai preparando una presentazione in Slides</div>
+      <div class="compare2-item"><span style="color:#1a73e8">✓</span> Vuoi cercare tra i tuoi file archiviati</div>
+    </div>
+  </div>
+</div>
+<div style="font-weight:700;color:#1e293b;font-size:15px;margin-bottom:12px">Struttura Gems consigliata per un docente</div>
+<div class="gem-item"><div class="gem-name">Classe 3A — Informatica</div><div class="gem-desc">Programma, livelli studenti, BES, argomento corrente del trimestre</div></div>
+<div class="gem-item"><div class="gem-name">Classe 4B — Informatica</div><div class="gem-desc">Programma, livelli studenti, BES, progetto PCTO in corso</div></div>
+<div class="gem-item"><div class="gem-name">Generatore verifiche — Informatica</div><div class="gem-desc">Istruzioni per creare verifiche bilanciate con livelli differenziati</div></div>
+<div class="gem-item"><div class="gem-name">Comunicazioni scuola-famiglia</div><div class="gem-desc">Tono, struttura e convenzioni formali per email e lettere ai genitori</div></div>
+<div class="gem-item"><div class="gem-name">Aggiornamento professionale</div><div class="gem-desc">Contesto personale, aree di interesse, articoli e risorse salvate</div></div>
+<div class="info-box green" style="margin-top:20px"><div class="info-box-title">In sintesi</div><div class="info-box-text">Usa la <strong>chat libera</strong> per sperimentare e per task rapidi. Passa ai <strong>Gems</strong> non appena hai un contesto stabile da conservare. Usa <strong>Gemini in Workspace</strong> ogni volta che il materiale su cui lavori è già in Drive o Docs — eviti il copia-incolla e lavori direttamente sul documento reale.</div></div>`
+
+];
+
+function goTo(n) {
+  current = n;
+  document.getElementById('main-content').innerHTML = sections[n] + navFooter();
+  document.querySelectorAll('.nav-btn').forEach((b, i) => b.classList.toggle('active', i === n));
+  document.querySelector('.content').scrollTop = 0;
+}
+
+function navFooter() {
+  return `<div class="nav-footer">
+    <button class="nav-prev" onclick="goTo(${current-1})" ${current===0?'disabled':''}>← Precedente</button>
+    <span class="nav-counter">${current+1} / ${sections.length}</span>
+    <button class="nav-next" onclick="goTo(${current+1})" ${current===sections.length-1?'disabled':''}>Successivo →</button>
+  </div>`;
+}
+
+function copyPrompt(btn) {
+  const text = btn.closest('.prompt-box').querySelector('.prompt-text').innerText;
+  navigator.clipboard.writeText(text);
+  btn.textContent = 'Copiato';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copia'; btn.classList.remove('copied'); }, 2000);
+}
+
+goTo(0);
+</script>
+</body>
+</html>
