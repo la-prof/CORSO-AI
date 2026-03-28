@@ -3,537 +3,456 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AI nella Didattica — Lezione Laboratoriale 2h</title>
+<title>AI nella Didattica — Lezione Laboratoriale</title>
 <style>
+:root{
+  --navy:#1a2744;--navy-light:#243256;
+  --gold:#8B6914;--gold-light:#C49A28;
+  --cream:#FAF8F3;--cream-dark:#F0EBE0;
+  --text:#2C2C2C;--muted:#6B6560;
+  --border:#D9D0BC;--white:#fff;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;min-height:100vh;padding-bottom:80px}
-.header{background:#1e293b;color:white;padding:11px 20px;display:flex;align-items:center;justify-content:space-between}
-.header-title{font-weight:700;font-size:14px;letter-spacing:.3px}
-.header-sub{font-size:12px;color:#94a3b8}
-.header-count{font-size:12px;font-weight:600;color:#94a3b8}
-.progress-bar{height:3px;background:#e2e8f0}
-.progress-fill{height:100%;transition:width .3s}
-.tabs{display:flex;overflow-x:auto;background:white;border-bottom:1px solid #e2e8f0}
-.tab-btn{padding:10px 14px;border:none;background:transparent;cursor:pointer;font-size:12px;white-space:nowrap;flex-shrink:0;border-bottom:2px solid transparent;color:#6b7280;font-weight:400;transition:all .2s;text-align:left}
-.tab-btn.active{font-weight:700;border-bottom-color:currentColor}
-.tab-num{display:inline-block;width:20px;height:20px;border-radius:4px;background:#e2e8f0;color:#9ca3af;font-size:10px;font-weight:700;text-align:center;line-height:20px;margin-right:6px}
-.tab-btn.active .tab-num{color:white}
-.tab-dur{display:block;font-size:10px;color:#9ca3af;margin-top:2px}
-.content{max-width:860px;margin:0 auto;padding:20px 16px}
-.slide-title{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-.title-bar{width:4px;height:22px;border-radius:2px;flex-shrink:0}
-h2{font-size:19px;font-weight:800;color:#1e293b}
-.card{background:white;border-radius:10px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:12px}
-.point{background:white;padding:11px 15px;border-radius:8px;border-left:3px solid;color:#374151;font-size:14px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-p.lead{color:#4b5563;line-height:1.8;font-size:14px;margin-bottom:16px}
-.myth{background:white;border-radius:12px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.myth-top{background:#fef2f2;padding:10px 15px;display:flex;gap:8px;align-items:center;border-bottom:1px solid #fee2e2;font-weight:700;color:#b91c1c;font-size:14px}
-.myth-bot{padding:12px 15px;display:flex;gap:8px;font-size:14px;color:#374151;line-height:1.65}
-.info-box{border-left:4px solid;border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:14px}
-.info-title{font-weight:700;font-size:14px;margin-bottom:6px}
-.info-text{font-size:14px;color:#374151;line-height:1.75}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
-.plan-card{background:white;border-radius:10px;padding:14px;border:1px solid #e2e8f0}
-.plan-name{font-weight:800;font-size:16px;margin-bottom:2px}
-.plan-price{font-size:12px;font-weight:600;color:#6b7280;margin-bottom:10px}
-.plan-feat{font-size:12px;color:#4b5563;display:flex;gap:6px;margin-bottom:5px}
-.plan-best{border-radius:6px;padding:6px 10px;font-size:12px;font-weight:600;margin-top:10px}
-.compare-wrap{background:white;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:12px}
-.compare-head{display:grid;grid-template-columns:1fr 68px 68px 68px 88px;padding:10px 14px}
-.compare-row{display:grid;grid-template-columns:1fr 68px 68px 68px 88px;padding:10px 14px;border-bottom:1px solid #f3f4f6;align-items:center}
-.compare-row.even{background:#fafafa}
-.c-feat{font-size:13px;color:#374151}
-.c-val{text-align:center;font-size:15px}
-.feature-card{background:white;border-radius:12px;padding:15px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:3px solid;margin-bottom:12px}
-.feature-head{display:flex;align-items:center;gap:9px;margin-bottom:7px}
-.feature-icon{font-size:20px}
-.feature-title{font-weight:700;font-size:15px;color:#1e293b}
-.feature-desc{color:#4b5563;font-size:14px;line-height:1.65;margin-bottom:8px}
-.feature-tip{border-radius:7px;padding:7px 11px;font-size:13px}
-.prompt-box{background:white;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:12px;overflow:hidden}
-.prompt-head{background:#f8fafc;padding:8px 14px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}
-.prompt-label{font-weight:700;font-size:13px}
-.copy-btn{color:white;border:none;border-radius:5px;padding:4px 12px;font-size:12px;cursor:pointer;font-weight:600}
-.prompt-text{padding:12px 14px;font-family:monospace;font-size:13px;color:#374151;line-height:1.7;white-space:pre-wrap}
-.activity-header{color:white;border-radius:10px;padding:13px 18px;margin-bottom:16px;display:flex;gap:12px;align-items:center;font-weight:700;font-size:15px}
-.step{background:white;border-radius:8px;padding:11px 14px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:9px}
-.step-num{width:26px;height:26px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
-.step-text{color:#374151;font-size:14px;line-height:1.55}
-.reflection{border-radius:9px;padding:12px 15px;font-size:14px;color:#374151;line-height:1.65;border-left:3px solid}
-.tool-header{color:white;border-radius:10px;padding:13px 18px;margin-bottom:14px}
-.tool-name{font-weight:800;font-size:18px}
-.tool-url{font-size:12px;opacity:.8;margin-top:2px}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.tag{border-radius:4px;padding:3px 10px;font-size:12px;font-weight:600}
-.tip-box{border-radius:8px;padding:12px 15px;font-size:14px;line-height:1.7;border-left:3px solid}
-.overview-card{background:white;border-radius:10px;padding:13px 15px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start}
-.sum-wrap{background:white;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.sum-head{display:grid;grid-template-columns:110px 1fr 78px 78px;background:#1e293b;padding:10px 14px}
-.sum-row{display:grid;grid-template-columns:110px 1fr 78px 78px;padding:10px 14px;border-bottom:1px solid #f3f4f6;align-items:center}
-.sum-row.even{background:#fafafa}
-.quiz-q{background:white;border-radius:12px;padding:15px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:12px}
-.quiz-q-text{font-weight:600;color:#1f2937;margin-bottom:10px;font-size:14px}
-.quiz-opt{display:block;width:100%;padding:8px 12px;border-radius:7px;border:2px solid #e5e7eb;background:white;cursor:pointer;text-align:left;font-size:13px;color:#374151;margin-bottom:6px;transition:all .15s;font-family:inherit}
-.quiz-opt.selected{border-color:#1e293b;background:#f8fafc;font-weight:700}
-.quiz-opt.correct{border-color:#16a34a;background:#f0fdf4;font-weight:700;color:#166534}
-.quiz-opt.wrong{border-color:#dc2626;background:#fef2f2;color:#b91c1c}
-.quiz-submit{width:100%;padding:13px;border-radius:9px;border:none;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:4px}
-.quiz-result{border-radius:14px;padding:24px;text-align:center;margin-bottom:18px}
-.quiz-score{font-size:40px;font-weight:800;color:#1f2937}
-.quiz-msg{font-size:14px;color:#4b5563;margin-top:8px}
-.result-item{background:white;border-radius:9px;padding:12px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.result-q{font-size:13px;font-weight:600;color:#1f2937;margin-bottom:4px}
-.result-wrong{font-size:12px;color:#dc2626;margin-bottom:2px}
-.result-correct{font-size:12px;color:#16a34a;font-weight:600}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #e2e8f0;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 -4px 12px rgba(0,0,0,.08)}
-.btn-prev,.btn-next{padding:8px 18px;border-radius:7px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
-.btn-prev{border:1px solid #e2e8f0;background:white;color:#374151}
-.btn-prev:disabled{color:#d1d5db;cursor:not-allowed}
-.btn-next{border:none;color:white}
-.btn-next:disabled{background:#e2e8f0;color:#9ca3af;cursor:not-allowed}
-.dot-nav{display:flex;gap:5px;align-items:center}
-.dot{height:6px;border-radius:3px;cursor:pointer;transition:all .2s;background:#d1d5db}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--text);min-height:100vh;padding-bottom:80px}
+
+/* HEADER */
+.header{background:var(--navy);color:white;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold)}
+.h-left{font-family:Georgia,serif;font-weight:700;font-size:15px;letter-spacing:.2px}
+.h-right{font-size:11px;color:#7A8BA3;letter-spacing:.5px}
+.h-count{font-size:12px;font-weight:700;color:var(--gold-light);background:rgba(255,255,255,.08);padding:3px 12px;border-radius:2px}
+
+/* PROGRESS */
+.progress{height:2px;background:#e2e8f0}
+.progress-fill{height:100%;background:var(--gold);transition:width .3s}
+
+/* TABS */
+.tabs{display:flex;overflow-x:auto;background:var(--white);border-bottom:1px solid var(--border)}
+.tab{padding:11px 16px;border:none;background:transparent;cursor:pointer;font-size:12px;white-space:nowrap;flex-shrink:0;border-bottom:2px solid transparent;color:var(--muted);font-weight:400;transition:all .2s;text-align:left;font-family:inherit}
+.tab.active{font-weight:700;border-bottom-color:var(--gold);color:var(--navy)}
+.tab-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:2px;background:#EDE9DE;color:#9A8F7E;font-size:10px;font-weight:700;margin-right:7px}
+.tab.active .tab-num{background:var(--navy);color:var(--gold-light)}
+.tab-dur{display:block;font-size:10px;color:#B0A898;margin-top:2px;font-weight:400}
+
+/* CONTENT */
+.content{max-width:860px;margin:0 auto;padding:32px 20px}
+.slide-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.slide-bar{width:3px;height:24px;background:var(--gold);flex-shrink:0;border-radius:1px}
+h2{font-family:Georgia,serif;font-size:21px;font-weight:700;color:var(--navy);line-height:1.3}
+p.lead{color:var(--muted);line-height:1.85;font-size:14px;margin-bottom:16px}
+
+/* POINT ROWS */
+.point{background:var(--white);padding:11px 16px;border-radius:2px;border-left:3px solid var(--gold);color:var(--text);font-size:14px;margin-bottom:8px;border:1px solid var(--border);border-left:3px solid var(--gold)}
+
+/* MYTH */
+.myth{background:var(--white);border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:14px}
+.myth-top{background:#FEF6F6;padding:10px 16px;display:flex;gap:9px;align-items:center;font-weight:700;color:#8B2020;font-size:13px;border-bottom:1px solid #F5DDD D}
+.myth-bot{padding:12px 16px;display:flex;gap:9px;font-size:13px;color:var(--text);line-height:1.7}
+
+/* INFO BOX */
+.info-box{border-left:3px solid var(--gold);background:var(--white);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:2px;padding:14px 18px;margin-bottom:14px}
+.info-box.green{border-left-color:#2D6A1F}
+.info-box.warn{border-left-color:#8B4513}
+.info-title{font-weight:700;font-size:13px;color:var(--gold);margin-bottom:6px}
+.info-box.green .info-title{color:#2D6A1F}
+.info-box.warn .info-title{color:#8B4513}
+.info-text{font-size:13px;color:var(--muted);line-height:1.75}
+
+/* GRID 2 */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:2px;padding:16px}
+.card.gold-top{border-top:2px solid var(--gold)}
+.card-icon{font-size:22px;margin-bottom:8px}
+.card-title{font-weight:700;color:var(--navy);font-size:14px;margin-bottom:5px;font-family:Georgia,serif}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* PLAN CARDS */
+.plan{background:var(--white);border:1px solid var(--border);border-radius:2px;padding:16px}
+.plan-name{font-family:Georgia,serif;font-weight:700;font-size:17px;margin-bottom:2px}
+.plan-price{font-size:12px;color:var(--muted);margin-bottom:12px;font-weight:600}
+.plan-feat{font-size:12px;color:var(--text);display:flex;gap:7px;margin-bottom:5px;line-height:1.5}
+.plan-best{margin-top:10px;font-size:12px;font-weight:600;border-radius:2px;padding:5px 10px}
+
+/* COMPARE TABLE */
+.compare{background:var(--white);border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:14px}
+.compare-head{display:grid;grid-template-columns:1fr 68px 68px 68px 88px;background:var(--navy);padding:10px 14px}
+.compare-hcell{font-weight:700;font-size:11px;color:var(--gold-light);letter-spacing:.5px}
+.compare-row{display:grid;grid-template-columns:1fr 68px 68px 68px 88px;padding:9px 14px;border-bottom:1px solid var(--cream-dark);align-items:center}
+.compare-row.even{background:var(--cream)}
+.compare-feat{font-size:13px;color:var(--text)}
+.compare-val{text-align:center;font-size:14px}
+.compare-note{padding:7px 14px;font-size:11px;color:#B0A898;font-style:italic}
+
+/* FEATURE CARDS */
+.feat-card{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:2px;padding:16px;margin-bottom:12px}
+.feat-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.feat-icon{font-size:20px}
+.feat-title{font-weight:700;font-size:15px;color:var(--navy);font-family:Georgia,serif}
+.feat-desc{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:9px}
+.feat-tip{background:var(--cream);border-radius:2px;padding:8px 12px;font-size:12px;color:var(--gold);border-left:2px solid var(--gold)}
+
+/* PROMPTS */
+.prompt{background:var(--white);border:1px solid var(--border);border-radius:2px;margin-bottom:12px;overflow:hidden}
+.prompt-head{background:var(--cream);padding:9px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.prompt-label{font-weight:700;font-size:12px;color:var(--gold);letter-spacing:.3px}
+.copy-btn{background:var(--navy);color:white;border:none;border-radius:2px;padding:4px 12px;font-size:11px;cursor:pointer;font-weight:700;letter-spacing:.5px;font-family:inherit}
+.copy-btn.ok{background:#2D6A1F}
+.prompt-text{padding:12px 14px;font-family:monospace;font-size:12px;color:var(--text);line-height:1.8;white-space:pre-wrap}
+
+/* ACTIVITY */
+.activity-hd{background:var(--navy);color:white;border-radius:2px;padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;align-items:center}
+.activity-hd strong{font-family:Georgia,serif;font-size:15px}
+.step{background:var(--white);border:1px solid var(--border);border-radius:2px;padding:11px 14px;display:flex;gap:12px;align-items:flex-start;margin-bottom:8px}
+.step-n{width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--gold-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.step-text{font-size:13px;color:var(--text);line-height:1.6}
+.reflection{background:var(--cream);border:1px solid var(--border);border-left:3px solid var(--border);border-radius:2px;padding:12px 16px;font-size:13px;color:var(--muted);line-height:1.7;margin-top:12px;font-style:italic}
+
+/* TOOL HEADER */
+.tool-hd{background:var(--navy);color:white;border-radius:2px;padding:14px 18px;margin-bottom:14px;border-left:4px solid var(--gold)}
+.tool-name{font-family:Georgia,serif;font-weight:700;font-size:19px;margin-bottom:3px}
+.tool-url{font-size:11px;color:var(--gold-light);letter-spacing:.5px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{background:var(--cream-dark);color:var(--navy);border:1px solid var(--border);border-radius:2px;padding:3px 10px;font-size:11px;font-weight:600;letter-spacing:.3px}
+.tip{background:var(--cream);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:2px;padding:12px 16px;font-size:13px;color:var(--muted);line-height:1.7}
+
+/* OVERVIEW */
+.ov-card{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:2px;padding:13px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ov-best{background:var(--cream-dark);color:var(--navy);border-radius:2px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap;border:1px solid var(--border)}
+
+/* SUMMARY TABLE */
+.sum{background:var(--white);border:1px solid var(--border);border-radius:2px;overflow:hidden}
+.sum-head{display:grid;grid-template-columns:110px 1fr 76px 76px;background:var(--navy);padding:10px 14px}
+.sum-hcell{font-size:11px;font-weight:700;color:var(--gold-light);letter-spacing:.5px}
+.sum-row{display:grid;grid-template-columns:110px 1fr 76px 76px;padding:10px 14px;border-bottom:1px solid var(--cream-dark);align-items:center}
+.sum-row.even{background:var(--cream)}
+.sum-name{font-weight:700;color:var(--navy);font-size:13px}
+.sum-desc{font-size:12px;color:var(--muted)}
+.sum-val{text-align:center;font-size:14px}
+
+/* QUIZ */
+.quiz-q{background:var(--white);border:1px solid var(--border);border-radius:2px;padding:16px;margin-bottom:12px}
+.quiz-qt{font-weight:700;color:var(--navy);font-size:13px;margin-bottom:10px;line-height:1.5;font-family:Georgia,serif}
+.quiz-opt{display:block;width:100%;padding:9px 13px;border-radius:2px;border:1px solid var(--border);background:var(--cream);cursor:pointer;text-align:left;font-size:13px;color:var(--text);margin-bottom:6px;transition:all .15s;font-family:inherit}
+.quiz-opt.sel{border-color:var(--navy);background:var(--cream-dark);font-weight:700;color:var(--navy)}
+.quiz-opt.correct{border-color:#2D6A1F;background:#F0F7ED;color:#1A4A0F;font-weight:700}
+.quiz-opt.wrong{border-color:#8B2020;background:#FEF2F2;color:#6B1010}
+.quiz-btn{width:100%;padding:13px;border-radius:2px;border:none;font-weight:700;font-size:14px;cursor:pointer;font-family:Georgia,serif;letter-spacing:.5px;margin-top:6px;transition:all .2s}
+.quiz-result{border-radius:2px;padding:28px;text-align:center;margin-bottom:18px;border:1px solid var(--border)}
+.quiz-score{font-family:Georgia,serif;font-size:44px;font-weight:700;color:var(--navy)}
+.quiz-emoji{font-size:44px;margin-bottom:10px}
+.quiz-msg{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.65}
+.result-item{background:var(--white);border:1px solid var(--border);border-radius:2px;padding:12px 14px;margin-bottom:8px}
+.result-q{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px}
+.result-wrong{font-size:12px;color:#8B2020;margin-bottom:3px}
+.result-ok{font-size:12px;color:#2D6A1F;font-weight:700}
+
+/* FORMULA */
+.formula-box{background:var(--white);border:1px solid var(--border);border-radius:2px;padding:18px;margin-bottom:20px}
+.formula-title{font-family:Georgia,serif;font-weight:700;color:var(--navy);font-size:14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.formula-row{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--cream-dark)}
+.formula-row:last-child{border-bottom:none}
+.f-tag{background:var(--navy);color:var(--gold-light);border-radius:2px;padding:2px 9px;font-size:11px;font-weight:700;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.f-ex{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);padding:10px 24px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 -4px 16px rgba(26,39,68,.06)}
+.btn{padding:8px 20px;border-radius:2px;font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;letter-spacing:.5px}
+.btn-prev{border:1px solid var(--border);background:var(--white);color:var(--text)}
+.btn-prev:disabled{color:#C8BFB5;cursor:not-allowed}
+.btn-next{border:none;background:var(--navy);color:var(--gold-light)}
+.btn-next:disabled{background:#E8E4DA;color:#B0A898;cursor:not-allowed}
+.dot-wrap{display:flex;gap:5px;align-items:center}
+.dot{height:5px;border-radius:2px;cursor:pointer;transition:all .2s;background:var(--border)}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div>
-    <div class="header-title">AI nella Didattica</div>
-    <div class="header-sub">Laboratorio · 2 ore · Scuola secondaria di 2° grado</div>
+  <div class="h-left">AI nella Didattica &mdash; Lezione Laboratoriale</div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="h-right">Scuola sec. 2° grado · 2 ore</div>
+    <div class="h-count" id="hcount">1 / 1</div>
   </div>
-  <div class="header-count" id="slide-count">1 / 1</div>
 </div>
-<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-
+<div class="progress"><div class="progress-fill" id="prog"></div></div>
 <div class="tabs" id="tabs"></div>
 
-<div class="content">
-  <div id="slide-area"></div>
-</div>
+<div class="content"><div id="area"></div></div>
 
 <div class="bottom-nav">
-  <button class="btn-prev" id="btn-prev" onclick="navigate(-1)">← Indietro</button>
-  <div class="dot-nav" id="dot-nav"></div>
-  <button class="btn-next" id="btn-next" onclick="navigate(1)">Avanti →</button>
+  <button class="btn btn-prev" id="bprev" onclick="nav(-1)">← Indietro</button>
+  <div class="dot-wrap" id="dots"></div>
+  <button class="btn btn-next" id="bnext" onclick="nav(1)">Avanti →</button>
 </div>
 
 <script>
-const MODULES = [
-  {
-    title:"Introduzione", duration:"15 min", accent:"#334155",
-    slides:[
-      {
-        title:"I Chatbot AI: di cosa parliamo?",
-        render:()=>`
-          <p class="lead">I chatbot AI sono programmi capaci di conversare in linguaggio naturale, basati su Large Language Models (LLM): modelli addestrati su miliardi di testi per generare risposte coerenti e contestualmente appropriate.</p>
-          <div class="point" style="border-color:#334155">Non comprendono nel senso umano: producono risposte statisticamente plausibili</div>
-          <div class="point" style="border-color:#334155">Sono strumenti: la qualità dell'output dipende dalla qualità del prompt (input)</div>
-          <div class="point" style="border-color:#334155">Possono «allucinare»: generare informazioni false presentate con sicurezza — verifica sempre le fonti</div>`
-      },
-      {
-        title:"Perché integrarli nella didattica?",
-        render:()=>`
-          <p class="lead">Usati con metodo, gli strumenti AI possono trasformare significativamente la preparazione e la gestione della didattica quotidiana.</p>
-          <div class="point" style="border-color:#334155">⏱ Risparmio di tempo — esercizi, verifiche e rubriche in pochi minuti</div>
-          <div class="point" style="border-color:#334155">✏️ Personalizzazione — adattare contenuti per BES, DSA e livelli differenziati</div>
-          <div class="point" style="border-color:#334155">💡 Creatività — idee per attività innovative, simulazioni, discussioni guidate</div>
-          <div class="point" style="border-color:#334155">📚 Aggiornamento professionale — sintesi di articoli, spiegazioni di nuovi argomenti</div>`
-      },
-      {
-        title:"Miti da sfatare",
-        render:()=>`
-          <div class="myth"><div class="myth-top"><span>✕</span> «L'AI sostituirà i professori»</div><div class="myth-bot"><span style="color:#16a34a">✓</span> Il docente resta insostituibile per la relazione educativa, l'empatia, il giudizio etico e la lettura del contesto.</div></div>
-          <div class="myth"><div class="myth-top"><span>✕</span> «Tutto ciò che dice l'AI è vero»</div><div class="myth-bot"><span style="color:#16a34a">✓</span> I modelli possono allucinare. Verifica sempre le informazioni critiche con fonti primarie affidabili.</div></div>
-          <div class="myth"><div class="myth-top"><span>✕</span> «Gli studenti imparano meno con l'AI»</div><div class="myth-bot"><span style="color:#16a34a">✓</span> Dipende dalla progettazione didattica. L'AI può stimolare il pensiero critico se il docente struttura bene le attività.</div></div>`
-      }
-    ]
-  },
-  {
-    title:"Claude ⭐", duration:"35 min", accent:"#1e40af",
-    slides:[
-      {
-        title:"Claude — Chi è e cosa lo distingue",
-        render:()=>`
-          <div class="info-box" style="border-color:#1e40af;background:#eff6ff">
-            <div class="info-title" style="color:#1e40af">Sviluppato da Anthropic · Constitutional AI · Sicuro · Affidabile</div>
-            <div class="info-text">Claude è un assistente AI sviluppato da Anthropic, azienda fondata nel 2021 da ex ricercatori di OpenAI con un focus specifico sulla sicurezza dell'AI. A differenza di altri modelli, Claude è addestrato con un approccio «Constitutional AI»: ogni risposta viene valutata su criteri di sicurezza, onestà e utilità prima di essere fornita.</div>
+const MODS=[
+  {title:"Introduzione",dur:"15 min",slides:[
+    {title:"I Chatbot AI: di cosa parliamo?",html:()=>`
+      <p class="lead">I chatbot AI sono programmi capaci di conversare in linguaggio naturale, basati su Large Language Models (LLM): modelli addestrati su miliardi di testi per generare risposte coerenti e contestualmente appropriate.</p>
+      <div class="point">Non comprendono nel senso umano: producono risposte statisticamente plausibili</div>
+      <div class="point">Sono strumenti: la qualità dell'output dipende dalla qualità del prompt (input)</div>
+      <div class="point">Possono «allucinare»: generare informazioni false presentate con sicurezza — verificare sempre le fonti</div>`},
+    {title:"Perché integrarli nella didattica?",html:()=>`
+      <p class="lead">Usati con metodo, gli strumenti AI possono trasformare significativamente la preparazione e la gestione della didattica quotidiana.</p>
+      <div class="point">⏱ Risparmio di tempo — esercizi, verifiche e rubriche in pochi minuti</div>
+      <div class="point">✏️ Personalizzazione — adattare contenuti per BES, DSA e livelli differenziati</div>
+      <div class="point">💡 Creatività — idee per attività innovative, simulazioni, discussioni guidate</div>
+      <div class="point">📚 Aggiornamento professionale — sintesi di articoli, spiegazioni di nuovi argomenti</div>`},
+    {title:"Miti da sfatare",html:()=>`
+      <div class="myth"><div class="myth-top"><span>✕</span>«L'AI sostituirà i professori»</div><div class="myth-bot"><span style="color:#2D6A1F;font-size:16px">✓</span>Il docente resta insostituibile per la relazione educativa, l'empatia, il giudizio etico e la lettura del contesto.</div></div>
+      <div class="myth"><div class="myth-top"><span>✕</span>«Tutto ciò che dice l'AI è vero»</div><div class="myth-bot"><span style="color:#2D6A1F;font-size:16px">✓</span>I modelli possono allucinare. Verificare sempre le informazioni critiche con fonti primarie affidabili.</div></div>
+      <div class="myth"><div class="myth-top"><span>✕</span>«Gli studenti imparano meno con l'AI»</div><div class="myth-bot"><span style="color:#2D6A1F;font-size:16px">✓</span>Dipende dalla progettazione didattica. L'AI può stimolare il pensiero critico se il docente struttura bene le attività.</div></div>`},
+  ]},
+  {title:"Claude ⭐",dur:"35 min",slides:[
+    {title:"Claude — Profilo e caratteristiche distintive",html:()=>`
+      <div class="info-box"><div class="info-title">Anthropic · Constitutional AI · Sicurezza · Affidabilità</div><div class="info-text">Claude è sviluppato da Anthropic (2021) con un approccio «Constitutional AI»: ogni risposta viene valutata su criteri di sicurezza, onestà e utilità. Particolarmente apprezzato per la gestione di testi lunghi, la qualità della prosa e il ragionamento strutturato.</div></div>
+      <div class="grid2">
+        <div class="card gold-top"><div class="card-icon">📄</div><div class="card-title">Contesto esteso</div><div class="card-desc">Analizza fino a ~200.000 parole in una sola conversazione</div></div>
+        <div class="card gold-top"><div class="card-icon">🧠</div><div class="card-title">Ragionamento avanzato</div><div class="card-desc">Eccellente per analisi complesse e spiegazioni strutturate</div></div>
+        <div class="card gold-top"><div class="card-icon">✍️</div><div class="card-title">Qualità della prosa</div><div class="card-desc">Testi fluidi: lezioni, schede, relazioni, lettere ai genitori</div></div>
+        <div class="card gold-top"><div class="card-icon">🛡️</div><div class="card-title">Sicurezza by design</div><div class="card-desc">Risposta etica e trasparente, rifiuta contenuti dannosi</div></div>
+      </div>`},
+    {title:"Claude — I Piani Disponibili",html:()=>`
+      <div class="grid2">
+        ${[
+          {name:"Free",price:"Gratuito",color:"#64748b",feats:["Accesso a Claude Sonnet","Messaggi giornalieri limitati","Web search (limitata)","Caricamento file e immagini","Projects limitati","Nessuna carta di credito"],best:"Esplorare lo strumento"},
+          {name:"Pro",price:"20 €/mese",color:"#1a2744",feats:["Sonnet + Opus (il più potente)","Messaggi prioritari, nessuna attesa","Projects illimitati","Web search avanzata","Caricamento file illimitato","Artifacts interattivi"],best:"Uso professionale quotidiano"},
+          {name:"Team",price:"25 €/utente/mese",color:"#2D6A1F",feats:["Tutto il piano Pro","Gestione centralizzata utenti","Dashboard amministratore","Finestra di contesto più ampia","Dati NON usati per training","Fatturazione unificata"],best:"Team docenti o dipartimento"},
+          {name:"Enterprise",price:"Su preventivo",color:"#5C3D0E",feats:["Tutto il piano Team","SSO aziendale","GDPR enterprise e DPA dedicato","Integrazione API","Supporto prioritario dedicato","Deployment personalizzato"],best:"Istituti e reti di scuole"},
+        ].map(p=>`
+          <div class="plan" style="border-top:3px solid ${p.color}">
+            <div class="plan-name" style="color:${p.color}">${p.name}</div>
+            <div class="plan-price">${p.price}</div>
+            ${p.feats.map(f=>`<div class="plan-feat"><span style="color:${p.color};flex-shrink:0">·</span>${f}</div>`).join('')}
+            <div class="plan-best" style="background:${p.color}14;color:${p.color}">Ideale per: ${p.best}</div>
+          </div>`).join('')}
+      </div>`},
+    {title:"Claude — Confronto tra Piani",html:()=>`
+      <div class="compare">
+        <div class="compare-head">
+          <div class="compare-hcell">Funzionalità</div>
+          <div class="compare-hcell" style="text-align:center">Free</div>
+          <div class="compare-hcell" style="text-align:center">Pro</div>
+          <div class="compare-hcell" style="text-align:center">Team</div>
+          <div class="compare-hcell" style="text-align:center">Enterprise</div>
+        </div>
+        ${[["Claude Sonnet","✅","✅","✅","✅"],["Claude Opus","❌","✅","✅","✅"],["Projects illimitati","❌","✅","✅","✅"],["Web Search","⚠️","✅","✅","✅"],["Caricamento file","✅","✅","✅","✅"],["Artifacts","✅","✅","✅","✅"],["Dati non per training","❌","❌","✅","✅"],["Admin dashboard","❌","❌","✅","✅"],["SSO / GDPR enterprise","❌","❌","❌","✅"],].map((r,i)=>`
+          <div class="compare-row ${i%2===0?'even':''}">
+            <div class="compare-feat">${r[0]}</div>
+            <div class="compare-val">${r[1]}</div>
+            <div class="compare-val">${r[2]}</div>
+            <div class="compare-val">${r[3]}</div>
+            <div class="compare-val">${r[4]}</div>
+          </div>`).join('')}
+        <div class="compare-note">✅ Incluso &nbsp;·&nbsp; ⚠️ Limitato &nbsp;·&nbsp; ❌ Non disponibile</div>
+      </div>`},
+    {title:"Claude — Funzionalità per il Docente",html:()=>`
+      ${[
+        {icon:"📁",title:"Projects",desc:"Crea un progetto per ogni classe o UDA. Carica programmi, materiali, libri di testo: Claude li ricorda in tutte le conversazioni del progetto.",tip:"💡 Crea un Project «Classe 4B Informatica» e carica la tua programmazione annuale"},
+        {icon:"🎨",title:"Artifacts",desc:"Genera contenuti interattivi direttamente nella chat: quiz HTML, tabelle comparative, timeline, infografiche e presentazioni.",tip:"💡 Chiedi: «Crea un quiz interattivo su [argomento] per i miei studenti»"},
+        {icon:"🌐",title:"Web Search",desc:"Cerca informazioni aggiornate sul web e le integra nelle risposte con riferimenti verificabili alle fonti.",tip:"💡 «Cerca le ultime linee guida MIUR sull'uso dell'AI a scuola»"},
+        {icon:"🧩",title:"Caricamento file",desc:"Carica PDF, Word, immagini e chiedi di analizzarli, riassumerli o usarli come base per nuovi materiali.",tip:"💡 Carica la verifica dell'anno scorso e chiedi di creare una versione aggiornata"},
+      ].map(f=>`
+        <div class="feat-card">
+          <div class="feat-head"><span class="feat-icon">${f.icon}</span><span class="feat-title">${f.title}</span></div>
+          <div class="feat-desc">${f.desc}</div>
+          <div class="feat-tip">${f.tip}</div>
+        </div>`).join('')}`},
+    {title:"Claude — Prompt Pratici per il Docente",html:()=>`
+      ${[
+        {label:"Piano lezione",text:`Sei un esperto di didattica. Crea una lezione di 50 minuti su [argomento] per una classe 3ª di istituto tecnico informatico.\nStruttura:\n- Obiettivi di apprendimento (3 obiettivi)\n- Attività di apertura (5 min)\n- Spiegazione con esempi concreti (25 min)\n- Attività pratica guidata (15 min)\n- Verifica di comprensione / exit ticket (5 min)`},
+        {label:"Rubrica di valutazione",text:`Crea una rubrica analitica per valutare [tipo di elaborato] su [tema] per studenti di [livello].\n- 4 livelli: Eccellente / Buono / Sufficiente / Non sufficiente\n- Indicatori: contenuto, struttura, linguaggio, originalità\nFormato: tabella con descrittori chiari per ogni cella.`},
+        {label:"Adattamento per DSA",text:`Adatta questo testo per uno studente con dislessia di classe [livello]:\n[incolla qui il testo originale]\n\n- Frasi brevi (max 20 parole)\n- Parole chiave in grassetto\n- Sostituisci termini tecnici con spiegazioni semplici\n- Schema visivo riassuntivo finale\n- Glossario dei 5 termini principali`},
+        {label:"Verifica differenziata",text:`Crea una verifica su [argomento] con tre versioni:\n- Versione A (base): 5 esercizi semplici, risposta guidata\n- Versione B (standard): 5 esercizi di comprensione e applicazione\n- Versione C (avanzata): 5 esercizi di analisi e problem solving\nTutte le versioni: 30 punti totali.`},
+      ].map((p,i)=>`
+        <div class="prompt">
+          <div class="prompt-head">
+            <span class="prompt-label">${p.label.toUpperCase()}</span>
+            <button class="copy-btn" onclick="cp(this,'${encodeURIComponent(p.text)}')">COPIA</button>
           </div>
-          <div class="grid2">
-            <div class="card" style="border-top:2px solid #1e40af"><div style="font-size:24px;margin-bottom:8px">📄</div><div style="font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px">Contesto esteso</div><div style="font-size:13px;color:#6b7280">Analizza fino a ~200.000 parole in una sola conversazione</div></div>
-            <div class="card" style="border-top:2px solid #1e40af"><div style="font-size:24px;margin-bottom:8px">🧠</div><div style="font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px">Ragionamento avanzato</div><div style="font-size:13px;color:#6b7280">Eccellente per analisi complesse e spiegazioni strutturate</div></div>
-            <div class="card" style="border-top:2px solid #1e40af"><div style="font-size:24px;margin-bottom:8px">✍️</div><div style="font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px">Qualità della scrittura</div><div style="font-size:13px;color:#6b7280">Testi fluidi: lezioni, schede, relazioni, lettere ai genitori</div></div>
-            <div class="card" style="border-top:2px solid #1e40af"><div style="font-size:24px;margin-bottom:8px">🛡️</div><div style="font-weight:700;color:#1e293b;font-size:14px;margin-bottom:4px">Sicurezza by design</div><div style="font-size:13px;color:#6b7280">Risposta etica e trasparente, rifiuta contenuti dannosi</div></div>
-          </div>`
-      },
-      {
-        title:"Claude — I Piani Disponibili",
-        render:()=>`
-          <div class="grid2">
-            <div class="plan-card" style="border-top:3px solid #64748b">
-              <div class="plan-name" style="color:#64748b">Free</div>
-              <div class="plan-price">Gratuito</div>
-              <div class="plan-feat"><span style="color:#64748b">·</span> Accesso a Claude Sonnet</div>
-              <div class="plan-feat"><span style="color:#64748b">·</span> Messaggi giornalieri limitati</div>
-              <div class="plan-feat"><span style="color:#64748b">·</span> Web search (limitata)</div>
-              <div class="plan-feat"><span style="color:#64748b">·</span> Caricamento file e immagini</div>
-              <div class="plan-feat"><span style="color:#64748b">·</span> Projects (limitati)</div>
-              <div class="plan-feat"><span style="color:#64748b">·</span> Nessuna carta di credito</div>
-              <div class="plan-best" style="background:#64748b18;color:#64748b">Ideale per: iniziare a esplorare</div>
-            </div>
-            <div class="plan-card" style="border-top:3px solid #1e40af">
-              <div class="plan-name" style="color:#1e40af">Pro</div>
-              <div class="plan-price">20 €/mese</div>
-              <div class="plan-feat"><span style="color:#1e40af">·</span> Sonnet + Opus (il più potente)</div>
-              <div class="plan-feat"><span style="color:#1e40af">·</span> Messaggi prioritari, nessuna attesa</div>
-              <div class="plan-feat"><span style="color:#1e40af">·</span> Projects illimitati</div>
-              <div class="plan-feat"><span style="color:#1e40af">·</span> Web search avanzata</div>
-              <div class="plan-feat"><span style="color:#1e40af">·</span> Caricamento file illimitato</div>
-              <div class="plan-feat"><span style="color:#1e40af">·</span> Artifacts interattivi</div>
-              <div class="plan-best" style="background:#1e40af18;color:#1e40af">Ideale per: uso professionale quotidiano</div>
-            </div>
-            <div class="plan-card" style="border-top:3px solid #0f766e">
-              <div class="plan-name" style="color:#0f766e">Team</div>
-              <div class="plan-price">25 €/utente/mese</div>
-              <div class="plan-feat"><span style="color:#0f766e">·</span> Tutto il piano Pro</div>
-              <div class="plan-feat"><span style="color:#0f766e">·</span> Gestione centralizzata utenti</div>
-              <div class="plan-feat"><span style="color:#0f766e">·</span> Fatturazione unificata</div>
-              <div class="plan-feat"><span style="color:#0f766e">·</span> Dashboard amministratore</div>
-              <div class="plan-feat"><span style="color:#0f766e">·</span> Dati NON usati per training</div>
-              <div class="plan-best" style="background:#0f766e18;color:#0f766e">Ideale per: team docenti o dipartimento</div>
-            </div>
-            <div class="plan-card" style="border-top:3px solid #374151">
-              <div class="plan-name" style="color:#374151">Enterprise</div>
-              <div class="plan-price">Su preventivo</div>
-              <div class="plan-feat"><span style="color:#374151">·</span> Tutto il piano Team</div>
-              <div class="plan-feat"><span style="color:#374151">·</span> SSO aziendale</div>
-              <div class="plan-feat"><span style="color:#374151">·</span> GDPR enterprise e DPA dedicato</div>
-              <div class="plan-feat"><span style="color:#374151">·</span> Integrazione API</div>
-              <div class="plan-feat"><span style="color:#374151">·</span> Supporto prioritario dedicato</div>
-              <div class="plan-best" style="background:#37415118;color:#374151">Ideale per: istituti e reti di scuole</div>
-            </div>
-          </div>`
-      },
-      {
-        title:"Claude — Confronto Rapido tra Piani",
-        render:()=>`
-          <div class="compare-wrap">
-            <div class="compare-head" style="background:#1e40af">
-              <div style="font-weight:700;font-size:12px;color:white">Funzionalità</div>
-              <div style="font-weight:700;font-size:12px;color:white;text-align:center">Free</div>
-              <div style="font-weight:700;font-size:12px;color:white;text-align:center">Pro</div>
-              <div style="font-weight:700;font-size:12px;color:white;text-align:center">Team</div>
-              <div style="font-weight:700;font-size:12px;color:white;text-align:center">Enterprise</div>
-            </div>
-            ${[
-              ["Claude Sonnet","✅","✅","✅","✅"],
-              ["Claude Opus","❌","✅","✅","✅"],
-              ["Projects illimitati","❌","✅","✅","✅"],
-              ["Web Search","⚠️","✅","✅","✅"],
-              ["Caricamento file","✅","✅","✅","✅"],
-              ["Artifacts","✅","✅","✅","✅"],
-              ["Dati non per training","❌","❌","✅","✅"],
-              ["Admin dashboard","❌","❌","✅","✅"],
-              ["SSO / GDPR enterprise","❌","❌","❌","✅"],
-            ].map((r,i)=>`<div class="compare-row ${i%2===0?'even':''}"><div class="c-feat">${r[0]}</div><div class="c-val">${r[1]}</div><div class="c-val">${r[2]}</div><div class="c-val">${r[3]}</div><div class="c-val">${r[4]}</div></div>`).join('')}
-            <div style="padding:8px 14px;font-size:11px;color:#9ca3af">✅ Incluso · ⚠️ Limitato · ❌ Non disponibile</div>
-          </div>`
-      },
-      {
-        title:"Claude — Funzionalità Chiave per il Docente",
-        render:()=>`
-          ${[
-            {icon:"📁",title:"Projects",desc:"Crea un progetto per ogni classe o UDA. Carica programmi, materiali, libri di testo: Claude li ricorda in tutte le conversazioni del progetto.",tip:"💡 Crea un Project 'Classe 4B Informatica' e carica la tua programmazione annuale"},
-            {icon:"🎨",title:"Artifacts",desc:"Genera contenuti interattivi direttamente nella chat: quiz HTML, tabelle comparative, timeline, infografiche e presentazioni.",tip:"💡 Chiedi: «Crea un quiz interattivo su [argomento] per i miei studenti»"},
-            {icon:"🌐",title:"Web Search",desc:"Cerca informazioni aggiornate sul web e le integra nelle risposte con riferimenti alle fonti.",tip:"💡 «Cerca le ultime linee guida MIUR sull'uso dell'AI a scuola»"},
-            {icon:"🧩",title:"Caricamento file",desc:"Carica PDF, Word, immagini e chiedi di analizzarli, riassumerli o usarli come base per nuovi materiali.",tip:"💡 Carica la verifica di un anno fa e chiedi di creare una versione aggiornata"},
-          ].map(f=>`
-            <div class="feature-card" style="border-color:#1e40af">
-              <div class="feature-head"><span class="feature-icon">${f.icon}</span><span class="feature-title">${f.title}</span></div>
-              <div class="feature-desc">${f.desc}</div>
-              <div class="feature-tip" style="background:#eff6ff;color:#1e40af">${f.tip}</div>
-            </div>`).join('')}`
-      },
-      {
-        title:"Claude — Prompt Pratici per il Docente",
-        render:()=>`
-          ${[
-            {label:"📋 Piano lezione",text:"Sei un esperto di didattica. Crea una lezione di 50 minuti su [argomento] per una classe 3ª di istituto tecnico informatico.\nStruttura:\n- Obiettivi di apprendimento (3 obiettivi)\n- Attività di apertura (5 min)\n- Spiegazione con esempi concreti (25 min)\n- Attività pratica guidata (15 min)\n- Verifica di comprensione / exit ticket (5 min)"},
-            {label:"📊 Rubrica di valutazione",text:"Crea una rubrica analitica per valutare [tipo di elaborato] su [tema] per studenti di [livello].\n- 4 livelli: Eccellente / Buono / Sufficiente / Non sufficiente\n- Indicatori: contenuto, struttura, linguaggio, originalità\nFormato: tabella con descrittori chiari per ogni cella."},
-            {label:"♿ Adattamento per DSA",text:"Adatta questo testo per uno studente con dislessia: [incolla testo]\n- Frasi brevi (max 20 parole)\n- Parole chiave in grassetto\n- Sostituisci termini tecnici con spiegazioni semplici\n- Aggiungi uno schema visivo riassuntivo finale\n- Crea un glossario dei 5 termini principali"},
-            {label:"🎯 Verifica differenziata",text:"Crea una verifica su [argomento] con tre versioni:\n- Versione A (base): 5 esercizi semplici, risposta guidata\n- Versione B (standard): 5 esercizi di comprensione e applicazione\n- Versione C (avanzata): 5 esercizi di analisi e problem solving\nTutte le versioni: 30 punti totali."},
-          ].map(p=>`
-            <div class="prompt-box">
-              <div class="prompt-head">
-                <span class="prompt-label" style="color:#1e40af">${p.label}</span>
-                <button class="copy-btn" style="background:#1e40af" onclick="copyText(this,'${encodeURIComponent(p.text)}')">Copia</button>
-              </div>
-              <div class="prompt-text">${p.text}</div>
-            </div>`).join('')}`
-      },
-      {
-        title:"Attività Pratica — Esploriamo Claude",
-        render:()=>`
-          <div class="activity-header" style="background:#1e40af">⏱ 10 minuti — Apri il browser: claude.ai</div>
-          ${["Vai su claude.ai e crea un account gratuito (o accedi se già registrato)","Crea un nuovo Project: nominalo con la tua materia o una classe","Scegli uno dei prompt dalla slide precedente e adattalo alla tua disciplina","Osserva la risposta: è utile? Prova a chiedere una modifica specifica"].map((s,i)=>`
-            <div class="step">
-              <div class="step-num" style="background:#1e40af">${i+1}</div>
-              <div class="step-text">${s}</div>
-            </div>`).join('')}
-          <div class="reflection" style="background:#f1f5f9;border-color:#94a3b8;margin-top:14px">💬 Riflessione: quale prompt ha prodotto il risultato più utilizzabile? Come integreresti questo strumento nella tua routine di preparazione?</div>`
-      }
-    ]
-  },
-  {
-    title:"Altri Generalisti", duration:"15 min", accent:"#0f766e",
-    slides:[
-      {
-        title:"ChatGPT · Gemini · Perplexity · Poe",
-        render:()=>`
-          ${[
-            {name:"ChatGPT",company:"OpenAI",color:"#059669",desc:"Il più diffuso. GPT-4o gestisce testo, immagini e voce. Permette di creare GPT personalizzati per materia senza programmazione.",best:"GPT personalizzati per la propria materia"},
-            {name:"Gemini",company:"Google",color:"#1d4ed8",desc:"Integrato in Google Workspace: analizza Docs, Drive, Gmail direttamente. Ottimo per chi usa già Google Classroom.",best:"Lavorare dentro i propri documenti Google"},
-            {name:"Perplexity",company:"Perplexity AI",color:"#7c3aed",desc:"Specializzato nella ricerca web in tempo reale. Cita sempre le fonti: ideale per insegnare ricerche verificabili.",best:"Ricerche aggiornate con fonti sempre citate"},
-            {name:"Poe",company:"Quora",color:"#374151",desc:"Piattaforma che dà accesso a Claude, GPT-4, Gemini e altri in un'unica app gratuita.",best:"Esplorare più modelli senza abbonamenti multipli"},
-          ].map(t=>`
-            <div class="overview-card" style="border-left:3px solid ${t.color}">
-              <div>
-                <div style="font-weight:700;font-size:15px;color:#1f2937;margin-bottom:6px">${t.name} <span style="font-weight:400;font-size:12px;color:#9ca3af">· ${t.company}</span></div>
-                <div style="font-size:13px;color:#6b7280;line-height:1.55">${t.desc}</div>
-              </div>
-              <span style="background:${t.color}18;color:${t.color};border-radius:4px;padding:3px 9px;font-size:12px;font-weight:600;white-space:nowrap;margin-left:12px;flex-shrink:0">${t.best}</span>
-            </div>`).join('')}`
-      },
-      {
-        title:"Come scegliere il chatbot giusto?",
-        render:()=>`
-          <p class="lead">Non esiste uno strumento migliore in assoluto: la scelta dipende dal task specifico, dal contesto e dall'integrazione con i propri flussi di lavoro.</p>
-          <div class="point" style="border-color:#0f766e">📝 Per scrivere e analizzare testi lunghi → <strong>Claude</strong> (contesto esteso, qualità della prosa)</div>
-          <div class="point" style="border-color:#0f766e">🔍 Per ricerca con fonti aggiornate → <strong>Perplexity</strong> (cita sempre le fonti)</div>
-          <div class="point" style="border-color:#0f766e">🖼️ Per generare immagini o usare plugin → <strong>ChatGPT</strong> (DALL-E integrato, GPT Store)</div>
-          <div class="point" style="border-color:#0f766e">📂 Per lavorare con i tuoi file Google → <strong>Gemini</strong> (integrazione nativa Drive e Docs)</div>
-          <div class="point" style="border-color:#0f766e">🧪 Per confrontare modelli diversi → <strong>Poe</strong> (accesso gratuito a più sistemi)</div>`
-      }
-    ]
-  },
-  {
-    title:"Strumenti Didattici", duration:"25 min", accent:"#6d28d9",
-    slides:[
-      {
-        title:"Perché strumenti specifici per la scuola?",
-        render:()=>`
-          <p class="lead">I chatbot generalisti sono potenti ma non progettati per il contesto scolastico. Gli strumenti didattici colmano questo gap in modo sostanziale.</p>
-          <div class="point" style="border-color:#6d28d9">🔒 Privacy e GDPR: pensati per il trattamento dati di minori, conformi alle normative europee</div>
-          <div class="point" style="border-color:#6d28d9">👩‍🏫 Controllo docente: l'insegnante monitora le conversazioni degli studenti in tempo reale</div>
-          <div class="point" style="border-color:#6d28d9">📋 Funzioni integrate: piani lezione, verifiche, schede BES già nel tool — nessun prompting avanzato</div>
-          <div class="point" style="border-color:#6d28d9">🌍 Community: template condivisi da milioni di docenti, pronti all'uso immediato</div>`
-      },
-      ...[
-        {name:"Mizou",color:"#b45309",url:"mizou.com",desc:"Crea chatbot personalizzati per i tuoi studenti. Il docente definisce argomento, tono e limiti: gli studenti interagiscono, il docente legge e monitora tutto.",features:["Chatbot personalizzabili per lezione","Dashboard con monitoraggio conversazioni","Privacy-first, GDPR compliant","Piano gratuito disponibile"],tip:"Crea un tutor su un argomento specifico: ogni studente lo interroga a modo suo, tu vedi tutte le domande poste."},
-        {name:"SchoolAI",color:"#dc2626",url:"schoolai.com",desc:"«Spaces»: ambienti AI sicuri e monitorati per attività in classe. Il docente vede tutto ciò che gli studenti scrivono in tempo reale.",features:["Spaces: ambienti AI guidati per studenti","Monitoraggio in tempo reale","Filtri contenuti automatici","Integrazione Google Classroom"],tip:"Attività in classe dove ogni studente usa l'AI in autonomia: tu vedi tutto dal tuo schermo senza doverti muovere."},
-        {name:"Magic School AI",color:"#6d28d9",url:"magicschool.ai",desc:"Uno dei preferiti degli insegnanti (3M+ docenti). Oltre 60 strumenti specifici: piani lezione, quiz, rubriche, lettere per genitori, tutto con un clic.",features:["60+ tool didattici pronti","Generatore lezioni, quiz, rubriche","Differenziazione automatica per livello","Raina: chatbot AI sicuro per studenti"],tip:"Ideale se non vuoi imparare il prompting: ogni funzione ha già il prompt ottimale integrato."},
-        {name:"Botsonic",color:"#0369a1",url:"writesonic.com/botsonic",desc:"Crea un chatbot alimentato esclusivamente dai tuoi documenti. Carica i tuoi materiali: il bot risponde solo basandosi su quelli.",features:["Chatbot dai propri documenti","Carica PDF, slide, appunti","Embed su Moodle, Classroom, sito","Nessuna programmazione richiesta"],tip:"Carica il tuo manuale: crea un assistente che risponde solo con quelle informazioni. Zero allucinazioni su contenuti extra-curriculum."},
-        {name:"Synthesia AI",color:"#1e293b",url:"synthesia.io",desc:"Generatore di video educativi con avatar AI. Scrivi un testo e ottieni un video professionale con un presentatore virtuale, in oltre 120 lingue.",features:["Video da testo — nessuna ripresa","120+ lingue e avatar realistici","Template e-learning professionali","Sottotitoli automatici inclusi"],tip:"Perfetto per la flipped classroom: video introduttivi per ogni unità.\n⚠️ Piano gratuito molto limitato. Piani da ~22 €/mese."},
-        {name:"Gamma",color:"#0f766e",url:"gamma.app",desc:"Genera presentazioni, documenti e siti web da un semplice testo o prompt. L'AI crea layout, grafica e struttura: tu modifichi ciò che vuoi.",features:["Presentazioni da prompt in 30 secondi","Layout professionali generati da AI","Export in PowerPoint o PDF","Modalità presentazione integrata"],tip:"Chiedi: «Crea una presentazione di 10 slide su [argomento] per studenti di liceo». Ottieni una base professionale da personalizzare."},
-      ].map(t=>({
-        title:t.name,
-        render:()=>`
-          <div class="tool-header" style="background:${t.color}">
-            <div class="tool-name">${t.name}</div>
-            <div class="tool-url">🔗 ${t.url}</div>
+          <div class="prompt-text">${p.text}</div>
+        </div>`).join('')}`},
+    {title:"Attività Pratica — Esploriamo Claude",html:()=>`
+      <div class="activity-hd">⏱ <strong>10 minuti</strong> &nbsp;—&nbsp; Apri il browser: <span style="color:var(--gold-light)">claude.ai</span></div>
+      ${["Vai su claude.ai e crea un account gratuito (o accedi se già registrato)","Crea un nuovo Project: nominalo con la tua materia o una classe","Scegli uno dei prompt dalla slide precedente e adattalo alla tua disciplina","Osserva la risposta: è utile? Prova a chiedere una modifica specifica"].map((s,i)=>`
+        <div class="step"><div class="step-n">${i+1}</div><div class="step-text">${s}</div></div>`).join('')}
+      <div class="reflection">Riflessione di gruppo: quale prompt ha prodotto il risultato più utilizzabile? Cosa cambieresti? Come integreresti questo strumento nella tua routine di preparazione?</div>`},
+  ]},
+  {title:"Altri Generalisti",dur:"15 min",slides:[
+    {title:"ChatGPT · Gemini · Perplexity · Poe",html:()=>`
+      ${[
+        {name:"ChatGPT",co:"OpenAI",desc:"Il più diffuso. GPT-4o gestisce testo, immagini e voce. Permette di creare GPT personalizzati per materia senza programmazione.",best:"GPT personalizzati per la propria materia"},
+        {name:"Gemini",co:"Google",desc:"Integrato in Google Workspace: analizza Docs, Drive, Gmail direttamente. Ottimo per chi usa già Google Classroom.",best:"Lavorare dentro i propri documenti Google"},
+        {name:"Perplexity",co:"Perplexity AI",desc:"Specializzato nella ricerca web in tempo reale. Cita sempre le fonti: ideale per insegnare ricerche verificabili.",best:"Ricerche aggiornate con fonti sempre citate"},
+        {name:"Poe",co:"Quora",desc:"Piattaforma che dà accesso a Claude, GPT-4, Gemini e altri in un'unica app gratuita.",best:"Esplorare più modelli senza abbonamenti multipli"},
+      ].map(t=>`
+        <div class="ov-card">
+          <div>
+            <div style="font-family:Georgia,serif;font-weight:700;font-size:15px;color:var(--navy);margin-bottom:5px">${t.name} <span style="font-weight:400;font-size:12px;color:var(--muted)">· ${t.co}</span></div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.55">${t.desc}</div>
           </div>
-          <p class="lead">${t.desc}</p>
-          <div class="tags">${t.features.map(f=>`<span class="tag" style="background:${t.color}18;color:${t.color}">${f}</span>`).join('')}</div>
-          <div class="tip-box" style="background:#f8fafc;border-color:${t.color};color:#374151">💡 ${t.tip}</div>`
-      })),
-      {
-        title:"Riepilogo — Quale strumento per quale scopo?",
-        render:()=>`
-          <div class="sum-wrap">
-            <div class="sum-head">
-              <div style="font-weight:700;font-size:12px;color:white">Strumento</div>
-              <div style="font-weight:700;font-size:12px;color:white">Ideale per...</div>
-              <div style="font-weight:700;font-size:12px;color:white;text-align:center">Gratuito</div>
-              <div style="font-weight:700;font-size:12px;color:white;text-align:center">GDPR</div>
-            </div>
-            ${[
-              ["Mizou","Tutor personalizzato su un argomento","✅","✅"],
-              ["SchoolAI","Attività monitorate in classe","✅","✅"],
-              ["Magic School","Preparare materiali in pochi clic","✅","⚠️"],
-              ["Botsonic","Chatbot dai propri documenti","⚠️","⚠️"],
-              ["Synthesia","Video didattici senza riprese","❌","⚠️"],
-              ["Gamma","Presentazioni visive da testo","✅","⚠️"],
-            ].map((r,i)=>`
-              <div class="sum-row ${i%2===0?'even':''}">
-                <div style="font-weight:700;color:#1f2937;font-size:13px">${r[0]}</div>
-                <div style="font-size:13px;color:#4b5563">${r[1]}</div>
-                <div style="text-align:center;font-size:15px">${r[2]}</div>
-                <div style="text-align:center;font-size:15px">${r[3]}</div>
-              </div>`).join('')}
-          </div>
-          <div style="margin-top:8px;font-size:11px;color:#9ca3af">✅ Disponibile · ⚠️ Limitato/da verificare · ❌ Non disponibile</div>`
-      }
-    ]
-  },
-  {
-    title:"Etica & Pratiche", duration:"15 min", accent:"#374151",
-    slides:[
-      {title:"Privacy e GDPR in classe",render:()=>`
-        <p class="lead">Prima di usare qualsiasi strumento AI con studenti, ogni docente deve considerare con attenzione alcuni aspetti fondamentali sulla privacy.</p>
-        <div class="point" style="border-color:#374151">Non inserire mai dati personali degli studenti nei chatbot generalisti</div>
-        <div class="point" style="border-color:#374151">Verificare i limiti d'età: molti strumenti vietano l'uso a minori di 13 o 18 anni senza consenso</div>
-        <div class="point" style="border-color:#374151">Consultare la policy del proprio istituto: potrebbero esistere linee guida o restrizioni specifiche</div>
-        <div class="point" style="border-color:#374151">Server extra-UE: verificare dove vengono trattati i dati e se il servizio ha un DPA valido</div>
-        <div class="point" style="border-color:#374151">Preferire strumenti GDPR-compliant (Mizou, SchoolAI) per attività dirette con studenti minori</div>`
-      },
-      {title:"Plagio, valutazione e pensiero critico",render:()=>`
-        <p class="lead">La sfida principale non è tecnologica, è pedagogica: come riprogettare i compiti nell'era dell'AI generativa?</p>
-        <div class="point" style="border-color:#374151">L'AI genera testo plausibile ma non sempre corretto: insegnare a verificare è fondamentale</div>
-        <div class="point" style="border-color:#374151">Stabilire regole chiare da subito: il testo generato dall'AI non è un elaborato dello studente</div>
-        <div class="point" style="border-color:#374151">Strumenti come Turnitin e GPTZero rilevano parzialmente i testi generati da AI</div>
-        <div class="point" style="border-color:#374151">Progettare compiti che richiedano elaborazione personale, usando l'AI come strumento e non sostituto</div>
-        <div class="point" style="border-color:#374151">Esempio: «Usa Claude per trovare 3 argomenti pro/contro, poi scrivi la tua posizione motivata»</div>`
-      },
-      {title:"Il ruolo del docente nell'era AI",render:()=>`
-        <p class="lead">L'AI non sostituisce il docente, ma richiede di ridefinire alcune competenze fondamentali del ruolo educativo.</p>
-        <div class="point" style="border-color:#374151">Dal trasmettitore di nozioni a facilitatore del pensiero critico e dell'elaborazione</div>
-        <div class="point" style="border-color:#374151">Nuova alfabetizzazione: valutare le risposte AI, riconoscere le allucinazioni, leggere i prompt</div>
-        <div class="point" style="border-color:#374151">Modellare l'uso responsabile: il docente che usa l'AI in modo trasparente è un esempio concreto</div>
-        <div class="point" style="border-color:#374151">Aggiornamento continuo: il settore evolve rapidamente, ma i principi pedagogici restano solidi</div>
-        <div class="point" style="border-color:#374151">Il vantaggio umano rimane: relazione educativa, contesto, empatia, giudizio etico</div>`
-      }
-    ]
-  },
-  {
-    title:"Verifica", duration:"10 min", accent:"#1e293b",
-    slides:[
-      {
-        title:"Verifica finale delle competenze",
-        isQuiz: true,
-        questions:[
-          {q:"Quale azienda ha sviluppato Claude con un approccio Constitutional AI?",opts:["OpenAI","Google","Anthropic","Quora"],ans:2},
-          {q:"Quale piano di Claude garantisce che i dati NON vengano usati per il training?",opts:["Free","Pro","Solo Team ed Enterprise","Solo Enterprise"],ans:2},
-          {q:"Quale strumento permette ricerche web in tempo reale citando sempre le fonti?",opts:["Claude","ChatGPT","Perplexity","Mizou"],ans:2},
-          {q:"Quale strumento genera presentazioni complete a partire da un testo?",opts:["Magic School AI","Gamma","Botsonic","Synthesia"],ans:1},
-          {q:"Cosa si intende per «allucinazione» in un modello AI?",opts:["Il modello non risponde","Genera informazioni false presentate come vere","Produce immagini distorte","Risponde in modo aggressivo"],ans:1},
-          {q:"Quale funzionalità di Claude organizza materiali e chat per classe o UDA?",opts:["Artifacts","Web Search","Projects","Canvas"],ans:2},
-          {q:"Quale strumento crea chatbot basati esclusivamente sui propri documenti?",opts:["Mizou","SchoolAI","Magic School","Botsonic"],ans:3},
-        ],
-        render:()=>renderQuiz()
-      }
-    ]
-  }
+          <div class="ov-best">${t.best}</div>
+        </div>`).join('')}`},
+    {title:"Come scegliere lo strumento più adatto?",html:()=>`
+      <p class="lead">Non esiste uno strumento migliore in assoluto: la scelta dipende dal task specifico, dal contesto e dall'integrazione con i propri flussi di lavoro.</p>
+      <div class="point">📝 Per scrivere e analizzare testi lunghi → <strong>Claude</strong> (contesto esteso, qualità della prosa)</div>
+      <div class="point">🔍 Per ricerca con fonti aggiornate → <strong>Perplexity</strong> (cita sempre le fonti)</div>
+      <div class="point">🖼️ Per generare immagini o usare plugin → <strong>ChatGPT</strong> (DALL-E integrato, GPT Store)</div>
+      <div class="point">📂 Per lavorare con file Google → <strong>Gemini</strong> (integrazione nativa Drive e Docs)</div>
+      <div class="point">🧪 Per confrontare modelli diversi → <strong>Poe</strong> (accesso gratuito a più sistemi)</div>`},
+  ]},
+  {title:"Strumenti Didattici",dur:"25 min",slides:[
+    {title:"Perché strumenti specifici per la scuola?",html:()=>`
+      <p class="lead">I chatbot generalisti sono potenti ma non progettati per il contesto scolastico. Gli strumenti didattici colmano questo gap in modo sostanziale.</p>
+      <div class="point">🔒 Privacy e GDPR: pensati per il trattamento dati di minori, conformi alle normative europee</div>
+      <div class="point">👩‍🏫 Controllo docente: l'insegnante monitora le conversazioni degli studenti in tempo reale</div>
+      <div class="point">📋 Funzioni integrate: piani lezione, verifiche, schede BES già nel tool — nessun prompting avanzato</div>
+      <div class="point">🌍 Community: template condivisi da milioni di docenti, pronti all'uso immediato</div>`},
+    ...[
+      {name:"Mizou",url:"mizou.com",desc:"Crea chatbot personalizzati per i tuoi studenti. Il docente definisce argomento, tono e limiti: gli studenti interagiscono, il docente monitora tutto.",feats:["Chatbot personalizzabili per lezione","Dashboard monitoraggio conversazioni","Privacy-first, GDPR compliant","Piano gratuito disponibile"],tip:"Crea un tutor su un argomento specifico: ogni studente lo interroga a modo suo, tu vedi tutte le domande poste."},
+      {name:"SchoolAI",url:"schoolai.com",desc:"«Spaces»: ambienti AI sicuri e monitorati per attività in classe. Il docente vede tutto ciò che gli studenti scrivono in tempo reale.",feats:["Spaces: ambienti AI guidati","Monitoraggio in tempo reale","Filtri contenuti automatici","Integrazione Google Classroom"],tip:"Attività in classe dove ogni studente usa l'AI in autonomia: tu monitora tutto dal tuo schermo senza doverti muovere."},
+      {name:"Magic School AI",url:"magicschool.ai",desc:"Oltre 60 strumenti specifici: piani lezione, quiz, rubriche, lettere per genitori, tutto in pochi clic. Usato da 3 milioni di docenti nel mondo.",feats:["60+ tool didattici pronti","Generatore lezioni, quiz, rubriche","Differenziazione per livello","Raina: chatbot sicuro per studenti"],tip:"Ideale se non vuoi imparare il prompting: ogni funzione ha già il prompt ottimale integrato."},
+      {name:"Botsonic",url:"writesonic.com/botsonic",desc:"Crea un chatbot alimentato esclusivamente dai tuoi documenti. Il bot risponde solo basandosi sui materiali caricati, senza inventare.",feats:["Chatbot dai propri documenti","Carica PDF, slide, appunti","Embed su Moodle, Classroom, sito","Nessuna programmazione richiesta"],tip:"Carica il tuo manuale: l'assistente risponde solo con quelle informazioni. Zero allucinazioni su contenuti extra-curriculum."},
+      {name:"Synthesia AI",url:"synthesia.io",desc:"Generatore di video educativi con avatar AI. Scrivi un testo e ottieni un video professionale con un presentatore virtuale in 120+ lingue.",feats:["Video da testo — nessuna ripresa","120+ lingue e avatar realistici","Template e-learning professionali","Sottotitoli automatici inclusi"],tip:"Perfetto per la flipped classroom: video introduttivi per ogni unità.\n⚠️ Piano gratuito molto limitato (~1 min/mese). Piani professionali da ~22 €/mese."},
+      {name:"Gamma",url:"gamma.app",desc:"Genera presentazioni, documenti e siti web da un semplice testo o prompt. L'AI crea layout, grafica e struttura: il docente personalizza.",feats:["Presentazioni da prompt in 30 secondi","Layout professionali generati da AI","Export in PowerPoint o PDF","Modalità presentazione integrata"],tip:"Chiedi: «Crea una presentazione di 10 slide su [argomento] per studenti di liceo». Ottieni una base professionale da personalizzare."},
+    ].map(t=>({
+      title:t.name,
+      html:()=>`
+        <div class="tool-hd">
+          <div class="tool-name">${t.name}</div>
+          <div class="tool-url">&#128279; ${t.url}</div>
+        </div>
+        <p class="lead">${t.desc}</p>
+        <div class="tags">${t.feats.map(f=>`<span class="tag">${f}</span>`).join('')}</div>
+        <div class="tip">💡 ${t.tip}</div>`
+    })),
+    {title:"Riepilogo — Quale strumento per quale scopo?",html:()=>`
+      <div class="sum">
+        <div class="sum-head">
+          <div class="sum-hcell">Strumento</div>
+          <div class="sum-hcell">Ideale per...</div>
+          <div class="sum-hcell" style="text-align:center">Gratuito</div>
+          <div class="sum-hcell" style="text-align:center">GDPR</div>
+        </div>
+        ${[["Mizou","Tutor personalizzato su un argomento","✅","✅"],["SchoolAI","Attività monitorate in classe","✅","✅"],["Magic School","Preparare materiali in pochi clic","✅","⚠️"],["Botsonic","Chatbot dai propri documenti","⚠️","⚠️"],["Synthesia","Video didattici senza riprese","❌","⚠️"],["Gamma","Presentazioni visive da testo","✅","⚠️"],].map((r,i)=>`
+          <div class="sum-row ${i%2===0?'even':''}">
+            <div class="sum-name">${r[0]}</div>
+            <div class="sum-desc">${r[1]}</div>
+            <div class="sum-val">${r[2]}</div>
+            <div class="sum-val">${r[3]}</div>
+          </div>`).join('')}
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted);font-style:italic">✅ Disponibile &nbsp;·&nbsp; ⚠️ Limitato/da verificare &nbsp;·&nbsp; ❌ Non disponibile</div>`},
+  ]},
+  {title:"Etica & Pratiche",dur:"15 min",slides:[
+    {title:"Privacy e GDPR in classe",html:()=>`
+      <p class="lead">Prima di usare qualsiasi strumento AI con studenti, ogni docente deve considerare con attenzione alcuni aspetti fondamentali sulla privacy.</p>
+      <div class="point">Non inserire mai dati personali degli studenti nei chatbot generalisti</div>
+      <div class="point">Verificare i limiti d'età: molti strumenti vietano l'uso a minori di 13 o 18 anni senza consenso</div>
+      <div class="point">Consultare la policy del proprio istituto: potrebbero esistere linee guida o restrizioni specifiche</div>
+      <div class="point">Server extra-UE: verificare dove vengono trattati i dati e se il servizio ha un DPA valido</div>
+      <div class="point">Preferire strumenti GDPR-compliant (Mizou, SchoolAI) per attività dirette con studenti minori</div>`},
+    {title:"Plagio, valutazione e pensiero critico",html:()=>`
+      <p class="lead">La sfida principale non è tecnologica, è pedagogica: come riprogettare i compiti nell'era dell'AI generativa?</p>
+      <div class="point">L'AI genera testo plausibile ma non sempre corretto: insegnare a verificare è fondamentale</div>
+      <div class="point">Stabilire regole chiare da subito: il testo generato dall'AI non è un elaborato dello studente</div>
+      <div class="point">Strumenti come Turnitin e GPTZero rilevano parzialmente i testi generati da AI</div>
+      <div class="point">Progettare compiti che richiedano elaborazione personale, usando l'AI come strumento e non sostituto</div>
+      <div class="point">Esempio efficace: «Usa Claude per trovare 3 argomenti pro/contro, poi scrivi la tua posizione motivata»</div>`},
+    {title:"Il ruolo del docente nell'era AI",html:()=>`
+      <p class="lead">L'AI non sostituisce il docente, ma richiede di ridefinire alcune competenze fondamentali del ruolo educativo.</p>
+      <div class="point">Dal trasmettitore di nozioni a facilitatore del pensiero critico e dell'elaborazione personale</div>
+      <div class="point">Nuova alfabetizzazione: valutare le risposte AI, riconoscere le allucinazioni, costruire prompt efficaci</div>
+      <div class="point">Modellare l'uso responsabile: il docente che usa l'AI in modo trasparente è un esempio concreto</div>
+      <div class="point">Aggiornamento continuo: il settore evolve rapidamente, ma i principi pedagogici restano solidi</div>
+      <div class="point">Il vantaggio umano rimane: relazione educativa, contesto, empatia, giudizio etico</div>`},
+  ]},
+  {title:"Verifica",dur:"10 min",slides:[
+    {title:"Verifica finale delle competenze",isQuiz:true,
+     questions:[
+      {q:"Quale azienda ha sviluppato Claude con un approccio Constitutional AI?",opts:["OpenAI","Google","Anthropic","Quora"],ans:2},
+      {q:"Quale piano di Claude garantisce che i dati NON vengano usati per il training?",opts:["Free","Pro","Team ed Enterprise","Solo Enterprise"],ans:2},
+      {q:"Quale strumento permette ricerche web in tempo reale citando sempre le fonti?",opts:["Claude","ChatGPT","Perplexity","Mizou"],ans:2},
+      {q:"Quale strumento genera presentazioni complete a partire da un testo o prompt?",opts:["Magic School AI","Gamma","Botsonic","Synthesia"],ans:1},
+      {q:"Cosa si intende per «allucinazione» in un modello AI?",opts:["Il modello non risponde","Genera informazioni false presentate come vere","Produce immagini distorte","Risponde in modo aggressivo"],ans:1},
+      {q:"Quale funzionalità di Claude organizza materiali e chat per classe o UDA?",opts:["Artifacts","Web Search","Projects","Canvas"],ans:2},
+      {q:"Quale strumento crea chatbot basati esclusivamente sui propri documenti?",opts:["Mizou","SchoolAI","Magic School","Botsonic"],ans:3},
+     ],
+     html:()=>renderQuiz()},
+  ]},
 ];
 
-// flat list of slides
-const allSlides = [];
-MODULES.forEach((m,mi)=>{
-  m.slides.forEach((s,si)=>{
-    allSlides.push({mod:mi,slide:si,data:s,modData:m});
-  });
-});
-
-let cur = 0;
-const quizState = { sel:{}, done:false };
+const flat=[];
+MODS.forEach((m,mi)=>m.slides.forEach((s,si)=>flat.push({mi,si,s,m})));
+let cur=0;
+const qState={sel:{},done:false};
 
 function renderQuiz(){
-  const qs = MODULES[MODULES.length-1].slides[0].questions;
-  if(quizState.done){
-    const score = qs.filter((q,i)=>quizState.sel[i]===q.ans).length;
-    return `<div class="quiz-result" style="background:${score>=6?'#f0fdf4':score>=4?'#fefce8':'#fef2f2'}">
-      <div style="font-size:48px;margin-bottom:8px">${score>=6?'🏆':score>=4?'👍':'📚'}</div>
-      <div class="quiz-score">${score}/${qs.length}</div>
-      <div class="quiz-msg">${score>=6?'Ottimo! Sei pronta a integrare questi strumenti nella tua didattica.':score>=4?'Buon risultato! Rivedi le risposte segnate.':'Continua ad esplorare i moduli.'}</div>
+  const qs=MODS[MODS.length-1].slides[0].questions;
+  if(qState.done){
+    const sc=qs.filter((q,i)=>qState.sel[i]===q.ans).length;
+    return `<div class="quiz-result" style="background:${sc>=6?'#F0F7ED':sc>=4?'#FBF6E9':'#FEF2F2'}">
+      <div class="quiz-emoji">${sc>=6?'🏆':sc>=4?'👍':'📚'}</div>
+      <div class="quiz-score">${sc} / ${qs.length}</div>
+      <div class="quiz-msg">${sc>=6?'Risultato eccellente. Sei pronta a integrare questi strumenti nella tua pratica didattica.':sc>=4?'Buon risultato. Rivedi le risposte segnate in rosso.':'Continua ad esplorare i materiali del corso.'}</div>
     </div>
-    ${qs.map((q,qi)=>{
-      const ok = quizState.sel[qi]===q.ans;
-      return `<div class="result-item" style="border-left:3px solid ${ok?'#16a34a':'#dc2626'}">
+    ${qs.map((q,qi)=>{const ok=qState.sel[qi]===q.ans;return`
+      <div class="result-item" style="border-left:3px solid ${ok?'#2D6A1F':'#8B2020'}">
         <div class="result-q">${qi+1}. ${q.q}</div>
-        ${!ok?`<div class="result-wrong">La tua risposta: ${q.opts[quizState.sel[qi]]}</div>`:''}
-        <div class="result-correct">✓ Risposta corretta: ${q.opts[q.ans]}</div>
-      </div>`;
-    }).join('')}`;
+        ${!ok?`<div class="result-wrong">La tua risposta: ${q.opts[qState.sel[qi]]}</div>`:''}
+        <div class="result-ok">✓ Risposta corretta: ${q.opts[q.ans]}</div>
+      </div>`;}).join('')}`;
   }
-  const allAnswered = Object.keys(quizState.sel).length >= qs.length;
+  const done=Object.keys(qState.sel).length>=qs.length;
   return `${qs.map((q,qi)=>`
     <div class="quiz-q">
-      <div class="quiz-q-text">${qi+1}. ${q.q}</div>
-      ${q.opts.map((opt,oi)=>`<button class="quiz-opt ${quizState.sel[qi]===oi?'selected':''}" onclick="selectOpt(${qi},${oi})">${opt}</button>`).join('')}
+      <div class="quiz-qt">${qi+1}. ${q.q}</div>
+      ${q.opts.map((o,oi)=>`<button class="quiz-opt ${qState.sel[qi]===oi?'sel':''}" onclick="pick(${qi},${oi})">${o}</button>`).join('')}
     </div>`).join('')}
-  <button class="quiz-submit" style="background:${allAnswered?'#1e293b':'#e5e7eb'};color:${allAnswered?'white':'#9ca3af'}" ${!allAnswered?'disabled':''} onclick="submitQuiz()">
-    ${allAnswered?'Invia risposte':'Rispondi a tutte le domande ('+Object.keys(quizState.sel).length+'/'+qs.length+')'}
+  <button class="quiz-btn" style="background:${done?'var(--navy)':'#E8E4DA'};color:${done?'var(--gold-light)':'#B0A898'}" ${!done?'disabled':''} onclick="submit()">
+    ${done?'Invia risposte':'Rispondi a tutte le domande ('+Object.keys(qState.sel).length+'/'+qs.length+')'}
   </button>`;
 }
-
-function selectOpt(qi,oi){
-  quizState.sel[qi]=oi;
-  draw();
+function pick(qi,oi){qState.sel[qi]=oi;draw();}
+function submit(){qState.done=true;draw();}
+function cp(btn,enc){
+  navigator.clipboard.writeText(decodeURIComponent(enc));
+  const o=btn.textContent;btn.textContent='COPIATO';btn.classList.add('ok');
+  setTimeout(()=>{btn.textContent=o;btn.classList.remove('ok');},2000);
 }
-function submitQuiz(){ quizState.done=true; draw(); }
-
-function copyText(btn,encoded){
-  const text = decodeURIComponent(encoded);
-  navigator.clipboard.writeText(text);
-  const orig = btn.textContent;
-  btn.textContent='✓ Copiato'; btn.style.background='#16a34a';
-  setTimeout(()=>{ btn.textContent=orig; btn.style.background='#1e40af'; },2000);
-}
-
-function navigate(dir){
-  cur = Math.max(0, Math.min(allSlides.length-1, cur+dir));
-  draw();
-}
-
-function jumpSlide(i){ cur=i; draw(); }
+function nav(d){cur=Math.max(0,Math.min(flat.length-1,cur+d));draw();}
+function jumpSlide(i){cur=i;draw();}
+function jumpMod(mi){cur=flat.findIndex(f=>f.mi===mi);draw();}
 
 function draw(){
-  const {data, modData, mod, slide} = allSlides[cur];
-  const acc = modData.accent;
-
-  // progress
-  document.getElementById('progress-fill').style.width = `${((cur+1)/allSlides.length)*100}%`;
-  document.getElementById('progress-fill').style.background = acc;
-  document.getElementById('slide-count').textContent = `${cur+1} / ${allSlides.length}`;
-
+  const {mi,si,s,m}=flat[cur];
+  // header
+  document.getElementById('hcount').textContent=`${cur+1} / ${flat.length}`;
+  document.getElementById('prog').style.width=`${((cur+1)/flat.length)*100}%`;
   // tabs
-  const tabsEl = document.getElementById('tabs');
-  tabsEl.innerHTML = MODULES.map((m,i)=>{
-    const active = mod===i;
-    return `<button class="tab-btn ${active?'active':''}" style="color:${active?m.accent:'#6b7280'};border-bottom-color:${active?m.accent:'transparent'}" onclick="jumpToMod(${i})">
-      <span class="tab-num" style="${active?'background:'+m.accent+';color:white':''}">${String(i+1).padStart(2,'0')}</span>${m.title}<span class="tab-dur">${m.duration}</span>
-    </button>`;
+  document.getElementById('tabs').innerHTML=MODS.map((mod,i)=>`
+    <button class="tab ${mi===i?'active':''}" onclick="jumpMod(${i})">
+      <span class="tab-num">${String(i+1).padStart(2,'0')}</span>${mod.title}<span class="tab-dur">${mod.dur}</span>
+    </button>`).join('');
+  // dots
+  const slides=flat.filter(f=>f.mi===mi);
+  document.getElementById('dots').innerHTML=slides.map((_,i)=>{
+    const absI=flat.findIndex(f=>f.mi===mi&&f.si===i);
+    return `<div onclick="jumpSlide(${absI})" style="height:5px;border-radius:2px;cursor:pointer;background:${si===i?'var(--gold)':'var(--border)'};width:${si===i?20:6}px;transition:all .2s"></div>`;
   }).join('');
-
-  // slide content
-  const slides = allSlides.filter(s=>s.mod===mod);
-  const slideContent = data.isQuiz ? renderQuiz() : data.render();
-  document.getElementById('slide-area').innerHTML = `
-    <div class="slide-title"><div class="title-bar" style="background:${acc}"></div><h2>${data.title}</h2></div>
-    ${slideContent}
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:1px solid #e2e8f0">
-      <div></div>
-      <div style="display:flex;gap:5px;align-items:center">
-        ${slides.map((_,i)=>{
-          const absI = allSlides.findIndex(s=>s.mod===mod&&s.slide===i);
-          return `<div onclick="jumpSlide(${absI})" style="height:6px;border-radius:3px;cursor:pointer;transition:all .2s;background:${slide===i?acc:'#d1d5db'};width:${slide===i?20:6}px"></div>`;
-        }).join('')}
-      </div>
-      <div></div>
-    </div>`;
-
-  // nav buttons
-  document.getElementById('btn-prev').disabled = cur===0;
-  document.getElementById('btn-next').disabled = cur===allSlides.length-1;
-  document.getElementById('btn-next').style.background = cur===allSlides.length-1?'#e2e8f0':acc;
-
+  // content
+  document.getElementById('area').innerHTML=`
+    <div class="slide-header"><div class="slide-bar"></div><h2>${s.title}</h2></div>
+    ${s.html()}
+    <div style="height:20px"></div>`;
+  // nav
+  document.getElementById('bprev').disabled=cur===0;
+  document.getElementById('bnext').disabled=cur===flat.length-1;
+  document.getElementById('bnext').style.opacity=cur===flat.length-1?.4:1;
   window.scrollTo(0,0);
 }
-
-function jumpToMod(mi){
-  cur = allSlides.findIndex(s=>s.mod===mi);
-  draw();
-}
-
 draw();
 </script>
 </body>
