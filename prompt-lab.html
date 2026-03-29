@@ -3,307 +3,575 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prompt Engineering Lab — Framework R-C-T-F</title>
+  <title>Prompt Engineering Lab — Corso AI per Docenti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --avorio:    #FAF8F3;
-      --blu:       #1a2744;
-      --blu-mid:   #243459;
-      --oro:       #8B6914;
-      --oro-light: #c49a28;
-      --testo:     #2c2c2c;
-      --bordo:     #d4c9a8;
-      --sfondo-card: #ffffff;
-      --ombra:     0 2px 16px rgba(26,39,68,.10);
+      --ink:       #0f1117;
+      --ink-mid:   #1c2030;
+      --gold:      #c9a84c;
+      --gold-pale: #e8cc80;
+      --cream:     #f5f0e6;
+      --cream-mid: #ede5d0;
+      --muted:     #8a8d99;
+      --border:    rgba(201,168,76,.22);
+      --white:     #ffffff;
+      --r-color:   #f0a070;
+      --c-color:   #70b8f0;
+      --t-color:   #70d0a0;
+      --f-color:   #c070e8;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      background-color: var(--avorio);
-      color: var(--testo);
-      font-family: 'Georgia', serif;
+      background-color: var(--ink);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
       min-height: 100vh;
-      padding: 0 0 60px;
+      overflow-x: hidden;
     }
 
-    /* ── HEADER ─────────────────────────────── */
-    header {
-      background-color: var(--blu);
-      color: #fff;
-      padding: 36px 40px 30px;
-      border-bottom: 4px solid var(--oro);
+    /* ═══ NAV ══════════════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(15,17,23,.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(201,168,76,.12);
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: .01em;
+    }
+    .nav-brand span { color: var(--cream); font-weight: 400; font-style: italic; }
+    .nav-link {
+      font-size: .82rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-link:hover { color: var(--gold); }
+    .nav-cta {
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: var(--gold);
+      padding: 9px 20px;
+      border-radius: 2px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: var(--gold-pale); transform: translateY(-1px); }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+
+    /* ═══ HERO ═════════════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
       position: relative;
       overflow: hidden;
     }
-    header::after {
+
+    /* geometric background */
+    .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 28px,
-        rgba(255,255,255,.025) 28px,
-        rgba(255,255,255,.025) 30px
-      );
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(112,184,240,.06) 0%, transparent 60%);
       pointer-events: none;
     }
-    .header-inner {
-      max-width: 860px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
     }
-    .header-badge {
-      display: inline-block;
-      background: var(--oro);
-      color: #fff;
-      font-family: 'Georgia', serif;
-      font-size: .72rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 2px;
-      margin-bottom: 14px;
-    }
-    header h1 {
-      font-size: 2rem;
-      font-weight: normal;
-      letter-spacing: .01em;
-      line-height: 1.25;
-      margin-bottom: 10px;
-    }
-    header h1 span { color: var(--oro-light); font-style: italic; }
-    header p {
-      font-size: .95rem;
-      color: #c5cfe8;
-      max-width: 620px;
-      line-height: 1.6;
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+      opacity: .4;
+      pointer-events: none;
     }
 
-    /* ── FRAMEWORK LEGEND ───────────────────── */
-    .legend-bar {
-      background: var(--blu-mid);
-      border-bottom: 2px solid var(--bordo);
-      padding: 16px 40px;
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.25);
+      padding: 6px 16px;
+      border-radius: 2px;
+      margin-bottom: 32px;
+      animation: fadeUp .6s ease both;
     }
-    .legend-inner {
+    .eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(.8); }
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--cream);
+      margin-bottom: 12px;
+      animation: fadeUp .6s .1s ease both;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-headline .line2 {
+      display: block;
+      color: var(--gold-pale);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 24px auto 40px;
+      font-weight: 300;
+      animation: fadeUp .6s .2s ease both;
+    }
+    .hero-sub strong { color: var(--cream); font-weight: 400; }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp .6s .3s ease both;
+    }
+    .btn-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      padding: 16px 32px;
+      border-radius: 2px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-hero-primary {
+      background: var(--gold);
+      color: var(--ink);
+    }
+    .btn-hero-primary:hover {
+      background: var(--gold-pale);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(201,168,76,.3);
+    }
+    .btn-hero-secondary {
+      background: transparent;
+      color: var(--cream);
+      border: 1px solid rgba(245,240,230,.2);
+    }
+    .btn-hero-secondary:hover {
+      border-color: rgba(245,240,230,.4);
+      background: rgba(245,240,230,.05);
+    }
+
+    /* stats row */
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 64px;
+      padding-top: 48px;
+      border-top: 1px solid rgba(201,168,76,.12);
+      animation: fadeUp .6s .4s ease both;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+      display: block;
+    }
+    .stat-divider {
+      width: 1px;
+      height: 40px;
+      background: rgba(201,168,76,.15);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══ FRAMEWORK STRIP ══════════════════════════════════════ */
+    .framework-strip {
+      background: var(--ink-mid);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 24px;
+    }
+    .framework-inner {
       max-width: 860px;
       margin: 0 auto;
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
       align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
-    .legend-label {
-      font-family: 'Georgia', serif;
-      font-size: .78rem;
-      color: #aab6d4;
-      letter-spacing: .08em;
+    .fw-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      margin-right: 6px;
+      color: var(--muted);
+      margin-right: 8px;
     }
-    .badge {
+    .fw-pill {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.15);
-      color: #fff;
-      border-radius: 4px;
-      padding: 5px 12px;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 2px;
       font-size: .82rem;
+      font-weight: 400;
+      border: 1px solid;
     }
-    .badge-letter {
-      font-size: 1rem;
-      font-weight: bold;
-      color: var(--oro-light);
-      font-family: 'Georgia', serif;
+    .fw-pill-r { background: rgba(240,160,112,.08); border-color: rgba(240,160,112,.25); color: var(--r-color); }
+    .fw-pill-c { background: rgba(112,184,240,.08); border-color: rgba(112,184,240,.25); color: var(--c-color); }
+    .fw-pill-t { background: rgba(112,208,160,.08); border-color: rgba(112,208,160,.25); color: var(--t-color); }
+    .fw-pill-f { background: rgba(192,112,232,.08); border-color: rgba(192,112,232,.25); color: var(--f-color); }
+    .fw-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .fw-arrow {
+      color: var(--muted);
+      font-size: .9rem;
     }
 
-    /* ── MAIN LAYOUT ────────────────────────── */
-    main {
-      max-width: 860px;
-      margin: 40px auto 0;
-      padding: 0 20px;
+    /* ═══ SECTION SHARED ═══════════════════════════════════════ */
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 860px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: .98rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 520px;
     }
 
-    /* ── STEP CARDS ─────────────────────────── */
+    /* ═══ HOW IT WORKS ═════════════════════════════════════════ */
+    .how-section { background: #13151e; }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2px;
+      margin-top: 48px;
+    }
+    .how-step {
+      background: var(--ink-mid);
+      padding: 32px 24px;
+      position: relative;
+      border: 1px solid rgba(201,168,76,.08);
+      transition: border-color .3s, background .3s;
+    }
+    .how-step:hover {
+      border-color: rgba(201,168,76,.2);
+      background: #1e2131;
+    }
+    .step-num-big {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 900;
+      color: rgba(201,168,76,.1);
+      line-height: 1;
+      margin-bottom: 12px;
+      transition: color .3s;
+    }
+    .how-step:hover .step-num-big { color: rgba(201,168,76,.2); }
+    .how-step h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .how-step p {
+      font-size: .83rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ═══ LAB TOOL ═════════════════════════════════════════════ */
+    #lab { background: var(--ink); }
+    .lab-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    /* STEP CARDS */
     .step-card {
-      background: var(--sfondo-card);
-      border: 1px solid var(--bordo);
-      border-radius: 6px;
-      margin-bottom: 24px;
-      box-shadow: var(--ombra);
+      background: var(--ink-mid);
+      border: 1px solid rgba(201,168,76,.12);
+      border-radius: 4px;
+      margin-bottom: 16px;
       overflow: hidden;
-      transition: box-shadow .2s;
+      transition: border-color .3s;
     }
     .step-card:focus-within {
-      box-shadow: 0 4px 24px rgba(26,39,68,.16);
+      border-color: rgba(201,168,76,.35);
+      box-shadow: 0 0 0 1px rgba(201,168,76,.1);
     }
     .step-header {
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 18px 24px 14px;
-      border-bottom: 1px solid var(--bordo);
-      background: #f5f2eb;
+      padding: 16px 24px 14px;
+      border-bottom: 1px solid rgba(201,168,76,.1);
+      background: rgba(0,0,0,.2);
     }
-    .step-number {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--blu);
-      color: var(--oro-light);
-      font-family: 'Georgia', serif;
-      font-size: 1.15rem;
-      font-weight: bold;
+    .step-letter {
+      width: 42px; height: 42px;
+      border-radius: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
       flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(26,39,68,.20);
     }
+    .step-letter-r { background: rgba(240,160,112,.12); color: var(--r-color); border: 1px solid rgba(240,160,112,.2); }
+    .step-letter-c { background: rgba(112,184,240,.12); color: var(--c-color); border: 1px solid rgba(112,184,240,.2); }
+    .step-letter-t { background: rgba(112,208,160,.12); color: var(--t-color); border: 1px solid rgba(112,208,160,.2); }
+    .step-letter-f { background: rgba(192,112,232,.12); color: var(--f-color); border: 1px solid rgba(192,112,232,.2); }
     .step-title-group { flex: 1 }
-    .step-label {
-      font-size: .7rem;
-      letter-spacing: .15em;
+    .step-label-tiny {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--oro);
-      font-family: 'Georgia', serif;
+      color: var(--muted);
       margin-bottom: 2px;
     }
     .step-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: var(--blu);
-      letter-spacing: .01em;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--cream);
     }
     .step-body { padding: 20px 24px; }
     .step-hint {
-      font-size: .84rem;
-      color: #7a7060;
-      margin-bottom: 12px;
-      line-height: 1.55;
-      font-style: italic;
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+      line-height: 1.6;
     }
-    .step-examples {
+    .step-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .chip {
-      font-size: .75rem;
-      background: #eee9dc;
-      border: 1px solid #d4c9a8;
-      color: #5a5040;
-      border-radius: 3px;
-      padding: 3px 9px;
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      background: rgba(201,168,76,.07);
+      border: 1px solid rgba(201,168,76,.18);
+      color: var(--gold);
+      border-radius: 2px;
+      padding: 4px 10px;
       cursor: pointer;
-      transition: background .15s, border-color .15s;
-      font-family: 'Georgia', serif;
+      transition: background .15s, border-color .15s, color .15s;
+      letter-spacing: .02em;
     }
     .chip:hover {
-      background: var(--blu);
-      color: #fff;
-      border-color: var(--blu);
+      background: var(--gold);
+      color: var(--ink);
+      border-color: var(--gold);
     }
     textarea, input[type="text"], select {
       width: 100%;
-      font-family: 'Georgia', serif;
-      font-size: .93rem;
-      color: var(--testo);
-      background: #fdfcf8;
-      border: 1px solid #ccc5a8;
-      border-radius: 4px;
-      padding: 10px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 300;
+      color: var(--cream);
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(201,168,76,.15);
+      border-radius: 2px;
+      padding: 12px 16px;
       resize: vertical;
       outline: none;
       transition: border-color .2s, box-shadow .2s;
-      line-height: 1.6;
+      line-height: 1.65;
     }
-    textarea:focus, input[type="text"]:focus, select:focus {
-      border-color: var(--blu);
-      box-shadow: 0 0 0 3px rgba(26,39,68,.10);
+    textarea::placeholder, input::placeholder { color: rgba(138,141,153,.5); }
+    textarea:focus, input:focus, select:focus {
+      border-color: rgba(201,168,76,.45);
+      box-shadow: 0 0 0 3px rgba(201,168,76,.06);
     }
     textarea { min-height: 88px; }
+    select option { background: #1c2030; color: var(--cream); }
     .char-count {
       text-align: right;
-      font-size: .73rem;
-      color: #aaa;
-      margin-top: 4px;
+      font-size: .68rem;
+      color: var(--muted);
+      margin-top: 5px;
+      font-family: 'DM Mono', monospace;
     }
 
-    /* ── OPTIONS ROW ────────────────────────── */
+    /* options row */
     .options-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
+      margin-bottom: 16px;
     }
-    @media (max-width: 560px) { .options-row { grid-template-columns: 1fr; } }
+    @media (max-width: 540px) { .options-row { grid-template-columns: 1fr; } }
     .option-group label {
       display: block;
-      font-size: .8rem;
-      letter-spacing: .06em;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .15em;
       text-transform: uppercase;
-      color: var(--oro);
-      margin-bottom: 6px;
-    }
-    select {
-      resize: none;
+      color: var(--muted);
+      margin-bottom: 7px;
     }
 
-    /* ── ACTION BUTTONS ─────────────────────── */
+    /* action row */
     .actions {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin: 10px 0 32px;
+      margin: 20px 0 36px;
     }
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-family: 'Georgia', serif;
-      font-size: .9rem;
-      padding: 12px 26px;
-      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .88rem;
+      font-weight: 500;
+      padding: 13px 28px;
+      border-radius: 2px;
       border: none;
       cursor: pointer;
       transition: all .2s;
       letter-spacing: .02em;
     }
     .btn-primary {
-      background: var(--blu);
-      color: #fff;
-      border: 2px solid var(--blu);
+      background: var(--gold);
+      color: var(--ink);
     }
-    .btn-primary:hover { background: var(--blu-mid); }
+    .btn-primary:hover {
+      background: var(--gold-pale);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(201,168,76,.3);
+    }
     .btn-secondary {
       background: transparent;
-      color: var(--blu);
-      border: 2px solid var(--blu);
+      color: var(--cream);
+      border: 1px solid rgba(245,240,230,.2);
     }
-    .btn-secondary:hover { background: #eef0f6; }
+    .btn-secondary:hover {
+      border-color: rgba(245,240,230,.4);
+      background: rgba(245,240,230,.05);
+    }
     .btn-ghost {
       background: transparent;
-      color: #888;
-      border: 2px solid #ccc;
-      font-size: .85rem;
-      padding: 10px 18px;
+      color: var(--muted);
+      border: 1px solid rgba(138,141,153,.25);
+      font-size: .82rem;
+      padding: 11px 20px;
     }
-    .btn-ghost:hover { border-color: #999; color: #555; }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
 
-    /* ── OUTPUT ─────────────────────────────── */
+    /* ═══ OUTPUT ═══════════════════════════════════════════════ */
     .output-section {
-      background: var(--blu);
-      border-radius: 6px;
-      padding: 28px 28px 24px;
-      margin-bottom: 32px;
+      background: var(--ink-mid);
+      border: 1px solid rgba(201,168,76,.2);
+      border-radius: 4px;
+      padding: 28px;
+      margin-bottom: 36px;
       display: none;
-      box-shadow: 0 4px 24px rgba(26,39,68,.22);
       position: relative;
       overflow: hidden;
     }
@@ -311,296 +579,468 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--oro), var(--oro-light), var(--oro));
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-pale), var(--gold));
     }
-    .output-section.visible { display: block; animation: fadeIn .35s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .output-section.visible { display: block; animation: fadeUp .35s ease both; }
     .output-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
     .output-title {
-      font-family: 'Georgia', serif;
-      font-size: 1rem;
-      color: var(--oro-light);
-      letter-spacing: .08em;
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      color: var(--gold);
+      letter-spacing: .18em;
       text-transform: uppercase;
     }
     .btn-copy {
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.25);
-      color: #fff;
-      border-radius: 4px;
-      padding: 7px 16px;
-      font-size: .8rem;
+      background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.25);
+      color: var(--gold);
+      border-radius: 2px;
+      padding: 8px 18px;
+      font-size: .75rem;
       cursor: pointer;
-      font-family: 'Georgia', serif;
+      font-family: 'DM Mono', monospace;
       transition: background .2s;
-      letter-spacing: .04em;
+      letter-spacing: .08em;
     }
-    .btn-copy:hover { background: rgba(255,255,255,.22); }
-    .btn-copy.copied { background: rgba(139,105,20,.5); border-color: var(--oro-light); }
+    .btn-copy:hover { background: rgba(201,168,76,.2); }
+    .btn-copy.copied { background: rgba(112,208,160,.15); border-color: rgba(112,208,160,.3); color: var(--t-color); }
     #promptOutput {
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 4px;
-      padding: 18px;
-      color: #dce5f5;
-      font-size: .92rem;
-      line-height: 1.75;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(201,168,76,.1);
+      border-radius: 2px;
+      padding: 20px;
+      color: rgba(245,240,230,.85);
+      font-family: 'DM Mono', monospace;
+      font-size: .83rem;
+      line-height: 1.85;
       white-space: pre-wrap;
       word-break: break-word;
-      font-family: 'Georgia', serif;
       min-height: 80px;
     }
-    .output-segments { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .output-segments {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      align-items: center;
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+    }
     .seg-badge {
-      font-size: .72rem;
+      font-size: .65rem;
       padding: 3px 10px;
-      border-radius: 3px;
-      letter-spacing: .06em;
+      border-radius: 2px;
+      letter-spacing: .08em;
     }
-    .seg-R { background: rgba(139,105,20,.3); color: #f0c96a; }
-    .seg-C { background: rgba(60,100,180,.3); color: #9fc4f8; }
-    .seg-T { background: rgba(60,160,100,.3); color: #8fdbb0; }
-    .seg-F { background: rgba(180,60,60,.3); color: #f8a0a0; }
+    .seg-R { background: rgba(240,160,112,.15); color: var(--r-color); border: 1px solid rgba(240,160,112,.2); }
+    .seg-C { background: rgba(112,184,240,.15); color: var(--c-color); border: 1px solid rgba(112,184,240,.2); }
+    .seg-T { background: rgba(112,208,160,.15); color: var(--t-color); border: 1px solid rgba(112,208,160,.2); }
+    .seg-F { background: rgba(192,112,232,.15); color: var(--f-color); border: 1px solid rgba(192,112,232,.2); }
 
-    /* ── TIPS ───────────────────────────────── */
-    .tips-box {
-      border-left: 4px solid var(--oro);
-      background: #f5f0e2;
-      padding: 16px 20px;
-      border-radius: 0 4px 4px 0;
-      margin-bottom: 32px;
+    /* ═══ TIPS ═════════════════════════════════════════════════ */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
     }
-    .tips-box h3 {
-      font-size: .8rem;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: var(--oro);
+    .tip-card {
+      background: var(--ink-mid);
+      border: 1px solid rgba(201,168,76,.1);
+      border-radius: 4px;
+      padding: 20px;
+      transition: border-color .3s, transform .2s;
+    }
+    .tip-card:hover {
+      border-color: rgba(201,168,76,.25);
+      transform: translateY(-2px);
+    }
+    .tip-icon {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .tip-card h4 {
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .tip-card p {
+      font-size: .78rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ═══ FOOTER ════════════════════════════════════════════════ */
+    footer {
+      background: #090b10;
+      border-top: 1px solid rgba(201,168,76,.1);
+      padding: 36px 24px;
+      text-align: center;
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--gold);
       margin-bottom: 10px;
     }
-    .tips-box ul {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px 20px;
+    .footer-meta {
+      font-size: .75rem;
+      color: var(--muted);
     }
-    @media (max-width: 560px) { .tips-box ul { grid-template-columns: 1fr; } }
-    .tips-box li {
-      font-size: .84rem;
-      color: #5a5040;
-      line-height: 1.5;
-      padding-left: 14px;
-      position: relative;
-    }
-    .tips-box li::before {
-      content: '✦';
+    .footer-meta a { color: var(--gold); text-decoration: none; }
+    .footer-meta a:hover { color: var(--gold-pale); }
+
+    /* ═══ SCROLL INDICATOR ══════════════════════════════════════ */
+    .scroll-cue {
       position: absolute;
-      left: 0;
-      color: var(--oro);
-      font-size: .65rem;
-      top: 3px;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      animation: fadeUp 1s .8s ease both;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: .4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
     }
 
-    /* ── FOOTER ─────────────────────────────── */
-    footer {
-      text-align: center;
-      color: #aaa4;
-      font-size: .78rem;
-      padding-top: 24px;
-      border-top: 1px solid var(--bordo);
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 16px 20px;
+    /* responsive nav */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-link { display: none; }
     }
-    footer span { color: var(--oro); }
+    @media (max-width: 480px) {
+      .hero-stats { gap: 24px; }
+      .stat-divider { display: none; }
+    }
   </style>
 </head>
 <body>
 
-<!-- ═══ HEADER ═══════════════════════════════════════════════════════ -->
-<header>
-  <div class="header-inner">
-    <div class="header-badge">Corso AI per Docenti</div>
-    <h1>Prompt Engineering Lab<br><span>Framework R · C · T · F</span></h1>
-    <p>Costruisci prompt efficaci compilando le quattro componenti del framework. Il prompt finale viene assemblato automaticamente, pronto da copiare.</p>
+<!-- ═══ NAV ═══════════════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-brand">PELab <span>R·C·T·F</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="#come-funziona">Come funziona</a>
+    <a class="nav-link" href="#lab">Il Lab</a>
+    <a class="nav-cta" href="#lab">→ Inizia ora</a>
   </div>
-</header>
+</nav>
 
-<!-- ═══ LEGEND BAR ════════════════════════════════════════════════════ -->
-<div class="legend-bar">
-  <div class="legend-inner">
-    <span class="legend-label">Framework:</span>
-    <span class="badge"><span class="badge-letter">R</span> Role — Ruolo</span>
-    <span class="badge"><span class="badge-letter">C</span> Context — Contesto</span>
-    <span class="badge"><span class="badge-letter">T</span> Task — Compito</span>
-    <span class="badge"><span class="badge-letter">F</span> Format — Formato</span>
+<!-- ═══ HERO ═══════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      Corso AI per Docenti · Framework R-C-T-F
+    </div>
+
+    <h1 class="hero-headline">
+      La differenza tra un prompt<br>
+      <span class="line2">e un buon prompt? Un metodo.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Il <strong>Prompt Engineering Lab</strong> ti guida passo dopo passo nel costruire
+      prompt professionali con il metodo R·C·T·F — il framework
+      che trasforma istruzioni vaghe in risposte precise, utili, pronte da usare in classe.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn-hero btn-hero-primary" href="#lab">✦ Prova il Lab</a>
+      <a class="btn-hero btn-hero-secondary" href="#come-funziona">Come funziona →</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Componenti</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">∞</span>
+        <span class="stat-label">Combinazioni</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">1×</span>
+        <span class="stat-label">Click per copiare</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">0€</span>
+        <span class="stat-label">Gratuito</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    Scorri
+  </div>
+</section>
+
+<!-- ═══ FRAMEWORK STRIP ════════════════════════════════════════════════ -->
+<div class="framework-strip">
+  <div class="framework-inner">
+    <span class="fw-label">Il metodo:</span>
+    <span class="fw-pill fw-pill-r"><span class="fw-letter">R</span> Role — Ruolo</span>
+    <span class="fw-arrow">→</span>
+    <span class="fw-pill fw-pill-c"><span class="fw-letter">C</span> Context — Contesto</span>
+    <span class="fw-arrow">→</span>
+    <span class="fw-pill fw-pill-t"><span class="fw-letter">T</span> Task — Compito</span>
+    <span class="fw-arrow">→</span>
+    <span class="fw-pill fw-pill-f"><span class="fw-letter">F</span> Format — Formato</span>
   </div>
 </div>
 
-<!-- ═══ MAIN ══════════════════════════════════════════════════════════ -->
-<main>
+<!-- ═══ HOW IT WORKS ════════════════════════════════════════════════════ -->
+<section class="how-section" id="come-funziona">
+  <div class="section-inner">
+    <span class="section-eyebrow">// Come funziona</span>
+    <h2 class="section-title">Quattro componenti.<br>Un prompt perfetto.</h2>
+    <p class="section-sub">Il framework R·C·T·F scompone ogni buona istruzione nelle sue parti essenziali. Compila una sola, o tutte e quattro: il lab costruisce il prompt per te.</p>
 
-  <!-- ── R: ROLE ── -->
-  <div class="step-card">
-    <div class="step-header">
-      <div class="step-number">R</div>
-      <div class="step-title-group">
-        <div class="step-label">Componente 1 · Role</div>
-        <div class="step-title">Ruolo — Chi deve essere l'AI?</div>
+    <div class="steps-grid">
+      <div class="how-step">
+        <div class="step-num-big" style="color: rgba(240,160,112,.15)">R</div>
+        <h3 style="color: var(--r-color)">Role — Ruolo</h3>
+        <p>Dai all'AI un'identità precisa. "Sei un esperto docente di matematica" attiva conoscenze e tono completamente diversi da una richiesta anonima.</p>
       </div>
-    </div>
-    <div class="step-body">
-      <p class="step-hint">Assegna all'AI un'identità o un'expertise specifica. Un ruolo preciso attiva conoscenze e tono adeguati al contesto.</p>
-      <div class="step-examples">
-        <span class="chip" onclick="appendChip('role','Sei un esperto docente di matematica con 20 anni di esperienza nella scuola secondaria.')">Docente di matematica</span>
-        <span class="chip" onclick="appendChip('role','Sei un tutor specializzato nel supporto agli studenti con DSA.')">Tutor DSA</span>
-        <span class="chip" onclick="appendChip('role','Sei un assistente didattico esperto in progettazione UDA per la scuola italiana.')">Progettista UDA</span>
-        <span class="chip" onclick="appendChip('role','Sei uno storico dell\'arte che spiega con semplicità a ragazzi delle medie.')">Storico dell'arte</span>
-        <span class="chip" onclick="appendChip('role','Sei un valutatore scolastico esperto nella costruzione di rubriche per competenze.')">Valutatore</span>
+      <div class="how-step">
+        <div class="step-num-big" style="color: rgba(112,184,240,.15)">C</div>
+        <h3 style="color: var(--c-color)">Context — Contesto</h3>
+        <p>Descrivi la situazione: classe, livello, vincoli, risorse. Più contesto fornisci, più la risposta sarà calibrata sulla tua realtà.</p>
       </div>
-      <textarea id="role" placeholder="Es. Sei un docente esperto di lettere che insegna al liceo classico…" rows="3" oninput="updateCount('role')"></textarea>
-      <div class="char-count"><span id="role-count">0</span> caratteri</div>
+      <div class="how-step">
+        <div class="step-num-big" style="color: rgba(112,208,160,.15)">T</div>
+        <h3 style="color: var(--t-color)">Task — Compito</h3>
+        <p>Dì esattamente cosa deve fare: crea, analizza, riscrivi, genera. Verbi precisi eliminano l'ambiguità e producono output azionabili.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num-big" style="color: rgba(192,112,232,.15)">F</div>
+        <h3 style="color: var(--f-color)">Format — Formato</h3>
+        <p>Specifica struttura, lunghezza e stile. Un formato definito trasforma la risposta dell'AI in qualcosa di immediatamente utilizzabile.</p>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- ── C: CONTEXT ── -->
-  <div class="step-card">
-    <div class="step-header">
-      <div class="step-number">C</div>
-      <div class="step-title-group">
-        <div class="step-label">Componente 2 · Context</div>
-        <div class="step-title">Contesto — Qual è la situazione?</div>
-      </div>
-    </div>
-    <div class="step-body">
-      <p class="step-hint">Fornisci le informazioni di sfondo necessarie: classe, livello, vincoli, materiali disponibili. Più contesto = risposte più calibrate.</p>
-      <div class="step-examples">
-        <span class="chip" onclick="appendChip('context','Sto preparando una lezione per una classe 3ª media (28 alunni, livello eterogeneo).')">Classe 3ª media</span>
-        <span class="chip" onclick="appendChip('context','Ho a disposizione 2 ore di lezione e una LIM in aula.')">2 ore + LIM</span>
-        <span class="chip" onclick="appendChip('context','Gli studenti non hanno conoscenze pregresse sull\'argomento.')">Nessuna conoscenza pregressa</span>
-        <span class="chip" onclick="appendChip('context','Il testo di riferimento è il capitolo 5 del manuale adottato.')">Testo cap. 5</span>
-        <span class="chip" onclick="appendChip('context','La classe include 3 studenti con BES e 1 con DSA (dislessia).')">Classe inclusiva</span>
-      </div>
-      <textarea id="context" placeholder="Es. Sto preparando una verifica per una 4ª liceo scientifico. Gli studenti hanno studiato…" rows="3" oninput="updateCount('context')"></textarea>
-      <div class="char-count"><span id="context-count">0</span> caratteri</div>
-    </div>
-  </div>
+<!-- ═══ THE LAB ══════════════════════════════════════════════════════════ -->
+<section id="lab">
+  <div class="section-inner">
 
-  <!-- ── T: TASK ── -->
-  <div class="step-card">
-    <div class="step-header">
-      <div class="step-number">T</div>
-      <div class="step-title-group">
-        <div class="step-label">Componente 3 · Task</div>
-        <div class="step-title">Compito — Cosa deve fare esattamente?</div>
-      </div>
+    <div class="lab-header">
+      <span class="section-eyebrow">// Prompt Engineering Lab</span>
+      <h2 class="section-title">Costruisci il tuo prompt.</h2>
+      <p class="section-sub" style="margin: 0 auto;">Compila le componenti che vuoi usare — anche solo una — poi clicca <em>Genera il Prompt</em>. Il testo è pronto da copiare e incollare in qualunque AI.</p>
     </div>
-    <div class="step-body">
-      <p class="step-hint">Descrivi il compito con precisione. Usa verbi d'azione concreti (crea, analizza, riscrivi, genera, correggi…). Evita richieste vaghe.</p>
-      <div class="step-examples">
-        <span class="chip" onclick="appendChip('task','Crea un piano di lezione dettagliato con obiettivi, attività e tempi.')">Piano di lezione</span>
-        <span class="chip" onclick="appendChip('task','Genera 10 domande aperte a difficoltà crescente sull\'argomento.')">10 domande</span>
-        <span class="chip" onclick="appendChip('task','Riscrivi questo testo con un linguaggio più semplice, adatto a studenti di 13 anni.')">Semplifica testo</span>
-        <span class="chip" onclick="appendChip('task','Crea una rubrica di valutazione con 4 livelli di competenza.')">Rubrica valutazione</span>
-        <span class="chip" onclick="appendChip('task','Proponi 3 attività cooperative da svolgere in classe a gruppi di 4.')">Attività cooperative</span>
-        <span class="chip" onclick="appendChip('task','Analizza i punti di forza e le criticità di questo compito assegnato.')">Analisi compito</span>
-      </div>
-      <textarea id="task" placeholder="Es. Genera una serie di esercizi graduati su… / Scrivi una spiegazione semplice di…" rows="3" oninput="updateCount('task')"></textarea>
-      <div class="char-count"><span id="task-count">0</span> caratteri</div>
-    </div>
-  </div>
 
-  <!-- ── F: FORMAT ── -->
-  <div class="step-card">
-    <div class="step-header">
-      <div class="step-number">F</div>
-      <div class="step-title-group">
-        <div class="step-label">Componente 4 · Format</div>
-        <div class="step-title">Formato — Come deve essere strutturata la risposta?</div>
-      </div>
-    </div>
-    <div class="step-body">
-      <p class="step-hint">Specifica lunghezza, struttura, stile. Il formato guida l'AI verso output immediatamente utilizzabili.</p>
-
-      <div class="options-row" style="margin-bottom:14px;">
-        <div class="option-group">
-          <label>Tipo di output</label>
-          <select id="formatType" onchange="updateFormatPreset()">
-            <option value="">— Scegli un tipo —</option>
-            <option value="elenco puntato">Elenco puntato</option>
-            <option value="testo continuo (paragrafi)">Testo continuo (paragrafi)</option>
-            <option value="tabella">Tabella</option>
-            <option value="schema numerato">Schema numerato</option>
-            <option value="dialogo / conversazione">Dialogo / Conversazione</option>
-            <option value="scheda strutturata con titoli">Scheda strutturata con titoli</option>
-            <option value="codice / snippet">Codice / Snippet</option>
-          </select>
-        </div>
-        <div class="option-group">
-          <label>Lunghezza indicativa</label>
-          <select id="formatLength" onchange="updateFormatPreset()">
-            <option value="">— Scegli la lunghezza —</option>
-            <option value="breve (max 150 parole)">Breve (max 150 parole)</option>
-            <option value="media (300-500 parole)">Media (300–500 parole)</option>
-            <option value="dettagliata (oltre 500 parole)">Dettagliata (oltre 500 parole)</option>
-            <option value="sintetica (max 5 righe)">Sintetica (max 5 righe)</option>
-          </select>
+    <!-- R -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-letter step-letter-r">R</div>
+        <div class="step-title-group">
+          <div class="step-label-tiny">Componente 1 · Role</div>
+          <div class="step-title">Ruolo — Chi deve essere l'AI?</div>
         </div>
       </div>
-
-      <div class="step-examples">
-        <span class="chip" onclick="appendChip('format','Rispondi solo in italiano. Usa un tono professionale ma accessibile.')">Italiano professionale</span>
-        <span class="chip" onclick="appendChip('format','Usa linguaggio semplice, adatto a ragazzi di 11-13 anni.')">Linguaggio per ragazzi</span>
-        <span class="chip" onclick="appendChip('format','Includi esempi concreti per ciascun punto.')">Con esempi concreti</span>
-        <span class="chip" onclick="appendChip('format','Non includere introduzioni o conclusioni generiche, vai dritto al contenuto.')">Solo contenuto</span>
+      <div class="step-body">
+        <p class="step-hint">Assegna all'AI un'identità o expertise specifica. Un ruolo preciso attiva conoscenze e tono adeguati al contesto.</p>
+        <div class="step-chips">
+          <span class="chip" onclick="appendChip('role','Sei un esperto docente di matematica con 20 anni di esperienza nella scuola secondaria.')">Docente matematica</span>
+          <span class="chip" onclick="appendChip('role','Sei un tutor specializzato nel supporto agli studenti con DSA.')">Tutor DSA</span>
+          <span class="chip" onclick="appendChip('role','Sei un assistente didattico esperto in progettazione UDA per la scuola italiana.')">Progettista UDA</span>
+          <span class="chip" onclick="appendChip('role','Sei uno storico dell\'arte che spiega con semplicità a ragazzi delle medie.')">Storico dell'arte</span>
+          <span class="chip" onclick="appendChip('role','Sei un valutatore scolastico esperto nella costruzione di rubriche per competenze.')">Valutatore</span>
+        </div>
+        <textarea id="role" placeholder="Es. Sei un docente esperto di lettere che insegna al liceo classico…" rows="3" oninput="updateCount('role')"></textarea>
+        <div class="char-count"><span id="role-count">0</span> car.</div>
       </div>
-
-      <textarea id="format" placeholder="Es. Rispondimi in italiano con un elenco numerato. Ogni punto max 2 righe. Tono formale ma accessibile…" rows="3" oninput="updateCount('format')"></textarea>
-      <div class="char-count"><span id="format-count">0</span> caratteri</div>
     </div>
-  </div>
 
-  <!-- ── ACTIONS ── -->
-  <div class="actions">
-    <button class="btn btn-primary" onclick="generatePrompt()">✦ Genera il Prompt</button>
-    <button class="btn btn-secondary" onclick="resetForm()">↺ Ricomincia</button>
-    <button class="btn btn-ghost" onclick="loadExample()">⊕ Carica esempio</button>
-  </div>
-
-  <!-- ── OUTPUT ── -->
-  <div class="output-section" id="outputSection">
-    <div class="output-header">
-      <span class="output-title">✦ Prompt Generato</span>
-      <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">Copia negli appunti</button>
+    <!-- C -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-letter step-letter-c">C</div>
+        <div class="step-title-group">
+          <div class="step-label-tiny">Componente 2 · Context</div>
+          <div class="step-title">Contesto — Qual è la situazione?</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-hint">Fornisci le informazioni di sfondo: classe, livello, vincoli, materiali. Più contesto = risposte più calibrate.</p>
+        <div class="step-chips">
+          <span class="chip" onclick="appendChip('context','Sto preparando una lezione per una classe 3ª media (28 alunni, livello eterogeneo).')">3ª media eterogenea</span>
+          <span class="chip" onclick="appendChip('context','Ho a disposizione 2 ore di lezione e una LIM in aula.')">2 ore + LIM</span>
+          <span class="chip" onclick="appendChip('context','Gli studenti non hanno conoscenze pregresse sull\'argomento.')">Nessuna conoscenza pregressa</span>
+          <span class="chip" onclick="appendChip('context','La classe include 3 studenti con BES e 1 con DSA (dislessia).')">Classe inclusiva</span>
+        </div>
+        <textarea id="context" placeholder="Es. Sto preparando una verifica per una 4ª liceo scientifico. Gli studenti hanno studiato…" rows="3" oninput="updateCount('context')"></textarea>
+        <div class="char-count"><span id="context-count">0</span> car.</div>
+      </div>
     </div>
-    <div id="promptOutput"></div>
-    <div class="output-segments" id="segBadges"></div>
+
+    <!-- T -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-letter step-letter-t">T</div>
+        <div class="step-title-group">
+          <div class="step-label-tiny">Componente 3 · Task</div>
+          <div class="step-title">Compito — Cosa deve fare esattamente?</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-hint">Descrivi il compito con precisione. Usa verbi d'azione concreti — crea, analizza, riscrivi, genera, correggi. Evita richieste vaghe.</p>
+        <div class="step-chips">
+          <span class="chip" onclick="appendChip('task','Crea un piano di lezione dettagliato con obiettivi, attività e tempi.')">Piano di lezione</span>
+          <span class="chip" onclick="appendChip('task','Genera 10 domande aperte a difficoltà crescente sull\'argomento.')">10 domande</span>
+          <span class="chip" onclick="appendChip('task','Riscrivi questo testo con un linguaggio più semplice, adatto a studenti di 13 anni.')">Semplifica testo</span>
+          <span class="chip" onclick="appendChip('task','Crea una rubrica di valutazione con 4 livelli di competenza.')">Rubrica valutazione</span>
+          <span class="chip" onclick="appendChip('task','Proponi 3 attività cooperative da svolgere in classe a gruppi di 4.')">Attività cooperative</span>
+          <span class="chip" onclick="appendChip('task','Analizza i punti di forza e le criticità di questo compito assegnato.')">Analisi compito</span>
+        </div>
+        <textarea id="task" placeholder="Es. Genera una serie di esercizi graduati su… / Scrivi una spiegazione semplice di…" rows="3" oninput="updateCount('task')"></textarea>
+        <div class="char-count"><span id="task-count">0</span> car.</div>
+      </div>
+    </div>
+
+    <!-- F -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-letter step-letter-f">F</div>
+        <div class="step-title-group">
+          <div class="step-label-tiny">Componente 4 · Format</div>
+          <div class="step-title">Formato — Come deve essere strutturata la risposta?</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-hint">Specifica lunghezza, struttura, stile. Il formato guida l'AI verso output immediatamente utilizzabili.</p>
+        <div class="options-row">
+          <div class="option-group">
+            <label>Tipo di output</label>
+            <select id="formatType" onchange="updateFormatPreset()">
+              <option value="">— Scegli un tipo —</option>
+              <option value="elenco puntato">Elenco puntato</option>
+              <option value="testo continuo (paragrafi)">Testo continuo (paragrafi)</option>
+              <option value="tabella">Tabella</option>
+              <option value="schema numerato">Schema numerato</option>
+              <option value="dialogo / conversazione">Dialogo / Conversazione</option>
+              <option value="scheda strutturata con titoli">Scheda strutturata con titoli</option>
+            </select>
+          </div>
+          <div class="option-group">
+            <label>Lunghezza indicativa</label>
+            <select id="formatLength" onchange="updateFormatPreset()">
+              <option value="">— Scegli la lunghezza —</option>
+              <option value="breve (max 150 parole)">Breve (max 150 parole)</option>
+              <option value="media (300-500 parole)">Media (300–500 parole)</option>
+              <option value="dettagliata (oltre 500 parole)">Dettagliata (oltre 500 parole)</option>
+              <option value="sintetica (max 5 righe)">Sintetica (max 5 righe)</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-chips">
+          <span class="chip" onclick="appendChip('format','Rispondi solo in italiano. Usa un tono professionale ma accessibile.')">Italiano professionale</span>
+          <span class="chip" onclick="appendChip('format','Usa linguaggio semplice, adatto a ragazzi di 11-13 anni.')">Linguaggio per ragazzi</span>
+          <span class="chip" onclick="appendChip('format','Includi esempi concreti per ciascun punto.')">Con esempi concreti</span>
+          <span class="chip" onclick="appendChip('format','Non includere introduzioni o conclusioni generiche, vai dritto al contenuto.')">Solo contenuto</span>
+        </div>
+        <textarea id="format" placeholder="Es. Rispondimi in italiano con un elenco numerato. Ogni punto max 2 righe. Tono formale ma accessibile…" rows="3" oninput="updateCount('format')"></textarea>
+        <div class="char-count"><span id="format-count">0</span> car.</div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button class="btn btn-primary" onclick="generatePrompt()">✦ Genera il Prompt</button>
+      <button class="btn btn-secondary" onclick="resetForm()">↺ Ricomincia</button>
+      <button class="btn btn-ghost" onclick="loadExample()">⊕ Carica esempio</button>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="output-section" id="outputSection">
+      <div class="output-header">
+        <span class="output-title">✦ Prompt Generato</span>
+        <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">Copia negli appunti</button>
+      </div>
+      <div id="promptOutput"></div>
+      <div class="output-segments" id="segBadges"></div>
+    </div>
+
+    <!-- TIPS -->
+    <span class="section-eyebrow" style="margin-top:48px; display:block;">// Consigli per prompt efficaci</span>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <span class="tip-icon">🎯</span>
+        <h4>Materia e livello</h4>
+        <p>Specifica sempre la disciplina e il grado scolastico nel Contesto. Cambia radicalmente la qualità della risposta.</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-icon">🎭</span>
+        <h4>Usa sempre il Ruolo</h4>
+        <p>Il Ruolo attiva conoscenze specialistiche. Non saltarlo mai, anche se la richiesta sembra semplice.</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-icon">⚡</span>
+        <h4>Verbi d'azione</h4>
+        <p>Nel Task usa: <em>crea, genera, analizza, riscrivi, elenca</em>. I verbi precisi eliminano l'ambiguità.</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-icon">📐</span>
+        <h4>Vincoli pratici</h4>
+        <p>Aggiungi limiti concreti: "max 200 parole", "in 5 punti", "senza introduzione". Il Formato è tuo alleato.</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-icon">🔬</span>
+        <h4>Itera e raffina</h4>
+        <p>Il prompt generato è un punto di partenza. Modificalo, testalo, miglioralo. Il perfezionamento è parte del processo.</p>
+      </div>
+      <div class="tip-card">
+        <span class="tip-icon">📊</span>
+        <h4>Output tabellari</h4>
+        <p>Se vuoi una tabella, specifica le colonne esatte che ti servono nel campo Formato. Risultati molto più precisi.</p>
+      </div>
+    </div>
+
   </div>
+</section>
 
-  <!-- ── TIPS ── -->
-  <div class="tips-box">
-    <h3>✦ Consigli per prompt efficaci</h3>
-    <ul>
-      <li>Specifica sempre la materia e il livello scolastico nel Contesto</li>
-      <li>Il Ruolo attiva conoscenze specialistiche: usalo sempre</li>
-      <li>Verbi precisi nel Task: <em>crea, genera, analizza, riscrivi, elenca</em></li>
-      <li>Il Formato evita risposte troppo generiche o troppo lunghe</li>
-      <li>Aggiungi vincoli pratici: "max 200 parole", "in 5 punti"</li>
-      <li>Indica se vuoi esempi concreti o solo struttura teorica</li>
-      <li>Per output tabellari, specifica le colonne che ti servono</li>
-      <li>Puoi usare il prompt generato come punto di partenza e raffinarlo</li>
-    </ul>
-  </div>
-
-</main>
-
+<!-- ═══ FOOTER ══════════════════════════════════════════════════════════ -->
 <footer>
-  <p>Prompt Engineering Lab &nbsp;·&nbsp; <span>Framework R-C-T-F</span> &nbsp;·&nbsp; Corso AI per Docenti &nbsp;·&nbsp; <a href="https://la-prof.github.io/CORSO-AI/" style="color:var(--oro);text-decoration:none;">la-prof.github.io/CORSO-AI</a></p>
+  <div class="footer-brand">Prompt Engineering Lab · R·C·T·F</div>
+  <p class="footer-meta">
+    Corso AI per Docenti &nbsp;·&nbsp;
+    <a href="https://la-prof.github.io/CORSO-AI/" target="_blank">la-prof.github.io/CORSO-AI</a>
+  </p>
 </footer>
 
 <script>
@@ -611,10 +1051,8 @@
 
   function appendChip(id, text) {
     const el = document.getElementById(id);
-    if (el.value.trim() && !el.value.trim().endsWith('.')) {
-      el.value += ' ' + text;
-    } else if (el.value.trim()) {
-      el.value += ' ' + text;
+    if (el.value.trim()) {
+      el.value = el.value.trimEnd() + ' ' + text;
     } else {
       el.value = text;
     }
@@ -630,8 +1068,9 @@
     if (type) parts.push('Struttura la risposta come: ' + type + '.');
     if (len)  parts.push('Lunghezza: ' + len + '.');
     if (parts.length) {
-      const existing = fEl.value.replace(/Struttura la risposta come:[^.]+\.\s*/g, '')
-                                 .replace(/Lunghezza:[^.]+\.\s*/g, '').trim();
+      const existing = fEl.value
+        .replace(/Struttura la risposta come:[^.]+\.\s*/g, '')
+        .replace(/Lunghezza:[^.]+\.\s*/g, '').trim();
       fEl.value = (parts.join(' ') + (existing ? ' ' + existing : '')).trim();
       updateCount('format');
     }
@@ -648,29 +1087,14 @@
       return;
     }
 
-    const parts = [];
-    const badges = [];
+    const parts = [], badges = [];
+    if (role)    { parts.push('[RUOLO]\n' + role);     badges.push('<span class="seg-badge seg-R">R · Ruolo</span>'); }
+    if (context) { parts.push('[CONTESTO]\n' + context); badges.push('<span class="seg-badge seg-C">C · Contesto</span>'); }
+    if (task)    { parts.push('[COMPITO]\n' + task);   badges.push('<span class="seg-badge seg-T">T · Compito</span>'); }
+    if (format)  { parts.push('[FORMATO]\n' + format); badges.push('<span class="seg-badge seg-F">F · Formato</span>'); }
 
-    if (role) {
-      parts.push('[RUOLO]\n' + role);
-      badges.push('<span class="seg-badge seg-R">R · Ruolo</span>');
-    }
-    if (context) {
-      parts.push('[CONTESTO]\n' + context);
-      badges.push('<span class="seg-badge seg-C">C · Contesto</span>');
-    }
-    if (task) {
-      parts.push('[COMPITO]\n' + task);
-      badges.push('<span class="seg-badge seg-T">T · Compito</span>');
-    }
-    if (format) {
-      parts.push('[FORMATO]\n' + format);
-      badges.push('<span class="seg-badge seg-F">F · Formato</span>');
-    }
-
-    const prompt = parts.join('\n\n');
-    document.getElementById('promptOutput').textContent = prompt;
-    document.getElementById('segBadges').innerHTML = 'Componenti incluse: ' + badges.join('');
+    document.getElementById('promptOutput').textContent = parts.join('\n\n');
+    document.getElementById('segBadges').innerHTML = 'Componenti: ' + badges.join('');
 
     const out = document.getElementById('outputSection');
     out.classList.add('visible');
