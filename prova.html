@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio AI per la Didattica</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --bg-color: #F9FAFB;
+            --text-color: #1F2937;
+            --card-bg: #FFFFFF;
+            --border-color: #E5E7EB;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bot-card {
+            background-color: #F3F4F6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .bot-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .prompt-box {
+            background-color: #111827;
+            color: #10B981;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #6B7280;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🤖 Laboratorio di AI per la Didattica</h1>
+        <p>Scuola Secondaria di II Grado | Strumenti e pratiche per docenti innovativi</p>
+    </header>
+
+    <div class="container">
+        
+        <section id="intro">
+            <h2>Introduzione: L'AI come Assistente Didattico</h2>
+            <p>L'Intelligenza Artificiale Generativa non è qui per sostituire il docente, ma per agire come un <strong>co-pilota instancabile</strong>. Può aiutarti a superare il "blocco della pagina bianca" nella progettazione, a personalizzare i materiali per studenti con BES/DSA e a creare simulazioni interattive.</p>
+        </section>
+
+        <section id="tools">
+            <h2>I Protagonisti: Claude vs Gemini</h2>
+            <div class="grid">
+                <div class="bot-card">
+                    <h4>Anthropic Claude</h4>
+                    <ul>
+                        <li><strong>Punto di forza:</strong> Qualità della scrittura, empatia e gestione di testi molto lunghi.</li>
+                        <li><strong>Ideale per:</strong> Analisi di lunghi PDF, stesura di saggi, creazione di rubriche di valutazione complesse, role-playing umanistici.</li>
+                        <li><strong>Stile:</strong> Preciso, sfumato, segue le istruzioni con grande rigore.</li>
+                    </ul>
+                </div>
+                <div class="bot-card">
+                    <h4>Google Gemini</h4>
+                    <ul>
+                        <li><strong>Punto di forza:</strong> Accesso al web in tempo reale e integrazione con l'ecosistema Google (Docs, Drive, Gmail).</li>
+                        <li><strong>Ideale per:</strong> Ricerche aggiornate, generazione di idee rapide, analisi di immagini e grafici scientifici.</li>
+                        <li><strong>Stile:</strong> Veloce, schematico, eccellente per materie STEM e sintesi rapide.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="lab">
+            <h2>💻 Hands-on: Esercitazione Pratica</h2>
+            <p>Aprite <a href="https://claude.ai" target="_blank">Claude.ai</a> in una scheda e <a href="https://gemini.google.com" target="_blank">Gemini</a> in un'altra. Provate a copiare e personalizzare questi prompt (istruzioni). <br><em>La regola d'oro del Prompting: <strong>Ruolo + Compito + Contesto + Formato.</strong></em></p>
+
+            <h3>1. Progettazione di un'UDA (Unità di Apprendimento)</h3>
+            <span class="tag">Per tutte le materie</span>
+            <div class="prompt-box">
+                Agisci come un docente esperto di [TUA MATERIA] di liceo. Crea una bozza per un'Unità di Apprendimento di 4 ore sull'argomento "[INSERISCI ARGOMENTO]". Includi: obiettivi di apprendimento (sapere e saper fare), un'attività pratica per la classe divisa in gruppi e un'idea per un compito di realtà finale. Formatta il tutto con elenchi puntati.
+            </div>
+
+            <h3>2. Inclusione e Personalizzazione (BES/DSA)</h3>
+            <span class="tag">Inclusione</span>
+            <div class="prompt-box">
+                Prendi il testo seguente e riscrivilo per un alunno di 15 anni con DSA. Usa frasi brevi, sintassi semplice (Soggetto, Verbo, Complemento), elenchi puntati ed evidenzia in grassetto i concetti chiave. Alla fine, genera un glossario di 5 parole difficili con spiegazione semplificata.<br><br>[INCOLLA QUI IL TESTO DEL LIBRO O DEGLI APPUNTI]
+            </div>
+
+            <h3>3. Creazione di una Rubrica di Valutazione</h3>
+            <span class="tag">Valutazione</span>
+            <div class="prompt-box">
+                Crea una rubrica di valutazione in formato tabella per valutare [ES: un saggio breve / un esperimento di laboratorio / una presentazione su PowerPoint]. I criteri devono essere 4 (es. Contenuto, Esposizione, Originalità, Lavoro di gruppo). Usa una scala da 1 (Insufficiente) a 4 (Eccellente), descrivendo esattamente cosa lo studente deve fare per ottenere ogni punteggio.
+            </div>
+        </section>
+
+        <section id="tips">
+            <h2>⚠️ Regole d'Oro e Best Practices</h2>
+            <ul>
+                <li><strong>Attenzione alle Allucinazioni:</strong> L'AI a volte inventa dati (nomi, date, fonti) pur sembrando sicura di sé. Il docente deve sempre verificare la veridicità dei contenuti generati.</li>
+                <li><strong>Privacy degli studenti:</strong> Non inserire mai nomi, cognomi o dati sensibili degli alunni nelle chat dell'AI.</li>
+                <li><strong>Iterazione:</strong> Il primo risultato raramente è perfetto. "Conversa" con l'AI chiedendo aggiustamenti (es. <em>"Rendi il tono più formale", "Aggiungi un esempio pratico", "Accorcia il testo del 30%"</em>).</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Materiale creato per il Laboratorio Docenti - Modificare e riutilizzare liberamente.</p>
+    </footer>
+
+</body>
+</html>
