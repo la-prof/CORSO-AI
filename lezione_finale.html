@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lezione Finale · Strumenti Specializzati · Corso AI per Docenti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#0f1117;
+  --ink-mid:#1c2030;
+  --gold:#c9a84c;
+  --gold-pale:#e8cc80;
+  --cream:#f5f0e6;
+  --cream-dim:rgba(245,240,230,.7);
+  --muted:#8a8d99;
+  --border:rgba(201,168,76,.18);
+  --border-dim:rgba(201,168,76,.09);
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;font-weight:300;background:var(--ink);color:var(--cream);min-height:100vh;overflow-x:hidden}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 48px;
+  background:rgba(15,17,23,.88);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(201,168,76,.1);
+}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--gold)}
+.nav-brand span{color:var(--cream);font-style:italic;font-weight:400}
+.nav-meta{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.12em;color:var(--muted)}
+.nav-back{
+  font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;border:1px solid var(--border-dim);
+  padding:6px 14px;border-radius:2px;transition:border-color .3s,color .3s;
+}
+.nav-back:hover{color:var(--gold);border-color:var(--border)}
+
+/* HERO */
+.hero{
+  min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden;
+}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.045) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(201,168,76,.11) 0%,transparent 70%);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:780px}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);background:rgba(201,168,76,.09);border:1px solid rgba(201,168,76,.22);
+  padding:6px 16px;border-radius:2px;margin-bottom:32px;
+  animation:fadeUp .6s ease both;
+}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.75)}}
+
+.hero-headline{
+  font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5.5vw,4rem);
+  font-weight:900;line-height:1.06;letter-spacing:-.02em;color:var(--cream);
+  margin-bottom:12px;animation:fadeUp .6s .1s ease both;
+}
+.hero-headline em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-size:1.05rem;color:var(--muted);line-height:1.75;max-width:560px;
+  margin:22px auto 40px;font-weight:300;animation:fadeUp .6s .2s ease both;
+}
+.hero-sub strong{color:var(--cream);font-weight:400}
+
+.hero-meta{
+  display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;
+  animation:fadeUp .6s .3s ease both;
+  font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;color:var(--muted);
+  text-transform:uppercase;
+}
+.hero-meta-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.5}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* PROGRESS BAR */
+.progress-section{background:#0d0f18;padding:0;border-bottom:1px solid var(--border-dim)}
+.progress-inner{max-width:900px;margin:0 auto;padding:0 24px}
+.progress-tabs{display:flex;overflow-x:auto;gap:0;scrollbar-width:none}
+.progress-tabs::-webkit-scrollbar{display:none}
+.prog-tab{
+  flex:1;min-width:110px;padding:16px 12px;text-align:center;cursor:pointer;
+  border-bottom:2px solid transparent;border-right:1px solid var(--border-dim);
+  transition:border-color .3s,color .3s;
+  font-family:'DM Mono',monospace;
+}
+.prog-tab:last-child{border-right:none}
+.prog-tab-time{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.prog-tab-label{font-size:.72rem;letter-spacing:.06em;color:var(--muted);transition:color .3s}
+.prog-tab.active{border-bottom-color:var(--gold)}
+.prog-tab.active .prog-tab-label{color:var(--gold)}
+.prog-tab:hover .prog-tab-label{color:var(--cream)}
+
+/* OVERALL PROGRESS */
+.overall-progress{padding:12px 0 0}
+.op-bar{height:2px;background:rgba(201,168,76,.12);border-radius:1px}
+.op-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s ease;width:0%}
+.op-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 0 10px}
+
+/* SECTION SHARED */
+section.content-section{padding:64px 24px;display:none}
+section.content-section.active{display:block}
+.section-inner{max-width:900px;margin:0 auto}
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:700;color:var(--cream);line-height:1.2;margin-bottom:14px}
+.section-sub{font-size:.95rem;color:var(--muted);line-height:1.7;max-width:640px}
+
+.section-rule{height:1px;background:var(--border-dim);max-width:900px;margin:0 auto}
+
+/* HIGHLIGHT BOX */
+.highlight-box{
+  background:rgba(201,168,76,.05);border:1px solid var(--border-dim);
+  border-left:3px solid var(--gold);border-radius:0 2px 2px 0;
+  padding:16px 20px;margin:32px 0;
+}
+.highlight-box p{font-size:.88rem;color:var(--cream-dim);line-height:1.7}
+
+/* TOOL GRID */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;margin:32px 0}
+.tool-card{
+  background:var(--ink-mid);border:1px solid var(--border-dim);
+  padding:22px;transition:border-color .3s,transform .2s;
+  position:relative;
+}
+.tool-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--tool-accent,var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.tool-card:hover{border-color:var(--border);transform:translateY(-2px)}
+.tool-card:hover::before{transform:scaleX(1)}
+.tool-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--cream);margin-bottom:4px}
+.tool-url{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;color:var(--gold);margin-bottom:10px}
+.tool-desc{font-size:.8rem;color:var(--muted);line-height:1.6}
+
+/* ACTIVITY BOX */
+.activity-box{
+  background:var(--ink-mid);border:1px solid var(--border-dim);
+  margin:24px 0;overflow:hidden;
+}
+.activity-header{
+  padding:16px 22px;border-bottom:1px solid var(--border-dim);
+  display:flex;align-items:center;gap:14px;
+  background:rgba(201,168,76,.04);
+}
+.activity-num{
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:.72rem;font-weight:500;color:var(--gold);flex-shrink:0;
+}
+.activity-title{font-size:.95rem;font-weight:500;color:var(--cream)}
+.activity-time{
+  margin-left:auto;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+  color:var(--muted);background:rgba(201,168,76,.06);border:1px solid var(--border-dim);
+  padding:4px 10px;border-radius:2px;white-space:nowrap;
+}
+.activity-body{padding:22px}
+.activity-body p{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:12px}
+.activity-body p:last-child{margin-bottom:0}
+.activity-body p em{color:var(--cream-dim);font-style:italic}
+
+/* STEP LIST */
+.step-list{list-style:none;margin:12px 0}
+.step-list li{
+  font-size:.85rem;color:var(--muted);line-height:1.65;
+  padding:8px 0 8px 22px;border-bottom:1px solid var(--border-dim);
+  position:relative;
+}
+.step-list li:last-child{border-bottom:none}
+.step-list li::before{content:'→';position:absolute;left:0;color:var(--gold);font-size:.8rem}
+.step-list li strong{color:var(--cream);font-weight:500}
+
+/* CHECKLIST */
+.checklist{list-style:none;margin:16px 0 0}
+.checklist li{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:9px 0;border-bottom:1px solid var(--border-dim);cursor:pointer;
+  transition:opacity .2s;
+}
+.checklist li:last-child{border-bottom:none}
+.checklist li input[type=checkbox]{
+  width:16px;height:16px;border:1px solid var(--border);
+  background:transparent;cursor:pointer;flex-shrink:0;margin-top:2px;
+  accent-color:var(--gold);
+}
+.checklist li span{font-size:.84rem;color:var(--muted);line-height:1.5;transition:all .2s}
+.checklist li.done span{text-decoration:line-through;opacity:.45}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:28px 0}
+.info-card{
+  background:var(--ink-mid);border:1px solid var(--border-dim);
+  border-radius:2px;padding:22px;transition:border-color .3s,transform .2s;
+}
+.info-card:hover{border-color:var(--border);transform:translateY(-2px)}
+.info-card-label{
+  font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;display:block;
+}
+.info-card h4{font-size:.95rem;font-weight:500;color:var(--cream);margin-bottom:8px}
+.info-card p{font-size:.82rem;color:var(--muted);line-height:1.65}
+
+/* TAG ROW */
+.tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.tag{
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 9px;border:1px solid var(--border-dim);color:var(--muted);border-radius:2px;
+}
+
+/* COMPARISON TABLE */
+.compare-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.84rem}
+.compare-table th{
+  font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;
+}
+.compare-table td{
+  padding:10px 14px;border-bottom:1px solid var(--border-dim);color:var(--muted);
+  vertical-align:top;line-height:1.55;
+}
+.compare-table td:first-child{color:var(--cream);font-weight:400}
+.compare-table tr:last-child td{border-bottom:none}
+
+/* NAV ROW */
+.nav-row{
+  display:flex;gap:12px;justify-content:space-between;align-items:center;
+  margin-top:48px;padding-top:28px;border-top:1px solid var(--border-dim);
+}
+.nav-btn{
+  font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:10px 20px;border:1px solid var(--border-dim);background:transparent;
+  color:var(--muted);cursor:pointer;transition:border-color .3s,color .3s;border-radius:2px;
+}
+.nav-btn:hover{border-color:var(--border);color:var(--cream)}
+.nav-btn.primary{border-color:var(--gold);color:var(--gold)}
+.nav-btn.primary:hover{background:rgba(201,168,76,.08)}
+.nav-btn:disabled{opacity:.25;pointer-events:none}
+
+/* SYNTHESIS MAP */
+.map-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px;margin:28px 0}
+.map-item{
+  background:var(--ink-mid);border:1px solid var(--border-dim);padding:22px;
+}
+.map-item-label{
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;display:block;
+}
+.map-item textarea{
+  width:100%;background:transparent;border:1px solid var(--border-dim);
+  color:var(--cream);font-family:'DM Sans',sans-serif;font-size:.84rem;
+  line-height:1.6;padding:10px;border-radius:2px;resize:vertical;min-height:80px;
+  transition:border-color .3s;font-weight:300;
+}
+.map-item textarea::placeholder{color:var(--muted);opacity:.6}
+.map-item textarea:focus{outline:none;border-color:var(--border)}
+
+/* FINALE QUOTE */
+.finale-quote{
+  text-align:center;padding:56px 24px;max-width:600px;margin:0 auto;
+}
+.finale-quote blockquote{
+  font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3vw,1.9rem);
+  font-weight:700;font-style:italic;color:var(--cream);line-height:1.35;margin-bottom:16px;
+}
+.finale-quote blockquote em{color:var(--gold)}
+.finale-quote cite{
+  font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* FOOTER */
+footer{
+  background:#090b10;border-top:1px solid rgba(201,168,76,.08);
+  padding:32px 24px;text-align:center;
+}
+.footer-brand{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--gold);margin-bottom:8px}
+.footer-meta{font-size:.75rem;color:var(--muted)}
+.footer-meta a{color:var(--gold);text-decoration:none}
+.footer-meta a:hover{color:var(--gold-pale)}
+
+@media(max-width:600px){
+  nav{padding:14px 20px}
+  .nav-meta{display:none}
+  .progress-tabs{gap:0}
+  .prog-tab{min-width:90px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Corso AI <span>per Docenti</span></div>
+  <div class="nav-meta">Prof.ssa Elisabetta Chiurco · 2025</div>
+  <a class="nav-back" href="index.html">← Indice</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      Modulo 06 · Lezione Finale
+    </div>
+    <h1 class="hero-headline">
+      Strumenti specializzati<br>
+      <em>per chi insegna.</em>
+    </h1>
+    <p class="hero-sub">
+      Ultima lezione laboratoriale: da strumenti generalisti a tool
+      <strong>pensati specificamente per i docenti</strong>.
+      Magic School AI, Diffit e Curipod per trasformare la pratica didattica quotidiana.
+    </p>
+    <div class="hero-meta">
+      <span>Laboratorio</span>
+      <span class="hero-meta-dot"></span>
+      <span>2 ore · 6 sezioni</span>
+      <span class="hero-meta-dot"></span>
+      <span>Lezione conclusiva</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS TABS + BAR -->
+<div class="progress-section">
+  <div class="progress-inner">
+    <div class="overall-progress">
+      <div class="op-bar"><div class="op-fill" id="opFill"></div></div>
+      <div class="op-label" id="opLabel">0 / 0 attività completate</div>
+    </div>
+    <div class="progress-tabs">
+      <div class="prog-tab active" onclick="goTo(0)">
+        <div class="prog-tab-time">0 – 15 min</div>
+        <div class="prog-tab-label">Intro & Recap</div>
+      </div>
+      <div class="prog-tab" onclick="goTo(1)">
+        <div class="prog-tab-time">15 – 45 min</div>
+        <div class="prog-tab-label">Magic School</div>
+      </div>
+      <div class="prog-tab" onclick="goTo(2)">
+        <div class="prog-tab-time">45 – 70 min</div>
+        <div class="prog-tab-label">Diffit</div>
+      </div>
+      <div class="prog-tab" onclick="goTo(3)">
+        <div class="prog-tab-time">70 – 90 min</div>
+        <div class="prog-tab-label">Curipod</div>
+      </div>
+      <div class="prog-tab" onclick="goTo(4)">
+        <div class="prog-tab-time">90 – 110 min</div>
+        <div class="prog-tab-label">Sintesi</div>
+      </div>
+      <div class="prog-tab" onclick="goTo(5)">
+        <div class="prog-tab-time">110 – 120 min</div>
+        <div class="prog-tab-label">Chiusura</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ SEZIONE 0: INTRO -->
+<section class="content-section active" id="sec-0">
+<div class="section-inner">
+  <span class="section-eyebrow">// 00 · Introduzione</span>
+  <h2 class="section-title">Dove siamo arrivati.</h2>
+  <p class="section-sub">Prima di esplorare nuovi strumenti, consolidiamo il percorso fatto insieme. Siamo all'ultima lezione: è il momento di dare senso all'intero cammino.</p>
+
+  <div class="highlight-box">
+    <p>L'obiettivo di oggi non è imparare altri strumenti, ma capire <strong>quale combinazione ha senso per il vostro contesto</strong>. Ogni insegnante uscirà con un proprio ecosistema AI — non una lista infinita di tool.</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <span class="info-card-label">Strumenti già visti</span>
+      <h4>Il vostro bagaglio</h4>
+      <p>ChatGPT · Gemini · Claude — AI generativa conversazionale, prompting, usi didattici generali.</p>
+      <p style="margin-top:8px">NotebookLM — analisi documenti, sintesi, podcast automatici da fonti proprie.</p>
+      <div class="tag-row">
+        <span class="tag">generativa</span>
+        <span class="tag">conversazionale</span>
+        <span class="tag">documenti</span>
+      </div>
+    </div>
+    <div class="info-card">
+      <span class="info-card-label">Oggi esploriamo</span>
+      <h4>Tool specializzati per docenti</h4>
+      <p>Magic School AI — suite completa con oltre 60 tool pensati esclusivamente per insegnanti.</p>
+      <p style="margin-top:8px">Diffit — differenziazione testi per livelli.</p>
+      <p style="margin-top:8px">Curipod — lezioni interattive generate con AI.</p>
+      <div class="tag-row">
+        <span class="tag">educazione</span>
+        <span class="tag">inclusività</span>
+        <span class="tag">interattività</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">01</div>
+      <div class="activity-title">Apertura — riflessione rapida in plenaria</div>
+      <div class="activity-time">10 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Chiedete ai partecipanti di rispondere a voce a una di queste domande:</p>
+      <ul class="step-list">
+        <li>Quale strumento già visto userete di più nel lavoro quotidiano, e perché?</li>
+        <li>Quale problema non avete ancora trovato uno strumento per risolvere?</li>
+        <li>C'è qualcosa che avete già sperimentato in classe dopo le lezioni precedenti?</li>
+      </ul>
+      <ul class="checklist">
+        <li onclick="toggle(this)"><input type="checkbox"><span>Risposte raccolte e discusse brevemente</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Obiettivi della lezione presentati</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Account agli strumenti di oggi confermati (Magic School, Diffit, Curipod)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" disabled>← Indietro</button>
+    <button class="nav-btn primary" onclick="goTo(1)">Magic School AI →</button>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════ SEZIONE 1: MAGIC SCHOOL -->
+<section class="content-section" id="sec-1">
+<div class="section-inner">
+  <span class="section-eyebrow">// 01 · Magic School AI</span>
+  <h2 class="section-title">La suite completa <em>per chi insegna.</em></h2>
+  <p class="section-sub">Magic School AI non è un chatbot generalista — è una piattaforma con oltre 60 tool pronti all'uso, costruiti attorno ai problemi reali dei docenti. Niente più prompt da costruire da zero.</p>
+
+  <div class="highlight-box">
+    <p>Il punto chiave di Magic School rispetto a ChatGPT o Claude: <strong>non devi sapere come chiedere</strong>. I form guidati ti portano direttamente all'output utile — il prompt engineering è già incorporato nello strumento.</p>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card" style="--tool-accent:#e8a84c">
+      <div class="tool-name">Lesson Plan Generator</div>
+      <div class="tool-url">magicschool.ai</div>
+      <div class="tool-desc">Genera piani di lezione completi da materia, livello, obiettivi e durata. Output strutturato con fasi, tempi e materiali.</div>
+    </div>
+    <div class="tool-card" style="--tool-accent:#7090e8">
+      <div class="tool-name">Rubric Generator</div>
+      <div class="tool-url">magicschool.ai</div>
+      <div class="tool-desc">Rubriche di valutazione strutturate per qualsiasi tipo di compito, con criteri e livelli di performance già definiti.</div>
+    </div>
+    <div class="tool-card" style="--tool-accent:#70c8a8">
+      <div class="tool-name">Text Leveler</div>
+      <div class="tool-url">magicschool.ai</div>
+      <div class="tool-desc">Adatta qualsiasi testo al livello di lettura degli studenti: dalla scuola primaria al superiore, mantenendo i concetti chiave.</div>
+    </div>
+    <div class="tool-card" style="--tool-accent:#b070e8">
+      <div class="tool-name">Email / Report Generator</div>
+      <div class="tool-url">magicschool.ai</div>
+      <div class="tool-desc">Bozze professionali di email per i genitori e commenti personalizzati per le pagelle in pochi secondi.</div>
+    </div>
+  </div>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">02</div>
+      <div class="activity-title">Demo guidata — esplorazione in plenaria</div>
+      <div class="activity-time">10 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Il docente mostra l'intera piattaforma sullo schermo, seguendo questo percorso:</p>
+      <ul class="step-list">
+        <li>Panoramica della dashboard — quanti e quali tool sono disponibili</li>
+        <li><strong>Lesson Plan Generator</strong> — inserire materia, livello, obiettivo e generare in diretta</li>
+        <li>Confronto immediato con un output di ChatGPT con lo stesso input: cosa cambia?</li>
+        <li><strong>Rubric Generator</strong> — scegliere un compito proposto dal gruppo e generare la rubrica</li>
+      </ul>
+      <ul class="checklist">
+        <li onclick="toggle(this)"><input type="checkbox"><span>Demo Lesson Plan completata</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Confronto con ChatGPT discusso con il gruppo</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Rubric Generator mostrato</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">03</div>
+      <div class="activity-title">Laboratorio — lavoro individuale o a coppie</div>
+      <div class="activity-time">20 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Ogni partecipante sceglie <strong>una delle due sfide</strong> in base alle proprie esigenze:</p>
+      <ul class="step-list">
+        <li><strong>Sfida A — pianificazione:</strong> Genera un piano di lezione per la tua prossima settimana. Poi rielaboralo manualmente: cosa hai tenuto? Cosa hai cambiato? Dove la tua voce fa la differenza?</li>
+        <li><strong>Sfida B — differenziazione:</strong> Usa il Text Leveler su un testo che usi abitualmente in classe. Genera due versioni (base e avanzata) e valuta se le differenze sono pedagogicamente utili o solo stilistiche.</li>
+      </ul>
+      <p><em>Domanda di riflessione: Magic School "pensa da insegnante" o è AI generativa con un'interfaccia specializzata? La differenza è rilevante?</em></p>
+      <ul class="checklist">
+        <li onclick="toggle(this)"><input type="checkbox"><span>Ogni partecipante ha completato almeno una sfida</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>2–3 partecipanti hanno condiviso il risultato in plenaria</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goTo(0)">← Intro</button>
+    <button class="nav-btn primary" onclick="goTo(2)">Diffit →</button>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════ SEZIONE 2: DIFFIT -->
+<section class="content-section" id="sec-2">
+<div class="section-inner">
+  <span class="section-eyebrow">// 02 · Diffit</span>
+  <h2 class="section-title">Differenziazione <em>in un clic.</em></h2>
+  <p class="section-sub">Diffit risolve uno dei problemi più concreti dell'insegnamento inclusivo: adattare materiali di lettura a studenti con livelli diversi, inclusi studenti con BES, DSA o di madrelingua diversa dall'italiano.</p>
+
+  <div class="highlight-box">
+    <p>Il flusso è semplice: incolli un testo o un URL, scegli il livello di leggibilità, e Diffit genera una versione adattata con <strong>domande di comprensione già incluse</strong>. Lo stesso contenuto, più accessibile — senza riscrivere tutto a mano.</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <span class="info-card-label">Punto di forza</span>
+      <h4>Inclusività reale</h4>
+      <p>Genera lo stesso contenuto a più livelli di leggibilità mantenendo invariata la sostanza dei concetti chiave. Utile per classi eterogenee, recupero o potenziamento.</p>
+    </div>
+    <div class="info-card">
+      <span class="info-card-label">Punto critico</span>
+      <h4>Verificare sempre l'output</h4>
+      <p>Le semplificazioni aggressive possono perdere sfumature importanti. Il docente deve revisionare prima di distribuire, soprattutto in ambiti tecnici, storici o letterari.</p>
+    </div>
+  </div>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">04</div>
+      <div class="activity-title">Demo guidata — da URL a materiale differenziato</div>
+      <div class="activity-time">10 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Mostrare in plenaria partendo da un articolo reale (ad esempio Wikipedia o un articolo di giornale scientifico):</p>
+      <ul class="step-list">
+        <li>Incollare l'URL di un articolo enciclopedico su un argomento curricolare</li>
+        <li>Generare la versione "elementare" e "superiore" — confrontare le differenze a schermo</li>
+        <li>Analizzare le domande di comprensione auto-generate: sono utili? Sono accurate?</li>
+        <li>Mostrare la funzione di traduzione per studenti di madrelingua diversa</li>
+      </ul>
+      <ul class="checklist">
+        <li onclick="toggle(this)"><input type="checkbox"><span>Demo con URL completata in plenaria</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Differenze tra livelli analizzate e discusse</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Qualità delle domande di comprensione valutata insieme</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">05</div>
+      <div class="activity-title">Laboratorio — il mio testo differenziato</div>
+      <div class="activity-time">15 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Ogni partecipante porta (o sceglie al momento) un testo della propria disciplina:</p>
+      <ul class="step-list">
+        <li>Generare almeno due versioni a livelli diversi del proprio testo</li>
+        <li>Valutare: quali concetti vengono conservati bene? Quali vengono banalizzati o persi?</li>
+        <li>Bonus: generare un quiz automatico e valutarne la qualità pedagogica rispetto ai propri obiettivi</li>
+      </ul>
+      <p><em>Domanda di riflessione: Diffit "risolve" la differenziazione o la rende più veloce da implementare? La differenza ha conseguenze pedagogiche?</em></p>
+      <ul class="checklist">
+        <li onclick="toggle(this)"><input type="checkbox"><span>Ogni partecipante ha prodotto almeno una versione differenziata del proprio testo</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Riflessione critica sull'utilità condivisa in plenaria</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goTo(1)">← Magic School</button>
+    <button class="nav-btn primary" onclick="goTo(3)">Curipod →</button>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════ SEZIONE 3: CURIPOD -->
+<section class="content-section" id="sec-3">
+<div class="section-inner">
+  <span class="section-eyebrow">// 03 · Curipod</span>
+  <h2 class="section-title">Lezioni interattive <em>generate in 30 secondi.</em></h2>
+  <p class="section-sub">Curipod genera slide di lezione interattive con sondaggi, word cloud e domande aperte già integrati. Ogni slide raccoglie risposte in tempo reale dagli studenti — come Mentimeter, ma costruito dall'AI a partire da un argomento.</p>
+
+  <div class="highlight-box">
+    <p>La differenza con NotebookLM che già conoscete: <strong>NotebookLM parte dai tuoi documenti</strong> e li elabora. <strong>Curipod parte da un argomento</strong> e costruisce una lezione partecipativa. Strumenti complementari, non alternativi.</p>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Aspetto</th>
+        <th>Curipod</th>
+        <th>NotebookLM</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Input principale</td>
+        <td>Argomento testuale</td>
+        <td>I tuoi documenti</td>
+      </tr>
+      <tr>
+        <td>Output</td>
+        <td>Lezione interattiva con slide</td>
+        <td>Sintesi, Q&A, podcast</td>
+      </tr>
+      <tr>
+        <td>Studenti coinvolti?</td>
+        <td>Sì — in tempo reale con codice</td>
+        <td>No — strumento per il docente</td>
+      </tr>
+      <tr>
+        <td>Fase didattica</td>
+        <td>Durante la lezione</td>
+        <td>Preparazione e studio</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">06</div>
+      <div class="activity-title">Demo guidata — generare e condurre una micro-lezione</div>
+      <div class="activity-time">8 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Il docente mostra l'intero flusso in plenaria. L'argomento della lezione demo viene scelto dal gruppo con una votazione rapida:</p>
+      <ul class="step-list">
+        <li>Generare la lezione su curipod.com inserendo argomento, livello e durata</li>
+        <li>Esplorare l'editor: modificare una slide, aggiungere un sondaggio manuale</li>
+        <li>Avviare la sessione live — i partecipanti si connettono dal proprio dispositivo con il codice</li>
+        <li>Condurre 2–3 slide interattive in tempo reale e mostrare le risposte aggregate</li>
+      </ul>
+      <ul class="checklist">
+        <li onclick="toggle(this)"><input type="checkbox"><span>Lezione generata e mostrata a schermo</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Sessione live avviata con il gruppo come studenti</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Risultati delle interazioni mostrati in tempo reale</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">07</div>
+      <div class="activity-title">Laboratorio — crea la tua lezione</div>
+      <div class="activity-time">12 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Ogni partecipante crea autonomamente una lezione Curipod su un argomento della propria materia:</p>
+      <ul class="step-list">
+        <li>Scegliere argomento, classe di riferimento e durata della lezione</li>
+        <li>Modificare almeno 2 elementi generati (testo di una slide, tipo di attività, immagine)</li>
+        <li>Bonus: condividere il link con un collega vicino e testare la sessione interattiva reciprocamente</li>
+      </ul>
+      <p><em>Domanda di riflessione: Curipod cambia il ruolo del docente durante la lezione, o solo la fase di preparazione? Che implicazioni ha per il rapporto con gli studenti?</em></p>
+      <ul class="checklist">
+        <li onclick="toggle(this)"><input type="checkbox"><span>Ogni partecipante ha una lezione Curipod salvata e modificata</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Riflessione sul ruolo del docente condivisa in plenaria</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goTo(2)">← Diffit</button>
+    <button class="nav-btn primary" onclick="goTo(4)">Sintesi →</button>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════ SEZIONE 4: SINTESI -->
+<section class="content-section" id="sec-4">
+<div class="section-inner">
+  <span class="section-eyebrow">// 04 · Sintesi</span>
+  <h2 class="section-title">Il proprio <em>ecosistema AI.</em></h2>
+  <p class="section-sub">Non esiste la combinazione giusta in assoluto — esiste quella giusta per il proprio contesto, la propria materia, il proprio stile di insegnamento. Questa attività serve a trovare la propria.</p>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">08</div>
+      <div class="activity-title">Mappa personale degli strumenti AI</div>
+      <div class="activity-time">15 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Individualmente o a coppie, compilare la mappa qui sotto — poi condividere 2–3 voci con il gruppo:</p>
+    </div>
+  </div>
+
+  <div class="map-grid">
+    <div class="map-item">
+      <span class="map-item-label">Pianificazione</span>
+      <textarea placeholder="Quale strumento per preparare lezioni? (Magic School, ChatGPT, Claude…)"></textarea>
+    </div>
+    <div class="map-item">
+      <span class="map-item-label">Materiali & differenziazione</span>
+      <textarea placeholder="Come adattate i contenuti? (Diffit, Text Leveler, Gemini…)"></textarea>
+    </div>
+    <div class="map-item">
+      <span class="map-item-label">In classe con gli studenti</span>
+      <textarea placeholder="Quale strumento cambia l'esperienza degli studenti? (Curipod, NotebookLM…)"></textarea>
+    </div>
+    <div class="map-item">
+      <span class="map-item-label">Valutazione & feedback</span>
+      <textarea placeholder="Come l'AI può supportare il feedback? (rubriche, quiz, commenti…)"></textarea>
+    </div>
+    <div class="map-item">
+      <span class="map-item-label">Il mio confine</span>
+      <textarea placeholder="Cosa NON delego all'AI? Qual è il limite che voglio mantenere come docente?"></textarea>
+    </div>
+    <div class="map-item">
+      <span class="map-item-label">Prossimo passo concreto</span>
+      <textarea placeholder="Una sola cosa che implemento entro la prossima settimana…"></textarea>
+    </div>
+  </div>
+
+  <div class="info-grid" style="margin-top:32px">
+    <div class="info-card">
+      <span class="info-card-label">Strumento bonus</span>
+      <h4>Canva AI per la didattica</h4>
+      <p>Canva integra AI per generare presentazioni, poster e materiali visivi da testo. Magic Write e Text to Image sono le funzioni più utili in classe. Ideale per chi vuole mantenere il controllo sul design.</p>
+      <div class="tag-row"><span class="tag">canva.com</span></div>
+    </div>
+    <div class="info-card">
+      <span class="info-card-label">Strumento bonus</span>
+      <h4>Eduaide.ai</h4>
+      <p>Simile a Magic School ma con un approccio più dialogico: invece di generare un output, si co-costruisce la lezione con l'AI. Utile per chi vuole capire il processo, non solo ottenere un risultato.</p>
+      <div class="tag-row"><span class="tag">eduaide.ai</span></div>
+    </div>
+  </div>
+
+  <ul class="checklist">
+    <li onclick="toggle(this)"><input type="checkbox"><span>Ogni partecipante ha compilato almeno 4 voci della mappa</span></li>
+    <li onclick="toggle(this)"><input type="checkbox"><span>2–3 mappe condivise e commentate in plenaria</span></li>
+    <li onclick="toggle(this)"><input type="checkbox"><span>Punti di convergenza e differenze tra i partecipanti notati e discussi</span></li>
+  </ul>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goTo(3)">← Curipod</button>
+    <button class="nav-btn primary" onclick="goTo(5)">Chiusura →</button>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════ SEZIONE 5: CHIUSURA -->
+<section class="content-section" id="sec-5">
+<div class="section-inner">
+  <span class="section-eyebrow">// 05 · Chiusura del corso</span>
+  <h2 class="section-title">Fine del percorso.</h2>
+  <p class="section-sub">Un momento per fare il punto, raccogliere un pensiero da portare a casa, e chiudere il corso in modo consapevole.</p>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">09</div>
+      <div class="activity-title">Round finale — un pensiero da portare a casa</div>
+      <div class="activity-time">5 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Ogni partecipante completa a voce <strong>una</strong> di queste frasi:</p>
+      <ul class="step-list">
+        <li>"Ho capito che l'AI nella didattica…"</li>
+        <li>"La cosa che voglio provare subito è…"</li>
+        <li>"Il confine che voglio mantenere come insegnante è…"</li>
+        <li>"Una domanda che rimane aperta per me è…"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <span class="info-card-label">Il percorso completo</span>
+      <h4>Cosa abbiamo visto</h4>
+      <p>ChatGPT · Gemini · Claude · NotebookLM · Magic School AI · Diffit · Curipod</p>
+      <p style="margin-top:10px">Da strumenti generici a strumenti specializzati. Il filo è sempre lo stesso: <strong>il docente al centro, l'AI come amplificatore.</strong></p>
+    </div>
+    <div class="info-card">
+      <span class="info-card-label">Prossimi passi</span>
+      <h4>Come continuare</h4>
+      <p>Scegliere <strong>un solo strumento</strong> e usarlo davvero per due settimane consecutive.</p>
+      <p style="margin-top:10px">Tenere un mini-diario: cosa ha funzionato? Cosa ha deluso? Cosa hai cambiato rispetto all'output originale?</p>
+    </div>
+  </div>
+
+  <div class="activity-box">
+    <div class="activity-header">
+      <div class="activity-num">10</div>
+      <div class="activity-title">Valutazione del corso</div>
+      <div class="activity-time">5 min</div>
+    </div>
+    <div class="activity-body">
+      <p>Distribuire o inviare il questionario di valutazione finale del corso.</p>
+      <ul class="checklist">
+        <li onclick="toggle(this)"><input type="checkbox"><span>Round finale completato — tutti hanno condiviso un pensiero</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Questionario di valutazione distribuito e compilato</span></li>
+        <li onclick="toggle(this)"><input type="checkbox"><span>Saluti, ringraziamenti e chiusura</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="finale-quote">
+    <blockquote>
+      "L'AI non sostituisce il docente.<br>
+      <em>Amplifica chi il docente è già.</em>"
+    </blockquote>
+    <cite>— Riflessione conclusiva del corso</cite>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goTo(4)">← Sintesi</button>
+    <a class="nav-btn primary" href="index.html">Torna all'indice →</a>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div class="footer-brand">Corso AI per Docenti</div>
+  <p class="footer-meta">Materiali a cura di Prof.ssa Chiurco Elisabetta · Aggiornato 2025 · <a href="https://la-prof.github.io/CORSO-AI/">la-prof.github.io/CORSO-AI</a></p>
+</footer>
+
+<script>
+const sections = document.querySelectorAll('.content-section');
+const tabs = document.querySelectorAll('.prog-tab');
+let current = 0;
+
+function goTo(n) {
+  sections[current].classList.remove('active');
+  tabs[current].classList.remove('active');
+  current = n;
+  sections[current].classList.add('active');
+  tabs[current].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  updateProgress();
+}
+
+function toggle(li) {
+  const cb = li.querySelector('input');
+  cb.checked = !cb.checked;
+  li.classList.toggle('done', cb.checked);
+  updateProgress();
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('.checklist input[type=checkbox]');
+  const done = document.querySelectorAll('.checklist input[type=checkbox]:checked');
+  const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+  document.getElementById('opFill').style.width = pct + '%';
+  document.getElementById('opLabel').textContent = done.length + ' / ' + all.length + ' attività completate';
+}
+
+updateProgress();
+</script>
+</body>
+</html>
